@@ -1,0 +1,1542 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Typer MŚ 2026</title>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+<style>html,body{margin:0;padding:0;background:#04150f}#root{min-height:100vh}#boot{color:#8fb0a1;font-family:system-ui,sans-serif;display:grid;place-items:center;height:100vh;font-size:15px}</style>
+</head>
+<body>
+<div id="root"><div id="boot">Ładowanie aplikacji…</div></div>
+<script type="text/babel" data-presets="react">
+const ICONS = {"check":"<path d=\"M20 6 9 17l-5-5\" />","chevron-left":"<path d=\"m15 18-6-6 6-6\" />","chevron-right":"<path d=\"m9 18 6-6-6-6\" />","clock":"<circle cx=\"12\" cy=\"12\" r=\"10\" /><path d=\"M12 6v6l4 2\" />","crown":"<path d=\"M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z\" /><path d=\"M5 21h14\" />","download":"<path d=\"M12 15V3\" /><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\" /><path d=\"m7 10 5 5 5-5\" />","eye":"<path d=\"M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0\" /><circle cx=\"12\" cy=\"12\" r=\"3\" />","flame":"<path d=\"M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4\" />","globe":"<circle cx=\"12\" cy=\"12\" r=\"10\" /><path d=\"M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20\" /><path d=\"M2 12h20\" />","history":"<path d=\"M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8\" /><path d=\"M3 3v5h5\" /><path d=\"M12 7v5l4 2\" />","lock":"<rect width=\"18\" height=\"11\" x=\"3\" y=\"11\" rx=\"2\" ry=\"2\" /><path d=\"M7 11V7a5 5 0 0 1 10 0v4\" />","log-in":"<path d=\"m10 17 5-5-5-5\" /><path d=\"M15 12H3\" /><path d=\"M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4\" />","log-out":"<path d=\"m16 17 5-5-5-5\" /><path d=\"M21 12H9\" /><path d=\"M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4\" />","pencil":"<path d=\"M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z\" /><path d=\"m15 5 4 4\" />","plus":"<path d=\"M5 12h14\" /><path d=\"M12 5v14\" />","refresh-cw":"<path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\" /><path d=\"M21 3v5h-5\" /><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\" /><path d=\"M8 16H3v5\" />","shield":"<path d=\"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z\" />","target":"<circle cx=\"12\" cy=\"12\" r=\"10\" /><circle cx=\"12\" cy=\"12\" r=\"6\" /><circle cx=\"12\" cy=\"12\" r=\"2\" />","trash-2":"<path d=\"M10 11v6\" /><path d=\"M14 11v6\" /><path d=\"M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6\" /><path d=\"M3 6h18\" /><path d=\"M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2\" />","trophy":"<path d=\"M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978\" /><path d=\"M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978\" /><path d=\"M18 9h1.5a1 1 0 0 0 0-5H18\" /><path d=\"M4 22h16\" /><path d=\"M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z\" /><path d=\"M6 9H4.5a1 1 0 0 1 0-5H6\" />","user-plus":"<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\" /><circle cx=\"9\" cy=\"7\" r=\"4\" /><line x1=\"19\" x2=\"19\" y1=\"8\" y2=\"14\" /><line x1=\"22\" x2=\"16\" y1=\"11\" y2=\"11\" />","users":"<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\" /><path d=\"M16 3.128a4 4 0 0 1 0 7.744\" /><path d=\"M22 21v-2a4 4 0 0 0-3-3.87\" /><circle cx=\"9\" cy=\"7\" r=\"4\" />","x":"<path d=\"M18 6 6 18\" /><path d=\"m6 6 12 12\" />","coins":"<circle cx=\"8\" cy=\"8\" r=\"6\" /><path d=\"M18.09 10.37A6 6 0 1 1 10.34 18\" /><path d=\"M7 6h1v4\" /><path d=\"m16.71 13.88.7.71-2.82 2.82\" />"};
+const { useState, useEffect, useMemo, useCallback } = React;
+function Ic({ n, size = 16, style, className }) {
+  return React.createElement("svg", { className: className, style: style, width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round", dangerouslySetInnerHTML: { __html: ICONS[n] || "" } });
+}
+const Trophy = (p) => React.createElement(Ic, Object.assign({ n: "trophy" }, p));
+const Lock = (p) => React.createElement(Ic, Object.assign({ n: "lock" }, p));
+const Users = (p) => React.createElement(Ic, Object.assign({ n: "users" }, p));
+const Plus = (p) => React.createElement(Ic, Object.assign({ n: "plus" }, p));
+const RefreshCw = (p) => React.createElement(Ic, Object.assign({ n: "refresh-cw" }, p));
+const LogOut = (p) => React.createElement(Ic, Object.assign({ n: "log-out" }, p));
+const Globe = (p) => React.createElement(Ic, Object.assign({ n: "globe" }, p));
+const Check = (p) => React.createElement(Ic, Object.assign({ n: "check" }, p));
+const X = (p) => React.createElement(Ic, Object.assign({ n: "x" }, p));
+const Pencil = (p) => React.createElement(Ic, Object.assign({ n: "pencil" }, p));
+const Trash2 = (p) => React.createElement(Ic, Object.assign({ n: "trash-2" }, p));
+const Shield = (p) => React.createElement(Ic, Object.assign({ n: "shield" }, p));
+const Clock = (p) => React.createElement(Ic, Object.assign({ n: "clock" }, p));
+const Target = (p) => React.createElement(Ic, Object.assign({ n: "target" }, p));
+const Download = (p) => React.createElement(Ic, Object.assign({ n: "download" }, p));
+const Flame = (p) => React.createElement(Ic, Object.assign({ n: "flame" }, p));
+const UserPlus = (p) => React.createElement(Ic, Object.assign({ n: "user-plus" }, p));
+const LogIn = (p) => React.createElement(Ic, Object.assign({ n: "log-in" }, p));
+const Crown = (p) => React.createElement(Ic, Object.assign({ n: "crown" }, p));
+const History = (p) => React.createElement(Ic, Object.assign({ n: "history" }, p));
+const ChevronLeft = (p) => React.createElement(Ic, Object.assign({ n: "chevron-left" }, p));
+const ChevronRight = (p) => React.createElement(Ic, Object.assign({ n: "chevron-right" }, p));
+const Eye = (p) => React.createElement(Ic, Object.assign({ n: "eye" }, p));
+const Coins = (p) => React.createElement(Ic, Object.assign({ n: "coins" }, p));
+
+
+/* ============================================================
+   TYPER MŚ 2026  —  pula typerska dla wąskiego grona
+   - logowanie (imię + PIN, lekkie)
+   - typy na 3 sposoby: dokładny wynik / zwycięzca / 1. strzelec
+   - typy zablokowane od pierwszego gwizdka
+   - cudze typy ukryte do startu meczu
+   - ranking punktów liczony automatycznie
+   - admin: dodaje mecze, pobiera wynik z internetu, zatwierdza
+   Dane trzymane we WSPÓLNYM storage artefaktu (shared=true),
+   więc paczka znajomych dzieli ten sam stan na jednym linku.
+   ============================================================ */
+
+/* ====== KONFIGURACJA SUPABASE — wklej dane swojego darmowego projektu ====== */
+const SUPABASE_URL = "https://orsflqxpkzfoffitonfq.supabase.co";        /* np. https://abcdefgh.supabase.co */
+const SUPABASE_KEY = "sb_publishable_KjnML2aqG07zrmTsPxXqpw_inTmjUbr";   /* klucz "anon public" z Project Settings -> API */
+/* ========================================================================== */
+const SB_OK = /^https:\/\/.+\.supabase\.co/.test(SUPABASE_URL) && SUPABASE_KEY.length > 20;
+const SB_H = { apikey: SUPABASE_KEY, Authorization: "Bearer " + SUPABASE_KEY, "Content-Type": "application/json" };
+const mem = new Map();
+const hasLS = (() => { try { return typeof localStorage !== "undefined"; } catch (e) { return false; } })();
+const store = {
+  async get(k) {
+    try {
+      if (SB_OK) {
+        const r = await fetch(SUPABASE_URL + "/rest/v1/kv?key=eq." + encodeURIComponent(k) + "&select=value", { headers: SB_H });
+        const j = await r.json(); return Array.isArray(j) && j[0] ? j[0].value : null;
+      }
+      if (hasLS) { const v = localStorage.getItem("kv:" + k); return v != null ? v : null; }
+      return mem.has(k) ? mem.get(k) : null;
+    } catch (e) { return null; }
+  },
+  async set(k, v) {
+    try {
+      if (SB_OK) {
+        await fetch(SUPABASE_URL + "/rest/v1/kv", { method: "POST", headers: Object.assign({}, SB_H, { Prefer: "resolution=merge-duplicates,return=minimal" }), body: JSON.stringify({ key: k, value: v }) });
+        return true;
+      }
+      if (hasLS) { localStorage.setItem("kv:" + k, v); return true; }
+      mem.set(k, v); return true;
+    } catch (e) { return false; }
+  },
+  async list(prefix) {
+    try {
+      if (SB_OK) {
+        const r = await fetch(SUPABASE_URL + "/rest/v1/kv?key=like." + encodeURIComponent(prefix + "%") + "&select=key", { headers: SB_H });
+        const j = await r.json(); return Array.isArray(j) ? j.map((x) => x.key) : [];
+      }
+      if (hasLS) { const out = []; for (let i = 0; i < localStorage.length; i++) { const kk = localStorage.key(i); if (kk && kk.indexOf("kv:" + prefix) === 0) out.push(kk.slice(3)); } return out; }
+      return [...mem.keys()].filter((k) => k.startsWith(prefix));
+    } catch (e) { return []; }
+  },
+  async delete(k) {
+    try {
+      if (SB_OK) { await fetch(SUPABASE_URL + "/rest/v1/kv?key=eq." + encodeURIComponent(k), { method: "DELETE", headers: SB_H }); return true; }
+      if (hasLS) { localStorage.removeItem("kv:" + k); return true; }
+      mem.delete(k); return true;
+    } catch (e) { return false; }
+  },
+};
+
+/* ---------- pomocnicze ---------- */
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+const hashPin = (pin) => { let h = 0; const s = "ms2026:" + String(pin); for (let i = 0; i < s.length; i++) { h = (h << 5) - h + s.charCodeAt(i); h |= 0; } return String(h); };
+const norm = (s) => (s || "").toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9 ]/g, "").trim();
+function scorerHit(guess, actual) {
+  const g = norm(guess), a = norm(actual);
+  if (!g || !a) return false;
+  if (g === a) return true;
+  const al = a.split(" "), gl = g.split(" ");
+  return al.includes(g) || gl.includes(a) || a.endsWith(" " + g) || g.endsWith(" " + a);
+}
+const flagUrl = (c) => `https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/${c}.svg`;
+const _tag = (s) => "\u{1F3F4}" + [...s].map((ch) => String.fromCodePoint(0xE0000 + ch.charCodeAt(0))).join("") + "\u{E007F}";
+const SUBDIV = { "gb-eng": _tag("gbeng"), "gb-sct": _tag("gbsct"), "gb-wls": _tag("gbwls") };
+const codeEmoji = (c) => {
+  if (!c) return "";
+  if (SUBDIV[c]) return SUBDIV[c];
+  const cc = c.slice(0, 2).toUpperCase();
+  if (!/^[A-Z]{2}$/.test(cc)) return cc;
+  return String.fromCodePoint(...[...cc].map((ch) => 0x1F1E6 + ch.charCodeAt(0) - 65));
+};
+const FLAG_SVG = {"ar":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 640 480\"><path fill=\"#74acdf\" d=\"M0 0h640v480H0z\"/><path fill=\"#fff\" d=\"M0 160h640v160H0z\"/><g id=\"ar-c\" transform=\"translate(-64)scale(.96)\"><path id=\"ar-a\" fill=\"#f6b40e\" stroke=\"#85340a\" stroke-width=\"1.1\" d=\"m396.8 251.3 28.5 62s.5 1.2 1.3.9c.8-.4.3-1.6.3-1.6l-23.7-64m-.7 24.2c-.4 9.4 5.4 14.6 4.7 23s3.8 13.2 5 16.5c1 3.3-1.2 5.2-.3 5.7 1 .5 3-2.1 2.4-6.8s-4.2-6-3.4-16.3-4.2-12.7-3-22\"/><use xlink:href=\"#ar-a\" width=\"100%\" height=\"100%\" transform=\"rotate(22.5 400 250)\"/><use xlink:href=\"#ar-a\" width=\"100%\" height=\"100%\" transform=\"rotate(45 400 250)\"/><use xlink:href=\"#ar-a\" width=\"100%\" height=\"100%\" transform=\"rotate(67.5 400 250)\"/><path id=\"ar-b\" fill=\"#85340a\" d=\"M404.3 274.4c.5 9 5.6 13 4.6 21.3 2.2-6.5-3.1-11.6-2.8-21.2m-7.7-23.8 19.5 42.6-16.3-43.9\"/><use xlink:href=\"#ar-b\" width=\"100%\" height=\"100%\" transform=\"rotate(22.5 400 250)\"/><use xlink:href=\"#ar-b\" width=\"100%\" height=\"100%\" transform=\"rotate(45 400 250)\"/><use xlink:href=\"#ar-b\" width=\"100%\" height=\"100%\" transform=\"rotate(67.5 400 250)\"/></g><use xlink:href=\"#ar-c\" width=\"100%\" height=\"100%\" transform=\"rotate(90 320 240)\"/><use xlink:href=\"#ar-c\" width=\"100%\" height=\"100%\" transform=\"rotate(180 320 240)\"/><use xlink:href=\"#ar-c\" width=\"100%\" height=\"100%\" transform=\"rotate(-90 320 240)\"/><circle cx=\"320\" cy=\"240\" r=\"26.7\" fill=\"#f6b40e\" stroke=\"#85340a\" stroke-width=\"1.4\"/><path id=\"ar-h\" fill=\"#843511\" stroke-width=\"1\" d=\"M329 234.3c-1.7 0-3.5.8-4.5 2.4 2 1.9 6.6 2 9.7-.2a7 7 0 0 0-5.1-2.2zm0 .4c1.8 0 3.5.8 3.7 1.6-2 2.3-5.3 2-7.4.4q1.6-2 3.8-2z\"/><use xlink:href=\"#ar-d\" width=\"100%\" height=\"100%\" transform=\"matrix(-1 0 0 1 640.2 0)\"/><use xlink:href=\"#ar-e\" width=\"100%\" height=\"100%\" transform=\"matrix(-1 0 0 1 640.2 0)\"/><use xlink:href=\"#ar-f\" width=\"100%\" height=\"100%\" transform=\"translate(18.1)\"/><use xlink:href=\"#ar-g\" width=\"100%\" height=\"100%\" transform=\"matrix(-1 0 0 1 640.2 0)\"/><path fill=\"#85340a\" d=\"M316 243.7a1.8 1.8 0 1 0 1.8 2.9 4 4 0 0 0 2.2.6h.2q1 0 2.3-.6.5.7 1.5.7a1.8 1.8 0 0 0 .3-3.6q.8.3.8 1.2a1.2 1.2 0 0 1-2.4 0 3 3 0 0 1-2.6 1.7 3 3 0 0 1-2.5-1.7q-.1 1.1-1.3 1.2-1-.1-1.2-1.2c-.2-1.1.3-1 .8-1.2zm2 5.4c-2.1 0-3 2-4.8 3.1 1-.4 1.8-1.2 3.3-2s2.6.2 3.5.2 2-1 3.5-.2l3.3 2c-1.9-1.2-2.7-3-4.8-3q-.7 0-2 .6z\"/><path fill=\"#85340a\" d=\"M317.2 251.6q-1.1 0-3.4.6c3.7-.8 4.5.5 6.2.5 1.6 0 2.5-1.3 6.1-.5-4-1.2-4.9-.4-6.1-.4-.8 0-1.4-.3-2.8-.2\"/><path fill=\"#85340a\" d=\"M314 252.2h-.8c4.3.5 2.3 3 6.8 3s2.5-2.5 6.8-3c-4.5-.4-3.1 2.3-6.8 2.3-3.5 0-2.4-2.3-6-2.3\"/><path fill=\"#85340a\" d=\"M323.7 258.9a3.7 3.7 0 0 0-7.4 0 3.8 3.8 0 0 1 7.4 0\"/><path id=\"ar-e\" fill=\"#85340a\" stroke-width=\"1\" d=\"M303.4 234.3c4.7-4.1 10.7-4.8 14-1.7a8 8 0 0 1 1.5 3.4q.6 3.6-2.1 7.5l.8.4q2.4-4.7 1.6-9.4l-.6-2.3c-4.5-3.7-10.7-4-15.2 2z\"/><path id=\"ar-d\" fill=\"#85340a\" stroke-width=\"1\" d=\"M310.8 233c2.7 0 3.3.6 4.5 1.7 1.2 1 1.9.8 2 1 .3.2 0 .8-.3.6q-.7-.2-2.5-1.6c-1.8-1.4-2.5-1-3.7-1-3.7 0-5.7 3-6.1 2.8-.5-.2 2-3.5 6.1-3.5\"/><use xlink:href=\"#ar-h\" width=\"100%\" height=\"100%\" transform=\"translate(-18.4)\"/><circle id=\"ar-f\" cx=\"310.9\" cy=\"236.3\" r=\"1.8\" fill=\"#85340a\" stroke-width=\"1\"/><path id=\"ar-g\" fill=\"#85340a\" stroke-width=\"1\" d=\"M305.9 237.5c3.5 2.7 7 2.5 9 1.3 2-1.3 2-1.7 1.6-1.7s-.8.4-2.4 1.3c-1.7.8-4.1.8-8.2-.9\"/></svg>","at":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><path fill=\"#fff\" d=\"M0 160h640v160H0z\"/><path fill=\"#c8102e\" d=\"M0 0h640v160H0zm0 320h640v160H0z\"/></svg>","au":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><path fill=\"#00008B\" d=\"M0 0h640v480H0z\"/><path fill=\"#fff\" d=\"m37.5 0 122 90.5L281 0h39v31l-120 89.5 120 89V240h-40l-120-89.5L40.5 240H0v-30l119.5-89L0 32V0z\"/><path fill=\"red\" d=\"M212 140.5 320 220v20l-135.5-99.5zm-92 10 3 17.5-96 72H0zM320 0v1.5l-124.5 94 1-22L295 0zM0 0l119.5 88h-30L0 21z\"/><path fill=\"#fff\" d=\"M120.5 0v240h80V0zM0 80v80h320V80z\"/><path fill=\"red\" d=\"M0 96.5v48h320v-48zM136.5 0v240h48V0z\"/><path fill=\"#fff\" d=\"m527 396.7-20.5 2.6 2.2 20.5-14.8-14.4-14.7 14.5 2-20.5-20.5-2.4 17.3-11.2-10.9-17.5 19.6 6.5 6.9-19.5 7.1 19.4 19.5-6.7-10.7 17.6zm-3.7-117.2 2.7-13-9.8-9 13.2-1.5 5.5-12.1 5.5 12.1 13.2 1.5-9.8 9 2.7 13-11.6-6.6zm-104.1-60-20.3 2.2 1.8 20.3-14.4-14.5-14.8 14.1 2.4-20.3-20.2-2.7 17.3-10.8-10.5-17.5 19.3 6.8L387 178l6.7 19.3 19.4-6.3-10.9 17.3 17.1 11.2ZM623 186.7l-20.9 2.7 2.3 20.9-15.1-14.7-15 14.8 2.1-21-20.9-2.4 17.7-11.5-11.1-17.9 20 6.7 7-19.8 7.2 19.8 19.9-6.9-11 18zm-96.1-83.5-20.7 2.3 1.9 20.8-14.7-14.8-15.1 14.4 2.4-20.7-20.7-2.8 17.7-11L467 73.5l19.7 6.9 7.3-19.5 6.8 19.7 19.8-6.5-11.1 17.6zM234 385.7l-45.8 5.4 4.6 45.9-32.8-32.4-33 32.2 4.9-45.9-45.8-5.8 38.9-24.8-24-39.4 43.6 15 15.8-43.4 15.5 43.5 43.7-14.7-24.3 39.2 38.8 25.1Z\"/></svg>","ba":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><defs><clipPath id=\"ba-a\"><path fill-opacity=\".7\" d=\"M-85.3 0h682.6v512H-85.3z\"/></clipPath></defs><g fill-rule=\"evenodd\" clip-path=\"url(#ba-a)\" transform=\"translate(80)scale(.9375)\"><path fill=\"#009\" d=\"M-85.3 0h682.6v512H-85.3z\"/><path fill=\"#FC0\" d=\"m56.5 0 511 512.3V.3z\"/><path fill=\"#FFF\" d=\"M439.9 481.5 412 461.2l-28.6 20.2 10.8-33.2-28.2-20.5h35l10.8-33.2 10.7 33.3h35l-28 20.7zm81.3 10.4-35-.1-10.7-33.3-10.8 33.2h-35l28.2 20.5-10.8 33.2 28.6-20.2 28 20.3-10.5-33zM365.6 384.7l28-20.7-35-.1-10.7-33.2-10.8 33.2-35-.1 28.2 20.5-10.8 33.3 28.6-20.3 28 20.4zm-64.3-64.5 28-20.6-35-.1-10.7-33.3-10.9 33.2h-34.9l28.2 20.5-10.8 33.2 28.6-20.2 27.9 20.3zm-63.7-63.6 28-20.7h-35L220 202.5l-10.8 33.2h-35l28.2 20.4-10.8 33.3 28.6-20.3 28 20.4-10.5-33zm-64.4-64.3 28-20.6-35-.1-10.7-33.3-10.9 33.2h-34.9L138 192l-10.8 33.2 28.6-20.2 27.9 20.3-10.4-33zm-63.6-63.9 27.9-20.7h-35L91.9 74.3 81 107.6H46L74.4 128l-10.9 33.2L92.1 141l27.8 20.4zm-64-64 27.9-20.7h-35L27.9 10.3 17 43.6h-35L10.4 64l-11 33.3L28.1 77l27.8 20.4zm-64-64L9.4-20.3h-35l-10.7-33.3L-47-20.4h-35L-53.7 0l-10.8 33.2L-35.9 13l27.8 20.4z\"/></g></svg>","be":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><g fill-rule=\"evenodd\" stroke-width=\"1pt\"><path fill=\"#000001\" d=\"M0 0h213.3v480H0z\"/><path fill=\"#ffd90c\" d=\"M213.3 0h213.4v480H213.3z\"/><path fill=\"#f31830\" d=\"M426.7 0H640v480H426.7z\"/></g></svg>","br":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><rect width=\"640\" height=\"480\" fill=\"#009B3A\"/><path d=\"M320 60 600 240 320 420 40 240z\" fill=\"#FEDF00\"/><circle cx=\"320\" cy=\"240\" r=\"85\" fill=\"#002776\"/></svg>","ca":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><path fill=\"#fff\" d=\"M150.1 0h339.7v480H150z\"/><path fill=\"#d52b1e\" d=\"M-19.7 0h169.8v480H-19.7zm509.5 0h169.8v480H489.9zM201 232l-13.3 4.4 61.4 54c4.7 13.7-1.6 17.8-5.6 25l66.6-8.4-1.6 67 13.9-.3-3.1-66.6 66.7 8c-4.1-8.7-7.8-13.3-4-27.2l61.3-51-10.7-4c-8.8-6.8 3.8-32.6 5.6-48.9 0 0-35.7 12.3-38 5.8l-9.2-17.5-32.6 35.8c-3.5.9-5-.5-5.9-3.5l15-74.8-23.8 13.4q-3.2 1.3-5.2-2.2l-23-46-23.6 47.8q-2.8 2.5-5 .7L264 130.8l13.7 74.1c-1.1 3-3.7 3.8-6.7 2.2l-31.2-35.3c-4 6.5-6.8 17.1-12.2 19.5s-23.5-4.5-35.6-7c4.2 14.8 17 39.6 9 47.7\"/></svg>","cd":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><path fill=\"#007fff\" d=\"M0 0h640v480H0z\"/><path fill=\"#f7d618\" d=\"M28.8 96H96l20.8-67.2L137.6 96h67.2l-54.4 41.6 20.8 67.2-54.4-41.6-54.4 41.6 20.8-67.2zM600 0 0 360v120h40l600-360V0z\"/><path fill=\"#ce1021\" d=\"M640 0 0 384v96L640 96z\"/></svg>","ch":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><g fill-rule=\"evenodd\" stroke-width=\"1pt\"><path fill=\"red\" d=\"M0 0h640v480H0z\"/><g fill=\"#fff\"><path d=\"M170 195h300v90H170z\"/><path d=\"M275 90h90v300h-90z\"/></g></g></svg>","ci":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><g fill-rule=\"evenodd\"><path fill=\"#00cd00\" d=\"M426.8 0H640v480H426.8z\"/><path fill=\"#ff9a00\" d=\"M0 0h212.9v480H0z\"/><path fill=\"#fff\" d=\"M212.9 0h214v480h-214z\"/></g></svg>","cl":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><defs><clipPath id=\"cl-a\"><path fill-opacity=\".7\" d=\"M0 0h682.7v512H0z\"/></clipPath></defs><g fill-rule=\"evenodd\" clip-path=\"url(#cl-a)\" transform=\"scale(.9375)\"><path fill=\"#fff\" d=\"M256 0h512v256H256z\"/><path fill=\"#0039a6\" d=\"M0 0h256v256H0z\"/><path fill=\"#fff\" d=\"M167.8 191.7 128.2 162l-39.5 30 14.7-48.8L64 113.1l48.7-.5L127.8 64l15.5 48.5 48.7.1-39.2 30.4z\"/><path fill=\"#d52b1e\" d=\"M0 256h768v256H0z\"/></g></svg>","cm":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 640 480\"><path fill=\"#007a5e\" d=\"M0 0h213.3v480H0z\"/><path fill=\"#ce1126\" d=\"M213.3 0h213.4v480H213.3z\"/><path fill=\"#fcd116\" d=\"M426.7 0H640v480H426.7z\"/><g fill=\"#fcd116\" transform=\"translate(320 240)scale(7.1111)\"><g id=\"cm-b\"><path id=\"cm-a\" d=\"M0-8-2.5-.4 1.3.9z\"/><use xlink:href=\"#cm-a\" width=\"100%\" height=\"100%\" transform=\"scale(-1 1)\"/></g><use xlink:href=\"#cm-b\" width=\"100%\" height=\"100%\" transform=\"rotate(72)\"/><use xlink:href=\"#cm-b\" width=\"100%\" height=\"100%\" transform=\"rotate(144)\"/><use xlink:href=\"#cm-b\" width=\"100%\" height=\"100%\" transform=\"rotate(-144)\"/><use xlink:href=\"#cm-b\" width=\"100%\" height=\"100%\" transform=\"rotate(-72)\"/></g></svg>","co":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><g fill-rule=\"evenodd\" stroke-width=\"1pt\"><path fill=\"#ffe800\" d=\"M0 0h640v480H0z\"/><path fill=\"#00148e\" d=\"M0 240h640v240H0z\"/><path fill=\"#da0010\" d=\"M0 360h640v120H0z\"/></g></svg>","cr":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><g fill-rule=\"evenodd\" stroke-width=\"1pt\"><path fill=\"#0000b4\" d=\"M0 0h640v480H0z\"/><path fill=\"#fff\" d=\"M0 75.4h640v322.3H0z\"/><path fill=\"#d90000\" d=\"M0 157.7h640v157.7H0z\"/></g></svg>","cv":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><defs><clipPath id=\"cv-a\"><path fill-opacity=\".7\" d=\"M-123.4 0h682.6v512h-682.6z\"/></clipPath></defs><g fill-rule=\"evenodd\" clip-path=\"url(#cv-a)\" transform=\"translate(115.7)scale(.94)\"><path fill=\"#fff\" d=\"M-123.4 233H723v206h-846.5z\"/><path fill=\"#081873\" d=\"M-122.8 0h846v256.6h-846zm.3 385.9h852.1V512h-852.1z\"/><path fill=\"#de3929\" d=\"M-122.5 302.6h846v39.6h-846z\"/><path fill=\"#ffce08\" d=\"m131 399.2 6.6 20.4H159l-17.4 12.7 6.6 20.5L131 440l-17.4 12.7 6.7-20.5-17.4-12.7h21.5M317 250.4l6.7 20.5H345l-17.4 12.6 6.6 20.5-17.4-12.7-17.4 12.7 6.6-20.5-17.4-12.6h21.6m-222 64.4 6.6 20.5h21.5L99 368.6l6.7 20.4-17.4-12.6L70.9 389l6.6-20.4-17.4-12.7h21.5M317 329.5l6.7 20.4H345l-17.4 12.7 6.6 20.4-17.4-12.6-17.4 12.7 6.6-20.5-17.4-12.7h21.6m-40.5-161.7 6.7 20.4H298l-17.4 12.7 6.6 20.5-17.4-12.7-17.4 12.7 6.7-20.5-17.5-12.7h21.6m-64.5-45.2 6.7 20.5h21.5l-17.4 12.6 6.6 20.5-17.4-12.6-17.4 12.6 6.7-20.5-17.4-12.6H192m-64.5 2.9 6.7 20.5h21.5l-17.4 12.6 6.7 20.5-17.5-12.7-17.4 12.7 6.7-20.5-17.4-12.6H121m-34.8 43.2 6.6 20.5h21.6l-17.5 12.6 6.7 20.5-17.4-12.7-17.4 12.7 6.6-20.5L58 271h21.5m119.2 149.4 6.7 20.5h21.5l-17.4 12.6 6.7 20.5-17.5-12.7-17.4 12.7 6.7-20.5-17.4-12.6H192m82.2-41.7 6.6 20.4h21.5L285 432.3l6.7 20.5-17.4-12.7-17.5 12.7 6.7-20.5-17.4-12.7h21.5\"/></g></svg>","cw":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 640 480\"><defs><clipPath id=\"cw-a\"><path fill-opacity=\".7\" d=\"M0 0h682.7v512H0z\"/></clipPath><path id=\"cw-b\" d=\"m0-1 .2.7H1L.3 0l.2.7L0 .4l-.6.4.2-.7-.5-.4h.7z\"/></defs><g clip-path=\"url(#cw-a)\" transform=\"scale(.94)\"><path fill=\"#002b7f\" d=\"M0 0h768v512H0z\"/><path fill=\"#f9e814\" d=\"M0 320h768v64H0z\"/><use xlink:href=\"#cw-b\" width=\"13500\" height=\"9000\" x=\"2\" y=\"2\" fill=\"#fff\" transform=\"scale(42.67)\"/><use xlink:href=\"#cw-b\" width=\"13500\" height=\"9000\" x=\"3\" y=\"3\" fill=\"#fff\" transform=\"scale(56.9)\"/></g></svg>","cz":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><path fill=\"#fff\" d=\"M0 0h640v240H0z\"/><path fill=\"#d7141a\" d=\"M0 240h640v240H0z\"/><path fill=\"#11457e\" d=\"M360 240 0 0v480z\"/></svg>","de":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><path fill=\"#fc0\" d=\"M0 320h640v160H0z\"/><path fill=\"#000001\" d=\"M0 0h640v160H0z\"/><path fill=\"red\" d=\"M0 160h640v160H0z\"/></svg>","dk":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><path fill=\"#c8102e\" d=\"M0 0h640.1v480H0z\"/><path fill=\"#fff\" d=\"M205.7 0h68.6v480h-68.6z\"/><path fill=\"#fff\" d=\"M0 205.7h640.1v68.6H0z\"/></svg>","dz":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><path fill=\"#fff\" d=\"M320 0h320v480H320z\"/><path fill=\"#006233\" d=\"M0 0h320v480H0z\"/><path fill=\"#d21034\" d=\"M424 180a120 120 0 1 0 0 120 96 96 0 1 1 0-120m4 60-108-35.2 67.2 92V183.2l-67.2 92z\"/></svg>","ec":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><rect width=\"640\" height=\"240\" fill=\"#FFDD00\"/><rect y=\"240\" width=\"640\" height=\"120\" fill=\"#034EA2\"/><rect y=\"360\" width=\"640\" height=\"120\" fill=\"#ED1C24\"/><ellipse cx=\"320\" cy=\"240\" rx=\"30\" ry=\"42\" fill=\"#7a5c2e\"/></svg>","eg":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><rect width=\"640\" height=\"160\" fill=\"#CE1126\"/><rect y=\"160\" width=\"640\" height=\"160\" fill=\"#fff\"/><rect y=\"320\" width=\"640\" height=\"160\" fill=\"#000\"/><circle cx=\"320\" cy=\"240\" r=\"22\" fill=\"none\" stroke=\"#C09300\" stroke-width=\"6\"/><path d=\"M310 232l10 16 10-16-5 20h-10z\" fill=\"#C09300\"/></svg>","es":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><rect width=\"640\" height=\"480\" fill=\"#AA151B\"/><rect y=\"120\" width=\"640\" height=\"240\" fill=\"#F1BF00\"/><rect x=\"150\" y=\"195\" width=\"70\" height=\"90\" rx=\"6\" fill=\"#AA151B\" stroke=\"#fff\" stroke-width=\"6\"/></svg>","fr":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><path fill=\"#000091\" d=\"M0 0h213.3v480H0z\"/><path fill=\"#fff\" d=\"M213.3 0h213.4v480H213.3z\"/><path fill=\"#e1000f\" d=\"M426.7 0H640v480H426.7z\"/></svg>","gb-eng":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><path fill=\"#fff\" d=\"M0 0h640v480H0z\"/><path fill=\"#ce1124\" d=\"M281.6 0h76.8v480h-76.8z\"/><path fill=\"#ce1124\" d=\"M0 201.6h640v76.8H0z\"/></svg>","gb-sct":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><path fill=\"#0065bd\" d=\"M0 0h640v480H0z\"/><path stroke=\"#fff\" stroke-width=\".6\" d=\"m0 0 5 3M0 3l5-3\" transform=\"scale(128 160)\"/></svg>","gb-wls":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><rect width=\"640\" height=\"240\" fill=\"#fff\"/><rect y=\"240\" width=\"640\" height=\"240\" fill=\"#00AD69\"/><path d=\"M250 200c40-20 90-10 110 20 8-18 30-20 40-8-6 6-4 14 2 18-14 6-30 2-38-8-10 26-60 40-100 24-14-6-20-26-14-46z\" fill=\"#C8102E\"/></svg>","gh":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><path fill=\"#006b3f\" d=\"M0 0h640v480H0z\"/><path fill=\"#fcd116\" d=\"M0 0h640v320H0z\"/><path fill=\"#ce1126\" d=\"M0 0h640v160H0z\"/><path fill=\"#000001\" d=\"m320 160 52 160-136.1-98.9H404L268 320z\"/></svg>","gr":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><path fill=\"#0d5eaf\" fill-rule=\"evenodd\" d=\"M0 0h640v53.3H0z\"/><path fill=\"#fff\" fill-rule=\"evenodd\" d=\"M0 53.3h640v53.4H0z\"/><path fill=\"#0d5eaf\" fill-rule=\"evenodd\" d=\"M0 106.7h640V160H0z\"/><path fill=\"#fff\" fill-rule=\"evenodd\" d=\"M0 160h640v53.3H0z\"/><path fill=\"#0d5eaf\" d=\"M0 0h266.7v266.7H0z\"/><path fill=\"#0d5eaf\" fill-rule=\"evenodd\" d=\"M0 213.3h640v53.4H0z\"/><path fill=\"#fff\" fill-rule=\"evenodd\" d=\"M0 266.7h640V320H0z\"/><path fill=\"#0d5eaf\" fill-rule=\"evenodd\" d=\"M0 320h640v53.3H0z\"/><path fill=\"#fff\" fill-rule=\"evenodd\" d=\"M0 373.3h640v53.4H0z\"/><g fill=\"#fff\" fill-rule=\"evenodd\" stroke-width=\"1.3\"><path d=\"M106.7 0H160v266.7h-53.3z\"/><path d=\"M0 106.7h266.7V160H0z\"/></g><path fill=\"#0d5eaf\" d=\"M0 426.7h640V480H0z\"/></svg>","hr":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><rect width=\"640\" height=\"160\" fill=\"#FF0000\"/><rect y=\"160\" width=\"640\" height=\"160\" fill=\"#fff\"/><rect y=\"320\" width=\"640\" height=\"160\" fill=\"#171796\"/><g transform=\"translate(285,150)\"><rect width=\"70\" height=\"70\" fill=\"#fff\" stroke=\"#171796\" stroke-width=\"4\"/><rect width=\"17.5\" height=\"17.5\" fill=\"#d00\"/><rect x=\"35\" width=\"17.5\" height=\"17.5\" fill=\"#d00\"/><rect x=\"17.5\" y=\"17.5\" width=\"17.5\" height=\"17.5\" fill=\"#d00\"/><rect x=\"52.5\" y=\"17.5\" width=\"17.5\" height=\"17.5\" fill=\"#d00\"/><rect y=\"35\" width=\"17.5\" height=\"17.5\" fill=\"#d00\"/><rect x=\"35\" y=\"35\" width=\"17.5\" height=\"17.5\" fill=\"#d00\"/><rect x=\"17.5\" y=\"52.5\" width=\"17.5\" height=\"17.5\" fill=\"#d00\"/><rect x=\"52.5\" y=\"52.5\" width=\"17.5\" height=\"17.5\" fill=\"#d00\"/></g></svg>","ht":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><rect width=\"640\" height=\"240\" fill=\"#00209F\"/><rect y=\"240\" width=\"640\" height=\"240\" fill=\"#D21034\"/><rect x=\"270\" y=\"200\" width=\"100\" height=\"80\" fill=\"#fff\" stroke=\"#ccc\" stroke-width=\"3\"/><circle cx=\"320\" cy=\"240\" r=\"16\" fill=\"#5b8a2e\"/></svg>","hu":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><g fill-rule=\"evenodd\"><path fill=\"#d43516\" d=\"M0 0h640v160H0z\"/><path fill=\"#fff\" d=\"M0 160h640v160H0z\"/><path fill=\"#388d00\" d=\"M0 320h640v160H0z\"/></g></svg>","ie":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><g fill-rule=\"evenodd\" stroke-width=\"1pt\"><path fill=\"#fff\" d=\"M0 0h640v480H0z\"/><path fill=\"#009A49\" d=\"M0 0h213.3v480H0z\"/><path fill=\"#FF7900\" d=\"M426.7 0H640v480H426.7z\"/></g></svg>","iq":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><path fill=\"#fff\" d=\"M0 160h640v160H0z\"/><path fill=\"#ce1126\" d=\"M0 0h640v160H0z\"/><path fill=\"#000001\" d=\"M0 320h640v160H0z\"/><g fill=\"#007a3d\" transform=\"translate(-179.3 -92.8)scale(1.75182)\"><path d=\"m325.5 173.2-1.4-1q-.6-.7 1.2-.2 3.3 1 5.3-.8l1.3-1.1 1.5.7q1.5.8 2 .7c.7-.2 2.1-2 2-2.6 0-.7.6-.5 1 .3.6 1.6-.3 3.5-2 3.9q-1 .3-2.6-.3c-1.4-.5-1.7-.5-2.4 0a5 5 0 0 1-5.9.4m5.8-5.3a8 8 0 0 1-1-4q.1-.9.8-.6c1 .3 1.2 1 1 3q0 2.7-.8 1.6m-67.6-1.9c-.1 1.3 2.4 4.6 3.5 5.2-.8.3-1.7.2-2.4.5-4 4-18.4 18-21 21.4 7.8.2 16.4-.1 23.7-.4 0-5.3 5-5.6 8.4-7.5 1.7 2.7 6 2.5 6.6 6.6v17.6H216a9.7 9.7 0 0 1-12.3 7.5c2-2 5.4-2.8 6.6-5.7 1-6.4-2-10.3-4-14a24 24 0 0 0 7-3.6c-2.3 7 6.2 6.3 12.4 6.1.2-2.4.1-5.2-1.7-5.6 2.3-.9 2.7-1.2 6.6-4.4v9.6l46.1-.1c0-3 .8-7.9-1.6-7.9-2.2 0 0 6.2-1.8 6.2h-35.7v-6c1.5-1.6 1.3-1.5 11.6-11.8 1-1 8.3-7.6 14.6-13.7zm89.1-.3c2.5 1.4 4.5 3.2 7.5 4-.3 1.3-1.5 1.8-1.8 3.1v27c3.4.7 4.2-1.3 5.8-2.3.4 4.3 3.2 8.5 3 12h-14.5zm-19.4 14.5s5.3-4.5 5.3-4.7V199h3.8l-.1-26.3c1.5-1.6 4.6-3.8 5.3-5.4v42h-33.4c-.5-8.7-.6-17.7 9.6-15.8V190c-.3-.6-.9.1-1-.7 1.6-1.6 2.1-2 6.5-5.8l.1 15.5h3.9zm-12.6 18.6c.7 1 3.2 1 3-.8-.3-1.5-3.5-1-3 .8\"/><circle cx=\"224\" cy=\"214.4\" r=\"2\"/><path d=\"M287 165.8c2.5 1.3 4.5 3.2 7.6 4-.4 1.2-1.5 1.7-1.8 3v27c3.4.7 4.1-1.2 5.7-2.3.5 4.3 3.2 8.6 3.1 12H287z\"/></g></svg>","ir":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><rect width=\"640\" height=\"160\" fill=\"#239F40\"/><rect y=\"160\" width=\"640\" height=\"160\" fill=\"#fff\"/><rect y=\"320\" width=\"640\" height=\"160\" fill=\"#DA0000\"/><path d=\"M300 235c-8-12 2-30 20-26-10 2-14 12-8 20 8 10 24 6 28-4 0 18-30 26-40 10z\" fill=\"#DA0000\"/></svg>","it":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><g fill-rule=\"evenodd\" stroke-width=\"1pt\"><path fill=\"#fff\" d=\"M0 0h640v480H0z\"/><path fill=\"#009246\" d=\"M0 0h213.3v480H0z\"/><path fill=\"#ce2b37\" d=\"M426.7 0H640v480H426.7z\"/></g></svg>","jo":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><defs><clipPath id=\"jo-a\"><path fill-opacity=\".7\" d=\"M-117.8 0h682.6v512h-682.6z\"/></clipPath></defs><g clip-path=\"url(#jo-a)\" transform=\"translate(110.5)scale(.9375)\"><g fill-rule=\"evenodd\" stroke-width=\"1pt\"><path fill=\"#000001\" d=\"M-117.8 0h1024v170.7h-1024z\"/><path fill=\"#fff\" d=\"M-117.8 170.7h1024v170.6h-1024z\"/><path fill=\"#090\" d=\"M-117.8 341.3h1024V512h-1024z\"/><path fill=\"red\" d=\"m-117.8 512 512-256-512-256z\"/><path fill=\"#fff\" d=\"m24.5 289 5.7-24.9H4.7l23-11-15.9-19.9 23 11 5.6-24.8 5.7 24.9L69 233.2l-16 19.9 23 11H50.6l5.7 24.9-15.9-20z\"/></g></g></svg>","jp":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><defs><clipPath id=\"jp-a\"><path fill-opacity=\".7\" d=\"M-88 32h640v480H-88z\"/></clipPath></defs><g fill-rule=\"evenodd\" stroke-width=\"1pt\" clip-path=\"url(#jp-a)\" transform=\"translate(88 -32)\"><path fill=\"#fff\" d=\"M-128 32h720v480h-720z\"/><circle cx=\"523.1\" cy=\"344.1\" r=\"194.9\" fill=\"#bc002d\" transform=\"translate(-168.4 8.6)scale(.76554)\"/></g></svg>","kr":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 640 480\"><defs><clipPath id=\"kr-a\"><path fill-opacity=\".7\" d=\"M-95.8-.4h682.7v512H-95.8z\"/></clipPath></defs><g fill-rule=\"evenodd\" clip-path=\"url(#kr-a)\" transform=\"translate(89.8 .4)scale(.9375)\"><path fill=\"#fff\" d=\"M-95.8-.4H587v512H-95.8Z\"/><g transform=\"rotate(-56.3 361.6 -101.3)scale(10.66667)\"><g id=\"kr-c\"><path id=\"kr-b\" fill=\"#000001\" d=\"M-6-26H6v2H-6Zm0 3H6v2H-6Zm0 3H6v2H-6Z\"/><use xlink:href=\"#kr-b\" width=\"100%\" height=\"100%\" y=\"44\"/></g><path stroke=\"#fff\" d=\"M0 17v10\"/><path fill=\"#cd2e3a\" d=\"M0-12a12 12 0 0 1 0 24Z\"/><path fill=\"#0047a0\" d=\"M0-12a12 12 0 0 0 0 24A6 6 0 0 0 0 0Z\"/><circle cy=\"-6\" r=\"6\" fill=\"#cd2e3a\"/></g><g transform=\"rotate(-123.7 191.2 62.2)scale(10.66667)\"><use xlink:href=\"#kr-c\" width=\"100%\" height=\"100%\"/><path stroke=\"#fff\" d=\"M0-23.5v3M0 17v3.5m0 3v3\"/></g></g></svg>","ma":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><path fill=\"#c1272d\" d=\"M640 0H0v480h640z\"/><path fill=\"none\" stroke=\"#006233\" stroke-width=\"11.7\" d=\"M320 179.4 284.4 289l93.2-67.6H262.4l93.2 67.6z\"/></svg>","mx":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><rect width=\"214\" height=\"480\" fill=\"#006847\"/><rect x=\"214\" width=\"212\" height=\"480\" fill=\"#fff\"/><rect x=\"426\" width=\"214\" height=\"480\" fill=\"#CE1126\"/><circle cx=\"320\" cy=\"240\" r=\"34\" fill=\"none\" stroke=\"#7B5B2E\" stroke-width=\"10\"/><path d=\"M299 235c8 14 34 14 42 0\" fill=\"none\" stroke=\"#5b8a2e\" stroke-width=\"8\"/></svg>","ng":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><g fill-rule=\"evenodd\" stroke-width=\"1pt\"><path fill=\"#fff\" d=\"M0 0h640v480H0z\"/><path fill=\"#008753\" d=\"M426.6 0H640v480H426.6zM0 0h213.3v480H0z\"/></g></svg>","nl":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><path fill=\"#ae1c28\" d=\"M0 0h640v160H0z\"/><path fill=\"#fff\" d=\"M0 160h640v160H0z\"/><path fill=\"#21468b\" d=\"M0 320h640v160H0z\"/></svg>","no":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><path fill=\"#ed2939\" d=\"M0 0h640v480H0z\"/><path fill=\"#fff\" d=\"M180 0h120v480H180z\"/><path fill=\"#fff\" d=\"M0 180h640v120H0z\"/><path fill=\"#002664\" d=\"M210 0h60v480h-60z\"/><path fill=\"#002664\" d=\"M0 210h640v60H0z\"/></svg>","nz":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 640 480\"><defs><g id=\"nz-b\"><g id=\"nz-a\"><path d=\"M0-.3v.5l1-.5z\"/><path d=\"M.2.3 0-.1l1-.2z\"/></g><use xlink:href=\"#nz-a\" transform=\"scale(-1 1)\"/><use xlink:href=\"#nz-a\" transform=\"rotate(72 0 0)\"/><use xlink:href=\"#nz-a\" transform=\"rotate(-72 0 0)\"/><use xlink:href=\"#nz-a\" transform=\"scale(-1 1)rotate(72)\"/></g></defs><path fill=\"#00247d\" fill-rule=\"evenodd\" d=\"M0 0h640v480H0z\"/><g transform=\"translate(-111 36.1)scale(.66825)\"><use xlink:href=\"#nz-b\" width=\"100%\" height=\"100%\" fill=\"#fff\" transform=\"translate(900 120)scale(45.4)\"/><use xlink:href=\"#nz-b\" width=\"100%\" height=\"100%\" fill=\"#cc142b\" transform=\"matrix(30 0 0 30 900 120)\"/></g><g transform=\"rotate(82 525.2 114.6)scale(.66825)\"><use xlink:href=\"#nz-b\" width=\"100%\" height=\"100%\" fill=\"#fff\" transform=\"rotate(-82 519 -457.7)scale(40.4)\"/><use xlink:href=\"#nz-b\" width=\"100%\" height=\"100%\" fill=\"#cc142b\" transform=\"rotate(-82 519 -457.7)scale(25)\"/></g><g transform=\"rotate(82 525.2 114.6)scale(.66825)\"><use xlink:href=\"#nz-b\" width=\"100%\" height=\"100%\" fill=\"#fff\" transform=\"rotate(-82 668.6 -327.7)scale(45.4)\"/><use xlink:href=\"#nz-b\" width=\"100%\" height=\"100%\" fill=\"#cc142b\" transform=\"rotate(-82 668.6 -327.7)scale(30)\"/></g><g transform=\"translate(-111 36.1)scale(.66825)\"><use xlink:href=\"#nz-b\" width=\"100%\" height=\"100%\" fill=\"#fff\" transform=\"translate(900 480)scale(50.4)\"/><use xlink:href=\"#nz-b\" width=\"100%\" height=\"100%\" fill=\"#cc142b\" transform=\"matrix(35 0 0 35 900 480)\"/></g><path fill=\"#012169\" d=\"M0 0h320v240H0z\"/><path fill=\"#fff\" d=\"m37.5 0 122 90.5L281 0h39v31l-120 89.5 120 89V240h-40l-120-89.5L40.5 240H0v-30l119.5-89L0 32V0z\"/><path fill=\"#c8102e\" d=\"M212 140.5 320 220v20l-135.5-99.5zm-92 10 3 17.5-96 72H0zM320 0v1.5l-124.5 94 1-22L295 0zM0 0l119.5 88h-30L0 21z\"/><path fill=\"#fff\" d=\"M120.5 0v240h80V0zM0 80v80h320V80z\"/><path fill=\"#c8102e\" d=\"M0 96.5v48h320v-48zM136.5 0v240h48V0z\"/></svg>","pa":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><path fill=\"#fff\" d=\"M0 0h640v480H0z\"/><path fill=\"#db0000\" d=\"M323 0h358v225.3H323z\"/><path fill=\"#0000ab\" d=\"M0 225.3h323.1V480H0z\"/><path fill=\"#0000ab\" fill-rule=\"evenodd\" d=\"m214.8 177.7-42-29.4-41.7 29.6 15.5-48L105 100l51.6-.4 16-48 16.3 47.9h51.6l-41.5 30 15.9 48z\"/><path fill=\"#d80000\" fill-rule=\"evenodd\" d=\"m516.9 413.9-42.4-27.7-42.1 28 15.6-45.6-42-28 52-.5 16.2-45.4 16.4 45.3h52l-41.8 28.5 16 45.4z\"/></svg>","pe":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><path fill=\"#D91023\" d=\"M0 0h640v480H0z\"/><path fill=\"#fff\" d=\"M213.3 0h213.4v480H213.3z\"/></svg>","pl":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><g fill-rule=\"evenodd\"><path fill=\"#fff\" d=\"M0 0h640v240H0z\"/><path fill=\"#dc143c\" d=\"M0 240h640v240H0z\"/></g></svg>","pt":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><rect width=\"256\" height=\"480\" fill=\"#046A38\"/><rect x=\"256\" width=\"384\" height=\"480\" fill=\"#DA291C\"/><circle cx=\"256\" cy=\"240\" r=\"42\" fill=\"none\" stroke=\"#FFE900\" stroke-width=\"8\"/><rect x=\"238\" y=\"222\" width=\"36\" height=\"40\" rx=\"5\" fill=\"#fff\" stroke=\"#DA291C\" stroke-width=\"4\"/></svg>","py":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><rect width=\"640\" height=\"160\" fill=\"#D52B1E\"/><rect y=\"160\" width=\"640\" height=\"160\" fill=\"#fff\"/><rect y=\"320\" width=\"640\" height=\"160\" fill=\"#0038A8\"/><circle cx=\"320\" cy=\"240\" r=\"34\" fill=\"none\" stroke=\"#D52B1E\" stroke-width=\"6\"/><path d=\"M320 218l6 14h14l-11 9 4 14-13-9-13 9 4-14-11-9h14z\" fill=\"#EDB92E\"/></svg>","qa":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><path fill=\"#8d1b3d\" d=\"M0 0h640v480H0z\"/><path fill=\"#fff\" d=\"M0 0v480h158.4l97.8-26.7-97.8-26.6 97.7-26.7-97.7-26.7 97.7-26.6-97.7-26.7 97.8-26.7-97.8-26.6 97.7-26.7-97.7-26.7 97.7-26.6-97.7-26.7 97.8-26.7-97.8-26.6L256.1 80l-97.7-26.7 97.8-26.6L158.3 0z\"/></svg>","ro":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><g fill-rule=\"evenodd\" stroke-width=\"1pt\"><path fill=\"#00319c\" d=\"M0 0h213.3v480H0z\"/><path fill=\"#ffde00\" d=\"M213.3 0h213.4v480H213.3z\"/><path fill=\"#de2110\" d=\"M426.7 0H640v480H426.7z\"/></g></svg>","rs":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><rect width=\"640\" height=\"160\" fill=\"#C6363C\"/><rect y=\"160\" width=\"640\" height=\"160\" fill=\"#0C4076\"/><rect y=\"320\" width=\"640\" height=\"160\" fill=\"#fff\"/><path d=\"M150 150h150v128c0 60-75 94-75 94s-75-34-75-94z\" fill=\"#C6363C\" stroke=\"#EDB92E\" stroke-width=\"8\"/><rect x=\"205\" y=\"172\" width=\"40\" height=\"118\" fill=\"#EDB92E\"/><rect x=\"165\" y=\"202\" width=\"120\" height=\"40\" fill=\"#EDB92E\"/></svg>","sa":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><rect width=\"640\" height=\"480\" fill=\"#006C35\"/><rect x=\"120\" y=\"300\" width=\"400\" height=\"14\" rx=\"7\" fill=\"#fff\"/><rect x=\"120\" y=\"190\" width=\"320\" height=\"40\" rx=\"6\" fill=\"#fff\" opacity=\".85\"/></svg>","se":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><path fill=\"#005293\" d=\"M0 0h640v480H0z\"/><path fill=\"#fecb00\" d=\"M176 0v192H0v96h176v192h96V288h368v-96H272V0z\"/></svg>","sk":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><path fill=\"#ee1c25\" d=\"M0 0h640v480H0z\"/><path fill=\"#0b4ea2\" d=\"M0 0h640v320H0z\"/><path fill=\"#fff\" d=\"M0 0h640v160H0z\"/><path fill=\"#fff\" d=\"M233 370.8c-43-20.7-104.6-61.9-104.6-143.2 0-81.4 4-118.4 4-118.4h201.3s3.9 37 3.9 118.4S276 350 233 370.8\"/><path fill=\"#ee1c25\" d=\"M233 360c-39.5-19-96-56.8-96-131.4s3.6-108.6 3.6-108.6h184.8s3.5 34 3.5 108.6C329 303.3 272.5 341 233 360\"/><path fill=\"#fff\" d=\"M241.4 209c10.7.2 31.6.6 50.1-5.6 0 0-.4 6.7-.4 14.4s.5 14.4.5 14.4c-17-5.7-38.1-5.8-50.2-5.7v41.2h-16.8v-41.2c-12-.1-33.1 0-50.1 5.7 0 0 .5-6.7.5-14.4s-.5-14.4-.5-14.4c18.5 6.2 39.4 5.8 50 5.6v-25.9c-9.7 0-23.7.4-39.6 5.7 0 0 .5-6.6.5-14.4 0-7.7-.5-14.4-.5-14.4 15.9 5.3 29.9 5.8 39.6 5.7-.5-16.4-5.3-37-5.3-37s9.9.7 13.8.7 13.8-.7 13.8-.7-4.8 20.6-5.3 37c9.7.1 23.7-.4 39.6-5.7 0 0-.5 6.7-.5 14.4s.5 14.4.5 14.4a119 119 0 0 0-39.7-5.7v26z\"/><path fill=\"#0b4ea2\" d=\"M233 263.3c-19.9 0-30.5 27.5-30.5 27.5s-6-13-22.2-13c-11 0-19 9.7-24.2 18.8 20 31.7 51.9 51.3 76.9 63.4 25-12 57-31.7 76.9-63.4-5.2-9-13.2-18.8-24.2-18.8-16.2 0-22.2 13-22.2 13S253 263.3 233 263.3\"/></svg>","sn":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><g fill-rule=\"evenodd\" stroke-width=\"1pt\"><path fill=\"#0b7226\" d=\"M0 0h213.3v480H0z\"/><path fill=\"#ff0\" d=\"M213.3 0h213.3v480H213.3z\"/><path fill=\"#bc0000\" d=\"M426.6 0H640v480H426.6z\"/></g><path fill=\"#0b7226\" d=\"M342 218.8h71.8l-56.6 43.6 20.7 69.3-56.6-43.6-56.6 41.6 20.7-67.3-56.6-43.6h69.8l22.7-71.3z\"/></svg>","tn":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><path fill=\"#e70013\" d=\"M0 0h640v480H0z\"/><path fill=\"#fff\" d=\"M320 119.2a1 1 0 0 0-1 240.3 1 1 0 0 0 1-240.3M392 293a90 90 0 1 1 0-107 72 72 0 1 0 0 107m-4.7-21.7-37.4-12.1-23.1 31.8v-39.3l-37.4-12.2 37.4-12.2V188l23.1 31.8 37.4-12.1-23.1 31.8z\"/></svg>","tr":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><g fill-rule=\"evenodd\"><path fill=\"#e30a17\" d=\"M0 0h640v480H0z\"/><path fill=\"#fff\" d=\"M407 247.5c0 66.2-54.6 119.9-122 119.9s-122-53.7-122-120 54.6-119.8 122-119.8 122 53.7 122 119.9\"/><path fill=\"#e30a17\" d=\"M413 247.5c0 53-43.6 95.9-97.5 95.9s-97.6-43-97.6-96 43.7-95.8 97.6-95.8 97.6 42.9 97.6 95.9z\"/><path fill=\"#fff\" d=\"m430.7 191.5-1 44.3-41.3 11.2 40.8 14.5-1 40.7 26.5-31.8 40.2 14-23.2-34.1 28.3-33.9-43.5 12-25.8-37z\"/></g></svg>","ua":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><g fill-rule=\"evenodd\" stroke-width=\"1pt\"><path fill=\"#0057b8\" d=\"M0 0h640v240H0z\"/><path fill=\"gold\" d=\"M0 240h640v240H0z\"/></g></svg>","us":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><path fill=\"#bd3d44\" d=\"M0 0h640v480H0\"/><path stroke=\"#fff\" stroke-width=\"37\" d=\"M0 55.3h640M0 129h640M0 203h640M0 277h640M0 351h640M0 425h640\"/><path fill=\"#192f5d\" d=\"M0 0h364.8v258.5H0\"/><marker id=\"us-a\" markerHeight=\"30\" markerWidth=\"30\"><path fill=\"#fff\" d=\"m14 0 9 27L0 10h28L5 27z\"/></marker><path fill=\"none\" marker-mid=\"url(#us-a)\" d=\"m0 0 16 11h61 61 61 61 60L47 37h61 61 60 61L16 63h61 61 61 61 60L47 89h61 61 60 61L16 115h61 61 61 61 60L47 141h61 61 60 61L16 166h61 61 61 61 60L47 192h61 61 60 61L16 218h61 61 61 61 60z\"/></svg>","uy":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 640 480\"><path fill=\"#fff\" d=\"M0 0h640v480H0z\"/><path fill=\"#0038a8\" d=\"M266 53.3h374v53.4H266zm0 106.7h374v53.3H266zM0 266.7h640V320H0zm0 106.6h640v53.4H0z\"/><g fill=\"#fcd116\" stroke=\"#000\" stroke-miterlimit=\"20\" stroke-width=\".6\" transform=\"translate(133.3 133.3)scale(2.93333)\"><g id=\"uy-c\"><g id=\"uy-b\"><g id=\"uy-a\"><path stroke-linecap=\"square\" d=\"m-2 8.9 3 4.5c-12.4 9-4.9 14.2-13.6 17 5.4-5.2-.9-5.7 3.7-16.8\"/><path fill=\"none\" d=\"M-4.2 10.2c-6.8 11.2-2.4 17.4-8.4 20.3\"/><path d=\"M0 0h6L0 33-6 0h6v33\"/></g><use xlink:href=\"#uy-a\" width=\"100%\" height=\"100%\" transform=\"rotate(45)\"/></g><use xlink:href=\"#uy-b\" width=\"100%\" height=\"100%\" transform=\"rotate(90)\"/></g><use xlink:href=\"#uy-c\" width=\"100%\" height=\"100%\" transform=\"scale(-1)\"/><circle r=\"11\"/></g><g transform=\"translate(133.3 133.3)scale(.29333)\"><g id=\"uy-d\"><path d=\"M81-44c-7 8-11-6-36-6S16-35 12-38s21-21 29-22 31 7 40 16m-29 9c7 6 1 19-6 19S26-28 32-36\"/><path d=\"M19-26c1-12 11-14 27-14s23 12 29 15c-7 0-13-10-29-10s-16 0-27 10m3 2c4-6 9 6 20 6s17-3 24-8-10 12-21 12-26-6-23-10\"/><path d=\"M56-17c13-7 5-17 0-19 2 2 10 12 0 19M0 43c6 0 8-2 16-2s27 11 38 7c-23 9-14 3-54 3h-5m63 6c-4-7-3-5-11-16 8 6 10 9 11 16M0 67c25 0 21-5 54-19-24 3-29 11-54 11h-5m5-29c7 0 9-5 17-5s19 3 24 7c1 1-3-8-11-9S25 9 16 7c0 4 3 3 4 9 0 5-9 5-11 0 2 8-4 8-9 8\"/></g><use xlink:href=\"#uy-d\" width=\"100%\" height=\"100%\" transform=\"scale(-1 1)\"/><path d=\"M0 76c-5 0-18 3 0 3s5-3 0-3\"/></g></svg>","uz":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 640 480\"><path fill=\"#1eb53a\" d=\"M0 320h640v160H0z\"/><path fill=\"#0099b5\" d=\"M0 0h640v160H0z\"/><path fill=\"#ce1126\" d=\"M0 153.6h640v172.8H0z\"/><path fill=\"#fff\" d=\"M0 163.2h640v153.6H0z\"/><circle cx=\"134.4\" cy=\"76.8\" r=\"57.6\" fill=\"#fff\"/><circle cx=\"153.6\" cy=\"76.8\" r=\"57.6\" fill=\"#0099b5\"/><g fill=\"#fff\" transform=\"translate(261.1 122.9)scale(1.92)\"><g id=\"uz-e\"><g id=\"uz-d\"><g id=\"uz-c\"><g id=\"uz-b\"><path id=\"uz-a\" d=\"M0-6-1.9-.3 1 .7\"/><use xlink:href=\"#uz-a\" width=\"100%\" height=\"100%\" transform=\"scale(-1 1)\"/></g><use xlink:href=\"#uz-b\" width=\"100%\" height=\"100%\" transform=\"rotate(72)\"/></g><use xlink:href=\"#uz-b\" width=\"100%\" height=\"100%\" transform=\"rotate(-72)\"/><use xlink:href=\"#uz-c\" width=\"100%\" height=\"100%\" transform=\"rotate(144)\"/></g><use xlink:href=\"#uz-d\" width=\"100%\" height=\"100%\" y=\"-24\"/><use xlink:href=\"#uz-d\" width=\"100%\" height=\"100%\" y=\"-48\"/></g><use xlink:href=\"#uz-e\" width=\"100%\" height=\"100%\" x=\"24\"/><use xlink:href=\"#uz-e\" width=\"100%\" height=\"100%\" x=\"48\"/><use xlink:href=\"#uz-d\" width=\"100%\" height=\"100%\" x=\"-48\"/><use xlink:href=\"#uz-d\" width=\"100%\" height=\"100%\" x=\"-24\"/><use xlink:href=\"#uz-d\" width=\"100%\" height=\"100%\" x=\"-24\" y=\"-24\"/></g></svg>","za":"<svg preserveAspectRatio=\"xMidYMid slice\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><defs><clipPath id=\"za-a\"><path fill-opacity=\".7\" d=\"M-71.9 0h682.7v512H-71.9z\"/></clipPath></defs><g clip-path=\"url(#za-a)\" transform=\"translate(67.4)scale(.93748)\"><g fill-rule=\"evenodd\" stroke-width=\"1pt\"><path fill=\"#000001\" d=\"M-71.9 407.8V104.4L154 256.1z\"/><path fill=\"#000c8a\" d=\"m82.2 512.1 253.6-170.6H696V512H82.2z\"/><path fill=\"#e1392d\" d=\"M66 0h630v170.8H335.7S69.3-1.7 66 0\"/><path fill=\"#ffb915\" d=\"M-71.9 64v40.4L154 256-72 407.8v40.3l284.5-192z\"/><path fill=\"#007847\" d=\"M-71.9 64V0h95l301.2 204h371.8v104.2H324.3L23 512h-94.9v-63.9l284.4-192L-71.8 64z\"/><path fill=\"#fff\" d=\"M23 0h59.2l253.6 170.7H696V204H324.3zm0 512.1h59.2l253.6-170.6H696v-33.2H324.3L23 512z\"/></g></g></svg>"};
+
+const DEFAULT_POINTS = { exact: 3, diff: 2, winner: 1, scorer: 2 };
+const STAKE = 50; // wpłata na gracza (zł) — zmień tę liczbę, jeśli stawka jest inna
+const plGracz = (n) => { const u = n % 10, d = n % 100; if (n === 1) return "gracz"; if (u >= 2 && u <= 4 && !(d >= 12 && d <= 14)) return "gracze"; return "graczy"; };
+const plMecz = (n) => { const u = n % 10, d = n % 100; if (n === 1) return "mecz"; if (u >= 2 && u <= 4 && !(d >= 12 && d <= 14)) return "mecze"; return "meczów"; };
+function fmtDur(ms) {
+  if (ms <= 0) return "już trwa";
+  const s = Math.floor(ms / 1000), d = Math.floor(s / 86400), h = Math.floor((s % 86400) / 3600), m = Math.floor((s % 3600) / 60), ss = s % 60;
+  if (d > 0) return `${d}d ${h}h ${m}m`;
+  if (h > 0) return `${h}h ${m}m ${ss}s`;
+  return `${m}m ${ss}s`;
+}
+/* domyślne pytania bonusowe na cały turniej — admin może zmienić punkty i wpisać poprawne odpowiedzi */
+const DEFAULT_BONUS = [
+  { id: "champion", label: "Mistrz świata", type: "team", points: 10, answer: "" },
+  { id: "finalist", label: "Wicemistrz (przegrany finalista)", type: "team", points: 6, answer: "" },
+  { id: "topscorer", label: "Król strzelców", type: "text", points: 8, answer: "" },
+  { id: "darkhorse", label: "Czarny koń turnieju", type: "team", points: 5, answer: "" },
+];
+const DEFAULT_BONUS_DEADLINE = "2026-06-11T12:00:00-04:00"; // przed pierwszym meczem MŚ
+/* punkty bonusowe gracza: porównuje jego odpowiedzi z rozstrzygnięciami (q.answer) */
+function bonusFor(answers, bonus) {
+  let total = 0; const hits = {};
+  for (const q of bonus) {
+    const ans = (q.answer || "").trim(); if (!ans) continue;
+    const pick = ((answers || {})[q.id] || "").trim(); if (!pick) continue;
+    const ok = q.type === "text" ? scorerHit(pick, ans) : pick === ans;
+    if (ok) { total += q.points || 0; hits[q.id] = true; }
+  }
+  return { total, hits };
+}
+
+const dtfFull = new Intl.DateTimeFormat("pl-PL", { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+const fmtDate = (iso) => { try { return dtfFull.format(new Date(iso)); } catch { return iso; } };
+function fmtCountdown(ms) {
+  if (ms <= 0) return "";
+  const m = Math.floor(ms / 60000), h = Math.floor(m / 60), d = Math.floor(h / 24);
+  if (d >= 1) return `za ${d} ${d === 1 ? "dzień" : "dni"} ${h % 24} h`;
+  if (h >= 1) return `za ${h} h ${m % 60} min`;
+  if (m >= 1) return `za ${m} min`;
+  return "za chwilę";
+}
+
+/* ---------- reprezentacje (nazwa PL + kod flagi) ---------- */
+const TEAMS = [
+  ["Algieria", "dz"], ["Anglia", "gb-eng"], ["Arabia Saudyjska", "sa"], ["Argentyna", "ar"],
+  ["Australia", "au"], ["Austria", "at"], ["Belgia", "be"], ["Brazylia", "br"],
+  ["Chile", "cl"], ["Chorwacja", "hr"], ["Czechy", "cz"], ["Dania", "dk"],
+  ["Egipt", "eg"], ["Ekwador", "ec"], ["Francja", "fr"], ["Ghana", "gh"],
+  ["Grecja", "gr"], ["Hiszpania", "es"], ["Holandia", "nl"], ["Iran", "ir"],
+  ["Irlandia", "ie"], ["Japonia", "jp"], ["Kamerun", "cm"], ["Kanada", "ca"],
+  ["Katar", "qa"], ["Kolumbia", "co"], ["Korea Płd.", "kr"], ["Kostaryka", "cr"],
+  ["Maroko", "ma"], ["Meksyk", "mx"], ["Niemcy", "de"], ["Nigeria", "ng"],
+  ["Norwegia", "no"], ["Nowa Zelandia", "nz"], ["Panama", "pa"], ["Paragwaj", "py"],
+  ["Peru", "pe"], ["Polska", "pl"], ["Portugalia", "pt"], ["RPA", "za"],
+  ["Rumunia", "ro"], ["Senegal", "sn"], ["Serbia", "rs"], ["Słowacja", "sk"],
+  ["Szkocja", "gb-sct"], ["Szwajcaria", "ch"], ["Szwecja", "se"], ["Tunezja", "tn"],
+  ["Turcja", "tr"], ["Ukraina", "ua"], ["Urugwaj", "uy"], ["USA", "us"],
+  ["Walia", "gb-wls"], ["Węgry", "hu"], ["Włochy", "it"], ["Wybrzeże K. Słoniowej", "ci"],
+].sort((a, b) => a[0].localeCompare(b[0], "pl"));
+const codeOf = (name) => (TEAMS.find((t) => t[0] === name) || [, ""])[1];
+
+const fmtDayKey = (iso) => { try { return new Intl.DateTimeFormat("pl-PL", { day: "numeric", month: "short" }).format(new Date(iso)); } catch { return iso; } };
+
+/* punktacja gracza po zbiorze rozegranych meczów (używane w rankingu i w historii) */
+function tally(users, matchList, betsByUser, points) {
+  return users.map((u) => {
+    let total = 0, ex = 0, df = 0, wn = 0, sc = 0;
+    for (const m of matchList) {
+      const b = (betsByUser[u.id] || {})[m.id];
+      if (!b || !m.result) continue;
+      const r = m.result;
+      const hasExact = b.exactHome !== "" && b.exactHome != null && b.exactAway !== "" && b.exactAway != null;
+      if (hasExact && Number(b.exactHome) === Number(r.homeScore) && Number(b.exactAway) === Number(r.awayScore)) { total += points.exact; ex++; }
+      if (hasExact && (Number(b.exactHome) - Number(b.exactAway)) === (Number(r.homeScore) - Number(r.awayScore))) { total += points.diff; df++; }
+      const aw = Number(r.homeScore) > Number(r.awayScore) ? "home" : Number(r.homeScore) < Number(r.awayScore) ? "away" : "draw";
+      if (b.winner && b.winner === aw) { total += points.winner; wn++; }
+      if (b.firstScorer && r.firstScorer && scorerHit(b.firstScorer, r.firstScorer)) { total += points.scorer; sc++; }
+    }
+    return { ...u, total, ex, df, wn, sc };
+  }).sort((a, b) => b.total - a.total || a.name.localeCompare(b.name, "pl"));
+}
+
+/* ---------- terminarz fazy grupowej MŚ 2026 (źródło: oficjalny terminarz FIFA, godziny ET) ---------- */
+const WC_TEAM = {
+  "Mexico": ["Meksyk", "mx"], "South Africa": ["RPA", "za"], "Korea Republic": ["Korea Płd.", "kr"], "Czechia": ["Czechy", "cz"],
+  "Canada": ["Kanada", "ca"], "Bosnia and Herzegovina": ["Bośnia i Hercegowina", "ba"], "Qatar": ["Katar", "qa"], "Switzerland": ["Szwajcaria", "ch"],
+  "Brazil": ["Brazylia", "br"], "Morocco": ["Maroko", "ma"], "Haiti": ["Haiti", "ht"], "Scotland": ["Szkocja", "gb-sct"],
+  "United States": ["USA", "us"], "Paraguay": ["Paragwaj", "py"], "Australia": ["Australia", "au"], "Türkiye": ["Turcja", "tr"],
+  "Germany": ["Niemcy", "de"], "Curaçao": ["Curaçao", "cw"], "Ivory Coast": ["Wybrzeże K. Słoniowej", "ci"], "Ecuador": ["Ekwador", "ec"],
+  "Netherlands": ["Holandia", "nl"], "Japan": ["Japonia", "jp"], "Sweden": ["Szwecja", "se"], "Tunisia": ["Tunezja", "tn"],
+  "Belgium": ["Belgia", "be"], "Egypt": ["Egipt", "eg"], "Iran": ["Iran", "ir"], "New Zealand": ["Nowa Zelandia", "nz"],
+  "Spain": ["Hiszpania", "es"], "Cape Verde": ["Cabo Verde", "cv"], "Saudi Arabia": ["Arabia Saudyjska", "sa"], "Uruguay": ["Urugwaj", "uy"],
+  "France": ["Francja", "fr"], "Senegal": ["Senegal", "sn"], "Iraq": ["Irak", "iq"], "Norway": ["Norwegia", "no"],
+  "Argentina": ["Argentyna", "ar"], "Algeria": ["Algieria", "dz"], "Austria": ["Austria", "at"], "Jordan": ["Jordania", "jo"],
+  "Portugal": ["Portugalia", "pt"], "DR Congo": ["DR Konga", "cd"], "Uzbekistan": ["Uzbekistan", "uz"], "Colombia": ["Kolumbia", "co"],
+  "England": ["Anglia", "gb-eng"], "Croatia": ["Chorwacja", "hr"], "Ghana": ["Ghana", "gh"], "Panama": ["Panama", "pa"],
+};
+/* 48 drużyn MŚ 2026 (do przypisywania w fazie pucharowej) — [nazwa PL, kod flagi] */
+const WC48 = Object.values(WC_TEAM).slice().sort((a, b) => a[0].localeCompare(b[0], "pl"));
+
+/* terminarz fazy pucharowej MŚ 2026 — [etap, "MM-DD", godzina ET (EDT, UTC-4), miasto]; pary zostaną przypisane po fazie grupowej.
+   Źródło dat/godzin: oficjalny terminarz FIFA (czas wschodni EDT). */
+const WC_KO = [
+  ["1/16 finału", "06-28", "15:00", "Los Angeles"],
+  ["1/16 finału", "06-29", "13:00", "Houston"],
+  ["1/16 finału", "06-29", "16:00", "Boston"],
+  ["1/16 finału", "06-29", "21:00", "Monterrey"],
+  ["1/16 finału", "06-30", "13:00", "Dallas"],
+  ["1/16 finału", "06-30", "17:00", "Nowy Jork/NJ"],
+  ["1/16 finału", "06-30", "21:00", "Meksyk"],
+  ["1/16 finału", "07-01", "12:00", "Atlanta"],
+  ["1/16 finału", "07-01", "16:00", "Seattle"],
+  ["1/16 finału", "07-01", "20:00", "San Francisco"],
+  ["1/16 finału", "07-02", "15:00", "Los Angeles"],
+  ["1/16 finału", "07-02", "19:00", "Toronto"],
+  ["1/16 finału", "07-02", "21:00", "Vancouver"],
+  ["1/16 finału", "07-03", "14:00", "Dallas"],
+  ["1/16 finału", "07-03", "18:00", "Miami"],
+  ["1/16 finału", "07-03", "21:30", "Kansas City"],
+  ["1/8 finału", "07-04", "13:00", "Houston"],
+  ["1/8 finału", "07-04", "17:00", "Filadelfia"],
+  ["1/8 finału", "07-05", "16:00", "Nowy Jork/NJ"],
+  ["1/8 finału", "07-05", "20:00", "Meksyk"],
+  ["1/8 finału", "07-06", "12:00", "Atlanta"],
+  ["1/8 finału", "07-06", "15:00", "Dallas"],
+  ["1/8 finału", "07-06", "20:00", "Seattle"],
+  ["1/8 finału", "07-07", "16:00", "Vancouver"],
+  ["Ćwierćfinał", "07-09", "16:00", "Boston"],
+  ["Ćwierćfinał", "07-10", "15:00", "Los Angeles"],
+  ["Ćwierćfinał", "07-11", "17:00", "Miami"],
+  ["Ćwierćfinał", "07-11", "21:00", "Kansas City"],
+  ["Półfinał", "07-14", "15:00", "Dallas"],
+  ["Półfinał", "07-15", "15:00", "Atlanta"],
+  ["Mecz o 3. miejsce", "07-18", "17:00", "Miami"],
+  ["Finał", "07-19", "15:00", "Nowy Jork/NJ"],
+];
+// [grupa, kolejka, dzień(czerwiec), godzina ET (EDT, UTC-4), gospodarz, gość]
+const WC_FIXTURES = [
+  ["A",1,11,"15:00","Mexico","South Africa"], ["A",1,11,"22:00","Korea Republic","Czechia"],
+  ["A",2,18,"12:00","Czechia","South Africa"], ["A",2,18,"21:00","Mexico","Korea Republic"],
+  ["A",3,24,"21:00","Czechia","Mexico"], ["A",3,24,"21:00","South Africa","Korea Republic"],
+  ["B",1,12,"15:00","Canada","Bosnia and Herzegovina"], ["B",1,13,"15:00","Qatar","Switzerland"],
+  ["B",2,18,"15:00","Switzerland","Bosnia and Herzegovina"], ["B",2,18,"18:00","Canada","Qatar"],
+  ["B",3,24,"15:00","Switzerland","Canada"], ["B",3,24,"15:00","Bosnia and Herzegovina","Qatar"],
+  ["C",1,13,"18:00","Brazil","Morocco"], ["C",1,13,"21:00","Haiti","Scotland"],
+  ["C",2,19,"18:00","Scotland","Morocco"], ["C",2,19,"20:30","Brazil","Haiti"],
+  ["C",3,24,"18:00","Scotland","Brazil"], ["C",3,24,"18:00","Morocco","Haiti"],
+  ["D",1,12,"21:00","United States","Paraguay"], ["D",1,13,"00:00","Australia","Türkiye"],
+  ["D",2,19,"15:00","United States","Australia"], ["D",2,19,"23:00","Türkiye","Paraguay"],
+  ["D",3,25,"22:00","Türkiye","United States"], ["D",3,25,"22:00","Paraguay","Australia"],
+  ["E",1,14,"13:00","Germany","Curaçao"], ["E",1,14,"19:00","Ivory Coast","Ecuador"],
+  ["E",2,20,"16:00","Germany","Ivory Coast"], ["E",2,20,"20:00","Ecuador","Curaçao"],
+  ["E",3,25,"16:00","Curaçao","Ivory Coast"], ["E",3,25,"16:00","Ecuador","Germany"],
+  ["F",1,14,"16:00","Netherlands","Japan"], ["F",1,14,"22:00","Sweden","Tunisia"],
+  ["F",2,20,"13:00","Netherlands","Sweden"], ["F",2,20,"00:00","Tunisia","Japan"],
+  ["F",3,25,"19:00","Japan","Sweden"], ["F",3,25,"19:00","Tunisia","Netherlands"],
+  ["G",1,15,"15:00","Belgium","Egypt"], ["G",1,15,"21:00","Iran","New Zealand"],
+  ["G",2,21,"15:00","Belgium","Iran"], ["G",2,21,"21:00","New Zealand","Egypt"],
+  ["G",3,26,"23:00","Egypt","Iran"], ["G",3,26,"23:00","New Zealand","Belgium"],
+  ["H",1,15,"12:00","Spain","Cape Verde"], ["H",1,15,"18:00","Saudi Arabia","Uruguay"],
+  ["H",2,21,"12:00","Spain","Saudi Arabia"], ["H",2,21,"18:00","Uruguay","Cape Verde"],
+  ["H",3,26,"20:00","Cape Verde","Saudi Arabia"], ["H",3,26,"20:00","Uruguay","Spain"],
+  ["I",1,16,"15:00","France","Senegal"], ["I",1,16,"18:00","Iraq","Norway"],
+  ["I",2,22,"17:00","France","Iraq"], ["I",2,22,"20:00","Norway","Senegal"],
+  ["I",3,26,"15:00","Norway","France"], ["I",3,26,"15:00","Senegal","Iraq"],
+  ["J",1,16,"21:00","Argentina","Algeria"], ["J",1,16,"00:00","Austria","Jordan"],
+  ["J",2,22,"13:00","Argentina","Austria"], ["J",2,22,"23:00","Jordan","Algeria"],
+  ["J",3,27,"22:00","Jordan","Argentina"], ["J",3,27,"22:00","Algeria","Austria"],
+  ["K",1,17,"13:00","Portugal","DR Congo"], ["K",1,17,"22:00","Uzbekistan","Colombia"],
+  ["K",2,23,"13:00","Portugal","Uzbekistan"], ["K",2,23,"22:00","Colombia","DR Congo"],
+  ["K",3,27,"19:30","Colombia","Portugal"], ["K",3,27,"19:30","DR Congo","Uzbekistan"],
+  ["L",1,17,"16:00","England","Croatia"], ["L",1,17,"19:00","Ghana","Panama"],
+  ["L",2,23,"16:00","England","Ghana"], ["L",2,23,"19:00","Panama","Croatia"],
+  ["L",3,27,"17:00","Panama","England"], ["L",3,27,"17:00","Croatia","Ghana"],
+];
+const WC_ENG = Object.fromEntries(Object.entries(WC_TEAM).map(([eng, v]) => [v[1], eng]));
+const engOf = (code, fallback) => WC_ENG[code] || fallback || "";
+const etDateKey = (ts) => { try { return new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(ts)); } catch { return ""; } };
+const fmtDayLabel = (ts) => { try { return new Intl.DateTimeFormat("pl-PL", { timeZone: "America/New_York", weekday: "long", day: "numeric", month: "long" }).format(new Date(ts)); } catch { return ""; } };
+const fmtDayShort = (ts) => { try { return new Intl.DateTimeFormat("pl-PL", { timeZone: "America/New_York", weekday: "short", day: "2-digit", month: "2-digit" }).format(new Date(ts)); } catch { return ""; } };
+/* mapowanie nazw reprezentacji (ESPN / angielskich) -> kod flagi, do pobierania wyników z ESPN */
+const ENG2CODE = (() => {
+  const mm = {};
+  for (const eng in WC_TEAM) mm[norm(eng)] = WC_TEAM[eng][1];
+  const alias = {
+    "south korea": "kr", "korea republic": "kr", "korea south": "kr",
+    "turkey": "tr", "turkiye": "tr",
+    "united states": "us", "usa": "us", "united states of america": "us",
+    "ivory coast": "ci", "cote divoire": "ci", "cote d ivoire": "ci",
+    "czech republic": "cz", "czechia": "cz",
+    "dr congo": "cd", "congo dr": "cd", "democratic republic of the congo": "cd",
+    "cape verde": "cv", "cabo verde": "cv", "cape verde islands": "cv",
+    "iran": "ir", "ir iran": "ir",
+    "bosnia": "ba", "bosnia and herzegovina": "ba", "bosnia herzegovina": "ba",
+    "south africa": "za", "new zealand": "nz", "saudi arabia": "sa"
+  };
+  for (const k in alias) mm[k] = alias[k];
+  return mm;
+})();
+
+/* wyniki wpisuje administrator ręcznie — brak wywołań AI, więc aplikacja nie wymaga konta Claude */
+
+/* ============================================================
+   GLOBALNE STYLE  —  klimat „transmisja ze stadionu nocą”
+   ============================================================ */
+const CSS = `
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Sora:wght@400;500;600;700;800&display=swap');
+:root{
+  --pitch:#0d1b3a; --pitch-d:#081230; --ink:#050a20;
+  --usa:#3b82f6;
+  --gold:#f4c95d; --gold-d:#dca838;
+  --grass:#27d586; --grass-d:#16a866;
+  --coral:#e8403a;
+  --txt:#eef6f0; --muted:#8fb0a1; --line:rgba(255,255,255,.10);
+  --panel:rgba(255,255,255,.045); --panel-2:rgba(255,255,255,.07);
+  --fd:'Anton','Arial Narrow',sans-serif; --fb:'Sora',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+.ms-root{font-family:var(--fb);color:var(--txt);min-height:100vh;position:relative;overflow-x:hidden;
+  background:
+   radial-gradient(1050px 600px at 12% -10%, rgba(39,213,134,.16), transparent 58%),
+   radial-gradient(900px 560px at 88% -6%, rgba(232,64,58,.17), transparent 56%),
+   radial-gradient(900px 620px at 50% 10%, rgba(59,130,246,.12), transparent 60%),
+   linear-gradient(180deg,#0d1b3a 0%, #081230 56%, #050a20 100%);}
+.ms-root::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.5;
+  background:repeating-linear-gradient(180deg, rgba(255,255,255,.025) 0 2px, transparent 2px 46px);
+  mask-image:linear-gradient(180deg, transparent, #000 18%, #000 82%, transparent);}
+h1,h2,h3,.disp{font-family:var(--fd);font-weight:400;letter-spacing:.5px;text-transform:uppercase;line-height:.98}
+.muted{color:var(--muted)}
+.wrap{max-width:980px;margin:0 auto;padding:0 16px}
+
+/* header */
+.hdr{position:sticky;top:0;z-index:20;backdrop-filter:blur(10px);
+  background:linear-gradient(180deg, rgba(8,18,48,.88), rgba(8,18,48,.55));border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px}
+.crest{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;color:#081226;
+  background:linear-gradient(140deg,var(--grass) 0%,var(--gold) 52%,var(--coral) 100%);box-shadow:0 6px 18px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.45)}
+.brand-tt{font-size:23px}
+.brand-sub{font-size:11px;letter-spacing:3px;color:var(--gold);font-family:var(--fb);font-weight:700;text-transform:uppercase}
+
+/* tabs */
+.tabs{display:flex;gap:6px;padding:10px 0 0;overflow-x:auto}
+.tab{flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:11px 16px;border-radius:12px 12px 0 0;cursor:pointer;
+  font-weight:700;font-size:14px;color:var(--muted);border:1px solid transparent;border-bottom:none;background:transparent;transition:.18s}
+.tab:hover{color:var(--txt);background:var(--panel)}
+.tab.on{color:#081226;background:linear-gradient(180deg,var(--gold),var(--gold-d));box-shadow:0 -2px 12px rgba(244,201,93,.25)}
+
+/* panels & cards */
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;
+  box-shadow:0 16px 40px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.05)}
+.card{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.025));
+  border:1px solid var(--line);border-radius:18px;overflow:hidden;
+  box-shadow:0 18px 44px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.06);
+  animation:rise .5s both}
+.card .strip{height:4px;background:linear-gradient(90deg,var(--grass) 0%,var(--gold) 50%,var(--coral) 100%)}
+.card-b{padding:18px}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* flags */
+.flag{position:relative;display:inline-block;border-radius:5px;overflow:hidden;background:rgba(255,255,255,.07);box-shadow:0 2px 7px rgba(0,0,0,.45);outline:1px solid rgba(255,255,255,.18);vertical-align:middle;line-height:0}
+.fl-lg{width:48px;height:36px}.fl-md{width:31px;height:23px}.fl-sm{width:22px;height:16px}
+.flag svg{display:block;width:100%;height:100%}
+.flag .fe{position:absolute;inset:0;display:grid;place-items:center;line-height:1;letter-spacing:-.5px;font-weight:800;color:var(--txt)}
+.fl-lg .fe{font-size:22px}.fl-md .fe{font-size:15px}.fl-sm .fe{font-size:11px}
+
+/* matchup */
+.vs{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;margin:6px 0 4px}
+.team{display:flex;align-items:center;gap:11px;min-width:0}
+.team.r{flex-direction:row-reverse;text-align:right}
+.team .nm{font-family:var(--fd);font-size:20px;letter-spacing:.4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vsbox{font-family:var(--fd);color:var(--muted);font-size:13px;letter-spacing:2px}
+.score{font-family:var(--fd);font-size:40px;color:var(--gold);text-shadow:0 3px 14px rgba(244,201,93,.25)}
+
+/* chips */
+.chip{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.4px}
+.chip.soon{background:rgba(39,213,134,.13);color:#7df0b6;border:1px solid rgba(39,213,134,.30)}
+.chip.live{background:rgba(232,64,58,.16);color:#ff9a9a;border:1px solid rgba(232,64,58,.4);animation:pulse 1.4s infinite}
+.chip.done{background:rgba(244,201,93,.14);color:var(--gold);border:1px solid rgba(244,201,93,.32)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+
+/* inputs */
+.inp{width:100%;background:rgba(0,0,0,.28);border:1px solid var(--line);color:var(--txt);border-radius:11px;
+  padding:11px 13px;font-family:var(--fb);font-size:15px;outline:none;transition:.15s}
+.inp:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(244,201,93,.16)}
+.inp::placeholder{color:#7589a8}
+.lbl{font-size:11px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);margin-bottom:7px;display:flex;align-items:center;gap:7px}
+.scoreinp{width:58px;text-align:center;font-family:var(--fd);font-size:26px;padding:6px 4px;color:var(--gold)}
+
+/* segmented winner */
+.seg{display:grid;grid-template-columns:1fr auto 1fr;gap:8px}
+.seg .o{display:flex;align-items:center;justify-content:center;gap:8px;padding:11px 8px;border-radius:12px;cursor:pointer;
+  background:rgba(0,0,0,.24);border:1px solid var(--line);color:var(--txt);font-weight:700;font-size:13px;transition:.15s;min-height:48px}
+.seg .o:hover{border-color:rgba(255,255,255,.28)}
+.seg .o.on{background:linear-gradient(180deg, rgba(39,213,134,.22), rgba(39,213,134,.10));border-color:var(--grass);box-shadow:0 6px 18px rgba(39,213,134,.16)}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;border-radius:12px;
+  font-family:var(--fb);font-weight:700;font-size:14px;padding:12px 18px;transition:.16s;color:#081226}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.grass{background:linear-gradient(180deg,var(--grass),var(--grass-d));box-shadow:0 8px 22px rgba(39,213,134,.28)}
+.btn.gold{background:linear-gradient(180deg,var(--gold),var(--gold-d));box-shadow:0 8px 22px rgba(244,201,93,.26)}
+.btn.grass:hover:not(:disabled),.btn.gold:hover:not(:disabled){transform:translateY(-1px)}
+.btn.ghost{background:var(--panel-2);color:var(--txt);border:1px solid var(--line)}
+.btn.ghost:hover:not(:disabled){background:rgba(255,255,255,.12)}
+.btn.danger{background:rgba(232,64,58,.16);color:#ffb3b3;border:1px solid rgba(232,64,58,.34)}
+.btn.sm{padding:8px 12px;font-size:13px;border-radius:10px}
+.icobtn{display:grid;place-items:center;width:40px;height:40px;border-radius:11px;background:var(--panel-2);border:1px solid var(--line);color:var(--txt);cursor:pointer;transition:.15s}
+.icobtn:hover{background:rgba(255,255,255,.12)}
+
+/* tables */
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{font-size:10.5px;letter-spacing:1.1px;text-transform:uppercase;color:var(--muted);text-align:left;padding:9px 10px;font-weight:800;border-bottom:1px solid var(--line)}
+.tbl td{padding:11px 10px;border-bottom:1px solid rgba(255,255,255,.055);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.hit{background:rgba(244,201,93,.13);border-radius:7px;color:var(--gold);font-weight:700}
+.hit2{background:rgba(56,189,248,.16);border-radius:7px;color:#7dd3fc;font-weight:700}
+.gtag{display:inline-flex;align-items:center;font-size:11px;font-weight:700;letter-spacing:.3px;color:var(--muted);background:rgba(255,255,255,.06);border:1px solid var(--line);padding:3px 9px;border-radius:999px}
+.daybar{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 8px}
+.daypill{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 13px;border-radius:12px;cursor:pointer;background:var(--panel);border:1px solid var(--line);color:var(--muted);transition:.15s;min-width:78px}
+.daypill:hover{color:var(--txt);border-color:rgba(255,255,255,.25)}
+.daypill.on{background:linear-gradient(180deg,var(--gold),var(--gold-d));color:#081226;border-color:transparent;box-shadow:0 6px 16px rgba(244,201,93,.22)}
+.daypill .dpn{font-family:var(--fd);font-size:14px;letter-spacing:.4px}
+.daypill .dpd{font-size:11px;font-weight:700;text-transform:capitalize}
+.xtab{border-collapse:separate;border-spacing:0;width:100%;font-size:13px}
+.xtab th{font-size:11px;letter-spacing:.4px;color:var(--muted);font-weight:800;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap;text-align:center}
+.xtab td{padding:9px 10px;border-bottom:1px solid rgba(255,255,255,.06);text-align:center}
+.xtab tr:last-child td{border-bottom:none}
+.xtab .mcol{position:sticky;left:0;text-align:left;z-index:1;background:#0d1838}
+.pick{display:inline-grid;place-items:center;width:32px;height:23px;border-radius:5px;outline:2px solid transparent}
+.pick.ok{outline-color:var(--grass);box-shadow:0 0 0 3px rgba(39,213,134,.18)}
+.pick.no{opacity:.45}
+.pickd{display:inline-grid;place-items:center;min-width:26px;height:23px;padding:0 6px;border-radius:6px;font-family:var(--fd);font-size:13px;background:rgba(255,255,255,.08);color:var(--muted)}
+.pickd.ok{background:rgba(39,213,134,.2);color:#7df0b6;outline:2px solid var(--grass)}
+.pickd.no{opacity:.55}
+.you{color:var(--grass);font-weight:800}
+
+/* ranking */
+.rank{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:14px;margin-bottom:10px;
+  background:var(--panel);border:1px solid var(--line);animation:rise .45s both}
+.rank.top{background:linear-gradient(100deg, rgba(244,201,93,.16), rgba(255,255,255,.04));border-color:rgba(244,201,93,.36)}
+.pos{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;font-family:var(--fd);font-size:20px;flex:0 0 auto;
+  background:rgba(0,0,0,.3);color:var(--muted)}
+.pos.g{background:linear-gradient(150deg,var(--gold),var(--gold-d));color:#081226}
+.pos.s{background:linear-gradient(150deg,#dfe6ea,#a9b4ba);color:#1a2420}
+.pos.b{background:linear-gradient(150deg,#d79a63,#a86b3c);color:#241409}
+.pts{font-family:var(--fd);font-size:30px;color:var(--gold);line-height:1}
+
+/* misc */
+.spin{animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.divider{height:1px;background:var(--line);margin:14px 0}
+.note{font-size:12.5px;color:var(--muted);display:flex;gap:8px;align-items:flex-start}
+.kpi{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--muted)}
+.kpi b{color:var(--txt)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:60;background:#0c1430;border:1px solid var(--line);
+  color:var(--txt);padding:12px 18px;border-radius:13px;box-shadow:0 18px 50px rgba(0,0,0,.5);font-size:14px;font-weight:600;animation:rise .25s both}
+.pot{display:inline-flex;align-items:center;gap:13px;padding:11px 16px;border-radius:15px;
+  background:linear-gradient(120deg, rgba(244,201,93,.15), rgba(255,255,255,.04));
+  border:1px solid rgba(244,201,93,.34);box-shadow:0 12px 30px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.06)}
+.pot-ic{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;color:#081226;flex:0 0 auto;
+  background:linear-gradient(140deg,var(--grass) 0%,var(--gold) 52%,var(--coral) 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.4)}
+.pot-l{font-size:10.5px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted)}
+.pot-sub{font-size:11.5px;color:var(--muted);font-weight:600}
+.pot-amt{font-family:var(--fd);font-size:31px;line-height:1;color:var(--gold);margin-left:8px;text-shadow:0 3px 14px rgba(244,201,93,.22);white-space:nowrap}
+.ministat{display:inline-flex;align-items:center;gap:12px;padding:11px 16px;border-radius:15px;background:var(--panel);border:1px solid var(--line);box-shadow:0 12px 30px rgba(0,0,0,.26);text-align:left;font-family:var(--fb)}
+button.ministat{cursor:pointer;transition:.15s}
+button.ministat:hover{background:var(--panel-2);border-color:rgba(255,255,255,.22);transform:translateY(-1px)}
+.ministat.ms-warn{border-color:rgba(232,64,58,.42)}
+.ms-ic{display:grid;place-items:center;width:38px;height:38px;border-radius:11px;flex:0 0 auto;color:#081226;box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
+.ms-blue{background:linear-gradient(140deg,#60a5fa,#3b82f6)}
+.ms-red{background:linear-gradient(140deg,#f87171,var(--coral))}
+.ms-big{font-family:var(--fd);font-size:23px;line-height:1.05;color:var(--txt)}
+input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+input[type=number]{-moz-appearance:textfield}
+::-webkit-scrollbar{height:10px;width:10px}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.14);border-radius:8px}
+`;
+
+const SQUADS = {"uy":["Agustín Canobbio","Darwin Núñez","Federico Viñas","Rodrigo Aguirre","Brian Rodríguez","Emiliano Martínez","Facundo Pellistri","Federico Valverde","Giorgian De Arrascaeta","Juan Sanabria","Manuel Ugarte","Nicolas de la Cruz","Rodrigo Bentancur","Rodrigo Zalazar","Guillermo Varela","Joaquín Piquerez","José Giménez","Mathías Olivera","Matías Viña","Maximiliano Araújo","Ronald Araújo","Santiago Bueno","Sebastían Cáceres","Fernando Muslera","Santiago Mele","Sergio Rochet"],"de":["Deniz Undav","Jamie Leweling","Kai Havertz","Leroy Sané","Maximilian Beier","Nick Woltemade","Aleksandar Pavlović","Angelo Stiller","Felix Kalu Nmecha","Florian Wirtz","Jamal Musiala","Joshua Kimmich","Lennart Karl","Leon Goretzka","Nadiem Amiri","Pascal Groß","Antonio Rüdiger","David Raum","Jonathan Tah","Malick Thiaw","Nathaniel Brown","Nico Schlotterbeck","Waldemar Anton","Alexander Nübel","Manuel Neuer","Oliver Baumann"],"es":["Borja Iglesias","Lamine Yamal","Nico Williams","Víctor Muñoz","Yeremi Pino","Álex Baena","Dani Olmo","Fabián Ruiz","Ferrán Torres","Marcos Llorente","Martín Zubimendi","Mikel Merino","Mikel Oyarzabal","Pablo Gavira","Pedri","Rodri","Alejandro Grimaldo","Aymeric Laporte","Cucurella","Eric García","Marc Pubill","Pau Cubarsí","Pedro Porro","David Raya","Joan García","Unai Simón"],"py":["Alex Arce","Antonio Sanabria","Gabriel Ávalos","Gustavo Caballero","Isidro Pitta","Julio Enciso","Ramón Sosa","Andrés Cubas","Braian Ojeda","Damian Bobadilla","Diego Gómez","Kaku","Matías Galarza","Mauricio","Miguel Almirón","Alexandro Maidana","Fabián Balbuena","Gustavo Gómez","Gustavo Velázquez","José Canale","Juan Cáceres","Júnior Alonso","Omar Alderete","Gastón Olveira","Orlando Gill","Roberto Fernández"],"ar":["Giuliano Simeone","José Manuel López","Julián Álvarez","Lautaro Martínez","Lionel Messi","Nicolás González","Alexis Mac Allister","Enzo Fernández","Exequiel Palacios","Giovani Lo Celso","Leandro Paredes","Nico Paz","Rodrigo de Paul","Thiago Almada","Christian Romero","Facundo Medina","Gonzalo Montiel","Leonardo Balerdi","Lisandro Martínez","Nahuel Molina","Nicolás Otamendi","Nicolás Tagliafico","Valentin Barco","Emiliano Martínez","Géronimo Rulli","Juan Musso"],"gh":["Abdul Issahaku","Antoine Semenyo","Brandon Thomas-Asante","Christopher Bonsu Baah","Ernest Nuamah","Iñaki Williams","Jordan Ayew","Kamal Deen Sulemana","Prince Adu","Augustine Boakye","Caleb Yirenkyi","Elisha Owusu","Kwasi Sibo","Thomas Partey","Abdul Mumin","Abdul Rahman Baba","Alidu Seidu","Derrick Luckassen","Gideon Mensah","Jerome Opoku","Jonas Adjei Adjetey","Kojo Peprah Oppong","Marvin Senaya","Benjamin Asare","Joseph Anang","Lawrence Ati-Zigi"],"br":["Endrick","Luiz Henrique","Martinelli","Matheus Cunha","Neymar","Raphinha","Rayan","Thiago","Vinicius Junior","Bruno Guimarães","Casemiro","Danilo dos Santos de Oliveira","Fabinho","Lucas Paquetá","Alex Sandro","Bremer","Danilo Luiz da Silva","Douglas Santos","Gabriel Magalhães","Léo Pereira","Marquinhos","Roger Ibañez","Wesley","Alisson Becker","Ederson","Weverton"],"pt":["Cristiano Ronaldo","Francisco Conceição","Gonçalo Ramos","João Félix","Pedro Neto","Rafael Leão","Trincão","Bernardo Silva","Bruno Fernandes","Gonçalo Guedes","Joao Neves","Rúben Neves","Samuel Almeida Costa","Vitinha","Diogo Dalot","Gonçalo Inácio","João Cancelo","Matheus Nunes","Nélson Semedo","Nuno Mendes","Renato Veiga","Rúben Dias","Tomas Araujo","Diogo Costa","José Sá","Rui Silva"],"jp":["Ayase Ueda","Daizen Maeda","Junya Ito","Keisuke Goto","Kento Shiogai","Koki Ogawa","Ritsu Doan","Ao Tanaka","Daichi Kamada","Kaishu Sano","Keito Nakamura","Takefusa Kubo","Wataru Endō","Yuito Suzuki","Ayumu Seko","Hiroki Ito","Junnosuke Suzuki","Ko Itakura","Shogo Taniguchi","Takehiro Tomiyasu","Tsuyoshi Watanabe","Yukinari Sugawara","Yūto Nagatomo","Keisuke Ōsako","Tomoki Hayakawa","Zion Suzuki"],"mx":["Alexis Vega","Armando González","César Huerta","Guillermo Martínez","Julián Quiñones","Raúl Jiménez","Roberto Alvarado","Santiago Giménez","Álvaro Fidalgo","Brian Gutiérrez","Edson Álvarez","Erik Lira","Gilberto Mora","Luis Chávez","Luis Romo","Obed Vargas","Orbelín Pineda","César Montes","Israel Reyes","Jesús Gallardo","Johan Vásquez","Jorge Sánchez","Mateo Chávez","Carlos Acevedo","Guillermo Ochoa","José Rangel"],"gb-eng":["Bukayo Saka","Harry Kane","Ivan Toney","Marcus Rashford","Noni Madueke","Ollie Watkins","Anthony Gordon","Declan Rice","Eberechi Eze","Elliot Anderson","Jordan Henderson","Jude Bellingham","Kobbie Mainoo","Morgan Rogers","Dan Burn","Djed Spence","Ezri Konsa","Jarell Quansah","John Stones","Marc Guéhi","Nico O'Reilly","Reece James","Valentino Livramento","Dean Henderson","James Trafford","Jordan Pickford"],"us":["Christian Pulisic","Folarin Balogun","Haji Wright","Max Arfsten","Ricardo Pepi","Tim Weah","Alejandro Zendejas","Brenden Aaronson","Cristian Roldan","Gio Reyna","Malik Tillman","Sebastian Berhalter","Tyler Adams","Weston McKennie","Alex Freeman","Antonee Robinson","Auston Trusty","Chris Richards","Joseph Scally","Mark McKenzie","Miles Robinson","Sergiño Dest","Tim Ream","Chris Brady","Matt Freese","Matt Turner"],"kr":["Gue-Sung Cho","Heung-min Son","Hwang Heechan","Hyun-Gyu Oh","Hyun-jun Yang","Ji-sung Eom","Dong-gyeong Lee","In-beom Hwang","Jae-sung Lee","Jens Castrop","Jin-Gyu Kim","Joon-ho Bae","Kang-in Lee","Seung-Ho Paik","Gi-hyuk Lee","Han-bum Lee","Jin-seob Park","Min-Jae Kim","Moon-hwan Kim","Tae-hyeon Kim","Tae-seok Lee","Young-woo Seol","Bum-keun Song","Hyeon-woo Jo","Seung-Gyu Kim"],"fr":["Bradley Barcola","Jean-Philippe Mateta","Kylian Mbappé","Marcus Thuram-Ulien","Michael Olise","Ousmane Dembélé","Adrien Rabiot","Aurélien Tchouameni","Desire Doue","Maghnes Akliouche","Manu Koné","N'Golo Kanté","Rayan Cherki","Warren Zaïre-Emery","Dayot Upamecano","Ibrahima Konaté","Jules Koundé","Lucas Digne","Lucas Hernández","Malo Gusto","Maxence Lacroix","Theo Hernández","William Saliba","Brice Samba","Mike Maignan","Robin Risser"],"za":["Evidence Makgopa","Iqraam Rayners","Lyle Foster","Oswin Appollis","Relebohile Mofokeng","Tshepang Moremi","Jayden Adams","Kamogelo Sebelebele","Sphephelo Sithole","Teboho Mokoena","Thalente Mbatha","Thapelo Maseko","Themba Zwane","Aubrey Modiba","Bradley Cross","Ime Okon","Khuliso Mudau","Khulumani Ndamane","Mbekezeli Mbokazi","Nkosinathi Sibisi","Olwethu Makhanya","Samukelo Kabini","Tholo Matuludi","Ricardo Goss","Ronwen Williams","Sipho Chaine"],"dz":["Amine Gouiri","Anis Moussa","Farés Ghedjemis","Mohammed Amoura","Nadhir Benbouali","Riyad Mahrez","Fares Chaïbi","Hicham Boudaoui","Houssem Aouar","Ibrahim Maza","Nabil Bentaleb","Ramiz Zerrouki","Yacine Titraoui","Aïssa Mandi","Amine Tougai","Jaouen Hadjam","Rafik Belghali","Ramy Bensebaini","Rayan Aït Nouri","Samir Chergui","Zinédine Belaïd","Luca Zidane","Melvin Mastil","Oussama Benbout"],"au":["Ante Šuto","Awer Mabil","Deni Jurić","Martin Boyle","Nestory Irankunda","Nishan Velupillay","Aiden O'Neill","Ajdin Hrustic","Alex Robertson","Connor Metcalfe","Kai Trewin","Patrick Yazbek","Paul Okon-Engstler","Riley McGree","Alessandro Circati","Aziz Behich","Cameron Burgess","Jacob Italiano","Jason Geria","Jordan Bos","Kye Rowles","Lucas Herrington","Miloš Degenek","Maty Ryan","Patrick Beach","Paul Izzo"],"nz":["Ben Waine","Chris Wood","Elijah Just","Jesse Randall","Kosta Barbarouses","Lachlan Bayliss","Matthew Garbett","Alex Rufer","Ben Old","Callum McCowatt","Joe Bell","Marko Stamenic","Ryan Thomas","Sarpreet Singh","Callan Elliot","Finn Surman","Francis De Vries","Liberato Cacace","Michael Boxall","Nando Pijnaker","Tim Payne","Tommy Smith","Tyler Bindon","Alex Paulsen","Max Crocombe","Michael Woud"],"ch":["Breel Embolo","Cédric Itten","Dan Ndoye","Noah Okafor","Zeki Amdouni","Ardon Jasari","Christian Fassnacht","Denis Zakaria","Djibril Sow","Fabian Rieder","Granit Xhaka","Johan Manzambi","Michel Aebischer","Remo Freuler","Ruben Vargas","Aurele Amenda","Eray Cömert","Luca Jaquez","Manuel Akanji","Miro Muheim","Nico Elvedi","Ricardo Rodriguez","Silvan Widmer","Gregor Kobel","Marvin Keller","Yvon Mvogo"],"ec":["Anthony Valencia","Enner Valencia","Jeremy","John Yeboah","Jordy Caicedo","Kevin Rodríguez","Nilson Angulo","Alan Franco","Alan Minda","Denil Castillo","Gonzalo Plata","Jordy Alcívar","Kendry Paez","Moisés Caicedo","Pedro Vite","Ángelo Preciado","Félix Torres","Jackson Porozo","Joel Ordoñez","Pervis Estupiñán","Piero Hincapié","William Pacho","Yaimar Medina","Gonzalo Valle","Hernán Galíndez","Moisés Ramírez"],"se":["Alexander Bernhardsson","Alexander Isak","Anthony Elanga","Benjamin Nygren","Gustaf Nilsson","Viktor Gyökeres","Besfort Zeneli","Jesper Karlström","Ken Sema","Lucas Bergvall","Mattias Svanberg","Taha Ali","Yasin Ayari","Carl Starfelt","Daniel Svensson","Elliot Stroud","Eric Smith","Gabriel Gudmundsson","Gustaf Lagerbielke","Herman Johansson","Hjalmar Ekdal","Isak Hien","Victor Nilsson-Lindelöf","Jacob Widell Zetterström","Kristoffer Nordfeldt","Viktor Johansson"],"cz":["Adam Hložek","Jan Kuchta","Mojmír Chytil","Patrik Schick","Tomáš Chorý","Alexandr Sojka","David Douděra","Denis Višinský","Hugo Sochůrek","Lukáš Červ","Lukáš Provod","Michal Sadílek","Pavel Šulc","Tomáš Souček","Vladimír Darida","David Jurásek","David Zima","Jaroslav Zelený","Ladislav Krejčí","Robin Hranac","Štěpán Chaloupek","Tomáš Holeš","Vladimir Coufal","Jindřich Staněk","Lukáš Horníček","Matej Kovar"],"hr":["Andrej Kramarić","Ante Budimir","Igor Matanovic","Ivan Perišić","Marco Pašalić","Petar Musa","Kristijan Jakić","Luka Modrić","Luka Sučić","Mario Pašalić","Martin Baturina","Mateo Kovačić","Nikola Moro","Nikola Vlašić","Petar Sucic","Toni Fruk","Duje Ćaleta-Car","Josip Stanišić","Josip Šutalo","Joško Gvardiol","Luka Vušković","Marin Pongračić","Martin Erlic","Dominik Kotarski","Dominik Livaković","Ivor Pandur"],"sa":["Abdullah Al-Hamdan","Firas Al Brikan","Khalid Al Ghannam","Saleh Al Shehri","Sultan Mandash","Abdullah Al Khaibari","Ayman Yahya","Mohammed Kanno","Musab Al Juwayr","Nasser Al Dawsari","Salem Al Dawsari","Ziyad Al-Johani","Abdulelah Al Amri","Ali Lajami","Hassan Al Tambakti","Hassan Kadesh","Moteb Al Harbi","Saud Abdulhamid","Ahmed Al Kassar","Mohammed Al Owais","Nawaf Al Aqidi"],"tn":["Elias Saad","Firas Chaouat","Hazem Mastouri","Rayan Elloumi","Sebastian Tounekti","Anis Ben Slimane","Elias Achouri","Ellyes Skhiri","Hadj Mahmoud","Hannibal Mejbri","Ismaël Gharbi","Rani Khedira","Adem Arous","Ali El Abdi","Dylan Bronn","Mohamed Amine Ben Hamida","Montassar Talbi","Mortadha Ben Ouanes","Moutaz Neffati","Omar Rekik","Yan Valery","Yassine Chikhaoui","Aymen Dahmen"],"tr":["Can Uzun","Deniz Gul","Kenan Yıldız","Muhammed Kerem Aktürkoğlu","Yunus Akgün","Arda Guler","Barış Alper Yılmaz","Hakan Çalhanoğlu","İrfan Kahveci","İsmail Yüksek","Oguz Aydin","Orkun Kökçü","Salih Özcan","Abdülkerim Bardakcı","Çağlar Söyüncü","Evren Eren Elmalı","Ferdi Kadıoğlu","Kaan Ayhan","Merih Demiral","Mert Müldür","Ozan Kabak","Samet Akaydın","Zeki Çelik","Altay Bayındır","Mert Günok","Uğurcan Çakır"],"sn":["Assane Diao","Boulaye Dia","Cheikh Ahmadou Dieng","Cherif Ndiaye","Habib Diallo","Ibrahim M'Baye","Iliman Ndiaye","Ismaïla Sarr","Mamadou Diakhon","Nicolas Jackson","Habib Diarra","Idrissa Gana Guèye","Krépin Diatta","Lamine Camara","Pape Gueye","Pape Sarr","Pathé Ciss","Abdoulaye Seck","Antoine Mendy","El Hadji Malick Diouf","Ismail Jakobs","Kalidou Koulibaly","Mamadou Sarr","Moussa Niakhaté","Nobel Mendy","Edouard Mendy","Mory Diaw","Yehvann Diouf"],"be":["Charles De Ketelaere","Leandro Trossard","Matias Fernandez-Pardo","Romelu Lukaku","Alexis Saelemaekers","Amadou Onana","Axel Witsel","Diego Moreira","Dodi Lukebakio","Hans Vanaken","Jeremy Doku","Kevin De Bruyne","Nicolas Raskin","Youri Tielemans","Arthur Theate","Brandon Mechele","Joaquin Seys","Koni De Winter","Maxim De Cuyper","Nathan Ngoy","Thomas Meunier","Timothy Castagne","Zeno Debast","Mike Penders","Senne Lammens","Thibaut Courtois"],"ma":["Abdessamad Ezzalzouli","Ayoub El Kaabi","Ayoube Amaimouni-Echghouyab","Gessime Yassine","Soufiane Rahimi","Ayyoub Bouaddi","Azzedine Ounahi","Bilal El Khannous","Brahim Diaz","Chemsdine Talbi","Ismael Saibari","Neil El Aynaoui","Samir El Mourabet","Sofyan Amrabat","Achraf Hakimi","Anass Salah-Eddine","Chadi Riad","Issa Diop","Nayef Aguerd","Noussair Mazraoui","Redouane Halhal","Youssef Belammari","Zakaria El Ouahdi","Ahmed Reda Tagnaouti","Munir Mohamedi","Yassine Bounou"],"at":["Marko Arnautovic","Michael Gregoritsch","Saša Kalajdžić","Alessandro Schöpf","Carney Chukwuemeka","Christoph Baumgartner","Florian Grillitsch","Konrad Laimer","Marcel Sabitzer","Nicolas  Seiwald","Patrick Wimmer","Paul Wanner","Romano Schmid","Xaver Schlager","Alexander Prass","David Affengruber","David Alaba","Kevin Danso","Marco Friedl","Michael Svoboda","Philipp Lienhart","Philipp Mwene","Stefan Posch","Alexander Schlager","Florian Wiegele","Patrick Pentz"],"co":["Carlos Andrés Gómez","Cucho Hernández","Jhon Córdoba","Luis Díaz","Luis Suárez","Gustavo Puerta","James Rodríguez","Jaminton Campaz","Jefferson Lerma","Jhon Arias","Jorge Carrascal","Juan Portilla","Juan Quintero","Kevin Castaño","Richard Rios","Daniel Muñoz","Davinson Sánchez","Deiver Machado","Jhon Lucumí","Johan Mojica","Santiago Arias","Willer Ditta","Yerry Mina","Álvaro Montero","Camilo Vargas","David Ospina"],"eg":["Haissem Hassan","Hamza Abdelkarim","Ibrahim Adel","Mohamed Salah","Omar Marmoush","Emam Ashour","Hamdy Fathy","Mahmoud Saber","Marwan Attia","Mohanad Lashin","Nabil Dunga","Trezeguet","Ahmed El Fotouh","Hossam Abdelmaguid","Karim Hafez","Mohamed Abdelmonem","Mohamed Hany","Rami Rabia","Yasser Ibrahim","Mohamed Alaa","Mohamed El Shenawy","Oufa Shobeir"],"ca":["Cyle Larin","Jacob Shaffelburg","Jonathan David","Liam Millar","Promise Akinpelu","Tani Oluwaseyi","Ali Ahmed","Ismael Kone","Jonathan Osorio","Marcelo Flores","Mathieu Choinière","Nathan-Dylan Saliba","Niko Sigur","Stephen Eustáquio","Tajon Buchanan","Alfie Jones","Alistair Johnston","Alphonso Davies","Derek Cornelius","Joel Waterman","Luc De Fougerolles","Moise Bombito","Richie Laryea","Dayne St. Clair","Maxime Crépeau","Owen Goodman"],"ht":["Duckens Nazon","Frantzdy Pierrot","Josué Casimir","Lenny Joseph","Louicius Don Deedson","Ruben Providence","Wilson Isidor","Yassin Fortune","Carl Sainté","Danley Jean Jacques","Derrick Etienne","Dominique Simon","Jean-Ricner Bellegarde","Leverton Pierre","Carlens Arcus","Duke LaCroix","Hannes Delcroix","Jean-Kevin Duverne","Keeto Thermoncy","Martin Expérience","Ricardo Adé","Wilguens Paugain","Alexandre Pierre","Johny Placide","Josué Duverger"],"ir":["Ali Alipour","Alireza Jahanbakhsh","Amir Hosseinzadeh","Dennis Eckert","Mehdi Taremi","Mohammad Mohebi","Saman Ghoddos","Shahriar Moghanlou","Ariya Yousefi","Medhi Ghayedi","Mehdi Torabi","Mohammad Ghorbani","Saeid Ezatolahi","Ehsan Hajsafi","Hossein Kanaanizadegan","Milad Mohammadi","Ramin Rezaeian","Rouzbeh Cheshmi","Saleh Hardani","Shojae Khalilzadeh","Alireza Beiranvand","Hossein Hosseini","Payam Niazmand"],"ba":["Edin Džeko","Ermedin Demirovic","Esmir Bajraktarevic","Haris Tabaković","Jovo Lukić","Kerim Alajbegović","Samed Bazdar","Amar Memić","Amir Hadžiahmetović","Armin Gigovic","Benjamin Tahirovic","Dženis Burnić","Ermin Mahmic","Ivan Bašić","Ivan Šunjić","Amar Dedić","Dennis Hadžikadunić","Nidal Čelik","Nihad Mujakić","Nikola Katić","Sead Kolašinac","Stjepan Radeljić","Tarik Muharemović","Martin Zlomislić","Mladen Jurkas","Nikola Vasilj"],"pa":["Azarias Londoño","Ismael Díaz","José Fajardo","Tomas Rodriguez","Adalberto Carrasquilla","Alberto Quintero","Aníbal Godoy","Carlos Harvey","Cecilio Waterman","César Yanis","Christian Martinez","Édgar Bárcenas","José Luis Rodríguez","Andrés Andrade","César Blackman","Edgardo Fariña","Éric Davis","Fidel Escobar","Jiovany Ramos","Jorge Gutiérrez","José Cordoba","Michael Murillo","Roderick Miller","Cesar Samudio","Luis Mejía","Orlando Mosquera"],"cv":["Dailon Rocha Livramento","Gilson Tavares","Hélio Varela","Jovane Cabral","Nuno Da Costa","Ryan Mendes","Willy Semedo","Deroy Duarte","Garry Rodrigues","Jamiro Monteiro","João Paulo","Kevin Pina","Laros Duarte","Telmo Arcanjo","Yannick Semedo","Diney Borges","Kelvin Pires","Logan Costa","Roberto Lopes","Sidny Lopes Cabral","Steven Moreira","Stopira","Wagner Pina","C.J. dos Santos","Márcio Rosa","Vózinha"],"cd":["Brian Cipenga","Cédric Bakambu","Fiston Mayele","Meschack Elia","Nathanael Mbuku","Simon Banza","Theo Bongonda","Yoane Wissa","Aaron Tshibola","Charles Pickel","Edo Kayembe","Gaël Kakuta","Ngal'ayel Mukau","Noah Sadiki","Samuel Moutoussamy","Aaron Wan-Bissaka","Arthur Masuaku","Axel Tuanzebe","Chancel Mbemba","Dylan Batubinsika","Gédéon Kalulu","Joris Kayembe","Steve Kapuadi","Lionel Mpasi","Matthieu Epolo","Timothy Fayulu"],"ci":["Ange-Yoan Bonny","Bazoumana Touré","Evann Guessand","Nicolas Pépé","Oumar Diakite","Sepe Elye Wahi","Simon Adingra","Yan Diomandé","Amad Diallo","Christ Ravynel Inao Oulaï","Franck Kessié","Ibrahim Sangaré","Jean Michaël Seri","Parfait Guiagon","Seko Fofana","Christopher Operi","Emmanuel Agbadou","Evan N'Dicka","Ghislain Konan","Guela Doué","Odilon Kossounou","Ousmane Diomande","Wilfried Singo","Alban Lafont","Mohamed Kone","Yahia Fofana"],"qa":["Ahmed Alaa Eldin","Akram Afif","Almoez Ali","Edmílson","Hassan Al Haydos","Mohammed Muntari","Abdulaziz Hatem","Ahmed Al Ganehi","Ahmed Fathy","Assim Madibo","Karim Boudiaf","Tahsin Jamshid","Yusuf Abdurisag","Ayoub Al-Oui","Boualem Khoukhi","Homam Ahmed","Jassem Gaber Abdulsallam","Lucas Mendes","Ró-Ró","Sultan Al Brake","Mahmoud Abunada","Meshaal Barsham","Salah Zakaria"],"jo":["Baha' Faisal","Ibrahim Sabra","Mahmoud Al Mardi","Musa Al Taamari","Ahmad Assaf","Ibrahim Saadeh","Nizar Al Rashdan","Noor Al Rawabdeh","Yousef Qashi","Abdallah Naseeb","Mohammad Abu Hasheesh","Mohammad Abualnadi","Mohannad Abu Taha","Saleem Obaid","Yazan Al Arab","Yousef Abu Al Jazar","Abdallah Al Fakhouri","Yazeed Abulaila"],"iq":["Ali Al-Hamadi","Ali Jassim El-Aibi","Aymen Hussein","Marko Farji","Mohanad Ali","Ahmed Qasem","Aimar Sher","Amir Al Ammari","Ibrahim Bayesh","Kevin Yakob","Youssef Amyn","Zaid Ismail","Zidane Iqbal","Ahmed Yahya","Akam Hashem","Frans Putros","Hussein Ali","Manaf Younis","Merchas Doski","Mustafa Saadoun","Rebin Sulaka","Zaid Tahseen","Ahmed Basil","Fahad Talib","Jalal Hassan"],"uz":["Alisher Odilov","Dostonbek Xamdamov","Eldor Shomurodov","Igor Sergeev","Oston Urunov","Akmal Mozgovoy","Azizjon Ganiev","Ibrokhim Ibrokhimov","Jamshid Iskanderov","Odiljon Hamrobekov","Otabek Shukurov","Umarali Rahmonaliyev","Abdukodir Khusanov","Farrukh Sayfiyev","Jakhongir O'rozov","Khodjiakbar Alijonov","Mukhammadkodir Khamraliev","Rustam Ashurmatov","Sherzod Nasrullayev","Umar Eshmurodov","Abduvakhid Nematov","Botirali Ergashev","Utkir Yusupov"],"nl":["Brian Brobbey","Cody Gakpo","Justin Kluivert","Memphis Depay","Wout Weghorst","Crysencio Summerville","Donyell Malen","Frenkie de Jong","Guus Til","Marten de Roon","Mats Wieffer","Noa Lang","Quinten Timber","Ryan Gravenberch","Teun Koopmeiners","Tijjani Reijnders","Denzel Dumfries","Jan Paul van Hecke","Jorrel Hato","Jurrien Timber","Mickey van de Ven","Nathan Aké","Virgil van Dijk","Bart Verbruggen","Mark Flekken","Robin Roefs"],"no":["Alexander Sørloth","Andreas Schjelderup","Erling Haaland","Jens Hauge","Jørgen Strand Larsen","Antonio Nusa","Fredrik Aursnes","Kristian Thorstvedt","Martin Ødegaard","Morten Thorsby","Oscar Bobb","Patrick Berg","Sander Berge","Thelo Aasgaard","David Wolfe","Fredrik Bjørkan","Henrik Falchener","Julian Ryerson","Kristoffer Ajer","Leo Østigård","Marcus Pedersen","Sondre Langås","Torbjørn Heggem","Egil Selvik","Ørjan Nyland","Sander Tangvik"],"gb-sct":["Che Adams","George Hirst","Lawrence Shankland","Lyndon Dykes","Ross Stewart","Ben Doak","Findlay Curtis","John McGinn","Kenny McLean","Lewis Ferguson","Ryan Christie","Scott McTominay","Tyler Fletcher","Aaron Hickey","Andrew Robertson","Anthony Ralston","Dominic Hyam","Grant Hanley","Jack Hendry","John Souttar","Kieran Tierney","Nathan Patterson","Scott McKenna","Angus Gunn","Craig Gordon","Liam Kelly"],"cw":["Brandley Kuwas","Gervane Kastaneer","Jearl Margaritha","Jeremy Antonisse","Jürgen Locadia","Kenji Gorré","Sontje Hansen","Tahith Chong","Godfried Roemeratoe","Juninho Bacuna","Kevin Felida","Leandro Bacuna","Ar'jany Martha","Armando Obispo","Deveron Fonville","Joshua Brenet","Juriën Gaari","Livano Comenencia","Riechedly Bazoer","Roshon van Eijma","Sheral Floranus","Shurandy Sambo","Tyrese Noslin","Eloy Room","Trevor Doornbusch","Tyrick Bodak"]};
+
+/* flaga: wbudowany SVG (działa offline na każdym urządzeniu); emoji jako zapas */
+function Flag({ code, size = "fl-md" }) {
+  if (!code) return null;
+  const svg = FLAG_SVG[code];
+  if (svg) return <span className={`flag ${size}`} title={code} dangerouslySetInnerHTML={{ __html: svg }} />;
+  return <span className={`flag ${size}`} title={code}><span className="fe">{codeEmoji(code)}</span></span>;
+}
+
+/* ============================================================
+   APLIKACJA
+   ============================================================ */
+function App() {
+  const [loading, setLoading] = useState(true);
+  const [busy, setBusy] = useState(false);
+  const [now, setNow] = useState(Date.now());
+  const [toast, setToast] = useState("");
+
+  const [users, setUsers] = useState([]);
+  const [matches, setMatches] = useState([]);
+  const [settings, setSettings] = useState({ points: DEFAULT_POINTS });
+  const [betsByUser, setBetsByUser] = useState({}); // {userId:{matchId:bet}}
+  const [bonusByUser, setBonusByUser] = useState({}); // {userId:{questionId:answer}}
+  const [bonusDraft, setBonusDraft] = useState({});   // moje edytowalne typy bonusowe
+
+  const [me, setMe] = useState(() => { try { const s = localStorage.getItem("ms2026_me"); return s ? JSON.parse(s) : null; } catch (e) { return null; } });           // sesja (tylko w pamięci)
+  const [tab, setTab] = useState("typuj");
+  const [draft, setDraft] = useState({});       // mój edytowalny typ {matchId:{...}}
+  /* składy zawodników są wbudowane (stała SQUADS) — bez stanu i bez pobierania */
+  const [selDay, setSelDay] = useState(null);   // wybrany dzień (klucz daty ET)
+
+  const flash = (m) => { setToast(m); setTimeout(() => setToast(""), 2600); };
+
+  /* --- wczytanie wspólnego stanu --- */
+  const loadShared = useCallback(async () => {
+    const [u, m, s] = await Promise.all([store.get("users"), store.get("matches"), store.get("settings")]);
+    setUsers(u ? JSON.parse(u) : []);
+    setMatches(m ? JSON.parse(m) : []);
+    setSettings(s ? JSON.parse(s) : { points: DEFAULT_POINTS });
+    const keys = await store.list("bets:");
+    const all = {};
+    for (const k of keys) {
+      const v = await store.get(k);
+      if (v) all[k.slice(5)] = JSON.parse(v);
+    }
+    setBetsByUser(all);
+    const bkeys = await store.list("bonus:");
+    const allB = {};
+    for (const k of bkeys) {
+      const v = await store.get(k);
+      if (v) allB[k.slice(6)] = JSON.parse(v);
+    }
+    setBonusByUser(allB);
+  }, []);
+
+  useEffect(() => {
+    (async () => { await loadShared(); setLoading(false); })();
+    const t1 = setInterval(() => setNow(Date.now()), 1000);
+    const t2 = setInterval(() => { loadShared(); }, 15000);
+    return () => { clearInterval(t1); clearInterval(t2); };
+  }, [loadShared]);
+
+  /* seed mojego draftu z zapisanych typów (bez nadpisywania edycji) */
+  useEffect(() => {
+    if (!me) return;
+    const mine = betsByUser[me.id] || {};
+    setDraft((d) => {
+      const next = { ...d };
+      for (const mid of Object.keys(mine)) if (next[mid] === undefined) next[mid] = { ...mine[mid] };
+      return next;
+    });
+  }, [me, betsByUser]);
+
+  useEffect(() => {
+    if (!me) return;
+    const mine = bonusByUser[me.id] || {};
+    setBonusDraft((d) => { const next = { ...d }; for (const k of Object.keys(mine)) if (next[k] === undefined) next[k] = mine[k]; return next; });
+  }, [me, bonusByUser]);
+
+  useEffect(() => { try { if (me) localStorage.setItem("ms2026_me", JSON.stringify(me)); else localStorage.removeItem("ms2026_me"); } catch (e) {} }, [me]);
+  const points = settings.points || DEFAULT_POINTS;
+  const isLocked = (mt) => now >= new Date(mt.kickoff).getTime();
+  const bonus = settings.bonus || DEFAULT_BONUS;
+  const bonusDeadline = settings.bonusDeadline || DEFAULT_BONUS_DEADLINE;
+  const bonusLocked = now >= new Date(bonusDeadline).getTime();
+
+  /* --- ranking i historia liczone automatycznie --- */
+  const standings = useMemo(
+    () => tally(users, matches.filter((m) => m.finished && m.result), betsByUser, points),
+    [users, matches, betsByUser, points]
+  );
+  const checkpoints = useMemo(() => {
+    const done = matches.filter((m) => m.finished && m.result).sort((a, b) => new Date(a.kickoff) - new Date(b.kickoff));
+    const groups = [];
+    for (const m of done) {
+      const key = m.roundLabel || ("Mecze: " + fmtDayKey(m.kickoff));
+      let g = groups.find((x) => x.key === key);
+      if (!g) { g = { key, first: new Date(m.kickoff).getTime(), matches: [] }; groups.push(g); }
+      g.matches.push(m);
+    }
+    groups.sort((a, b) => a.first - b.first);
+    let cum = [];
+    return groups.map((g) => { cum = cum.concat(g.matches); return { label: g.key, table: tally(users, cum, betsByUser, points) }; });
+  }, [matches, users, betsByUser, points]);
+  const bonusPtsByUser = useMemo(() => {
+    const out = {};
+    for (const u of users) out[u.id] = bonusFor(bonusByUser[u.id] || {}, bonus);
+    return out;
+  }, [users, bonusByUser, bonus]);
+  const standingsFull = useMemo(() =>
+    standings.map((u) => { const bp = bonusPtsByUser[u.id] || { total: 0 }; return { ...u, bonusPts: bp.total, grand: u.total + bp.total }; })
+      .sort((a, b) => b.grand - a.grand || a.name.localeCompare(b.name, "pl")),
+    [standings, bonusPtsByUser]);
+
+  const days = useMemo(() => {
+    const map = new Map();
+    for (const m of matches) { const key = etDateKey(m.kickoff); if (!map.has(key)) map.set(key, []); map.get(key).push(m); }
+    return [...map.entries()].map(([key, ms]) => {
+      ms.sort((a, b) => new Date(a.kickoff) - new Date(b.kickoff));
+      return { key, matches: ms };
+    }).sort((a, b) => a.key.localeCompare(b.key));
+  }, [matches]);
+
+  useEffect(() => {
+    if (!days.length) return;
+    if (selDay && days.some((d) => d.key === selDay)) return;
+    const todayET = etDateKey(Date.now());
+    const def = days.find((d) => d.key >= todayET) || days[days.length - 1];
+    setSelDay(def.key);
+  }, [days, selDay]);
+
+  /* ---------------- AUTORYZACJA ---------------- */
+  const [auth, setAuth] = useState({ mode: "login", name: "", pin: "", err: "" });
+  const persistUsers = async (next) => { setUsers(next); await store.set("users", JSON.stringify(next)); };
+
+  async function doRegister() {
+    const name = auth.name.trim();
+    if (name.length < 2) return setAuth((a) => ({ ...a, err: "Podaj imię (min. 2 znaki)." }));
+    if (!/^\d{4}$/.test(auth.pin)) return setAuth((a) => ({ ...a, err: "PIN to 4 cyfry." }));
+    if (users.some((u) => norm(u.name) === norm(name))) return setAuth((a) => ({ ...a, err: "Taki gracz już istnieje — zaloguj się." }));
+    const user = { id: uid(), name, pin: hashPin(auth.pin), isAdmin: users.length === 0 };
+    await persistUsers([...users, user]);
+    setMe(user); setAuth({ mode: "login", name: "", pin: "", err: "" });
+    flash(user.isAdmin ? "Konto admina utworzone 👑" : "Konto utworzone!");
+  }
+  function doLogin() {
+    const u = users.find((x) => norm(x.name) === norm(auth.name.trim()));
+    if (!u) return setAuth((a) => ({ ...a, err: "Nie ma takiego gracza." }));
+    if (u.pin !== hashPin(auth.pin)) return setAuth((a) => ({ ...a, err: "Błędny PIN." }));
+    setMe(u); setAuth({ mode: "login", name: "", pin: "", err: "" });
+  }
+
+  /* ---------------- ZAPIS TYPU ---------------- */
+  const setD = (mid, patch) => setDraft((d) => ({ ...d, [mid]: { ...(d[mid] || {}), ...patch } }));
+  async function saveBet(m) {
+    const d = draft[m.id] || {};
+    const mine = { ...(betsByUser[me.id] || {}) };
+    mine[m.id] = {
+      exactHome: d.exactHome ?? "", exactAway: d.exactAway ?? "",
+      winner: d.winner ?? "", firstScorer: (d.firstScorer ?? "").trim(), at: Date.now(),
+    };
+    await store.set("bets:" + me.id, JSON.stringify(mine));
+    setBetsByUser((b) => ({ ...b, [me.id]: mine }));
+    flash("Typ zapisany ✓");
+  }
+  async function saveBonus() {
+    if (bonusLocked) return flash("Typowanie bonusowe jest już zamknięte.");
+    const mine = {};
+    for (const q of bonus) mine[q.id] = (bonusDraft[q.id] ?? "").toString().trim();
+    await store.set("bonus:" + me.id, JSON.stringify(mine));
+    setBonusByUser((b) => ({ ...b, [me.id]: mine }));
+    flash("Typy bonusowe zapisane ✓");
+  }
+
+  /* składy zawodników są wbudowane w aplikację (stała SQUADS) — bez pobierania z sieci */
+
+  /* ---------------- AKCJE ADMINA ---------------- */
+  const persistMatches = async (next) => { setMatches(next); await store.set("matches", JSON.stringify(next)); };
+  const [addF, setAddF] = useState({ home: "Polska", away: "Holandia", kickoff: "", stage: "" });
+  const [editId, setEditId] = useState("");
+  const [editF, setEditF] = useState({ home: "", away: "", kickoff: "" });
+  async function addMatch() {
+    if (addF.home === addF.away) return flash("Wybierz dwie różne drużyny.");
+    if (!addF.kickoff) return flash("Ustaw datę i godzinę meczu.");
+    const m = { id: uid(), group: "", roundLabel: addF.stage.trim(), homeTeam: addF.home, homeCode: codeOf(addF.home), awayTeam: addF.away, awayCode: codeOf(addF.away),
+      kickoff: new Date(addF.kickoff).toISOString(), finished: false, result: null };
+    await persistMatches([...matches, m].sort((a, b) => new Date(a.kickoff) - new Date(b.kickoff)));
+    setAddF((f) => ({ ...f, kickoff: "" })); flash("Mecz dodany.");
+  }
+  async function delMatch(id) { await persistMatches(matches.filter((m) => m.id !== id)); }
+  async function seedWorldCup() {
+    const have = new Set(matches.map((m) => `${m.homeTeam}|${m.awayTeam}|${m.kickoff}`));
+    const add = [];
+    for (const [g, r, day, time, h, a] of WC_FIXTURES) {
+      const et = `2026-06-${String(day).padStart(2, "0")}T${time}:00-04:00`;
+      const kickoff = new Date(et).toISOString();
+      const [hn, hc] = WC_TEAM[h], [an, ac] = WC_TEAM[a];
+      if (have.has(`${hn}|${an}|${kickoff}`)) continue;
+      add.push({ id: uid(), group: g, round: r, roundLabel: `Faza grupowa — ${r}. kolejka`,
+        homeTeam: hn, homeCode: hc, awayTeam: an, awayCode: ac, kickoff, finished: false, result: null });
+    }
+    if (!add.length) return flash("Terminarz MŚ 2026 jest już wczytany.");
+    await persistMatches([...matches, ...add].sort((a, b) => new Date(a.kickoff) - new Date(b.kickoff)));
+    flash(`Wczytano terminarz MŚ 2026 — ${add.length} meczów grupowych.`);
+  }
+  async function seedKnockout() {
+    const have = new Set(matches.map((m) => (m.roundLabel || "") + "|" + m.kickoff));
+    const add = [];
+    for (const [label, md, time, city] of WC_KO) {
+      const kickoff = new Date(`2026-${md}T${time}:00-04:00`).toISOString();
+      if (have.has(label + "|" + kickoff)) continue;
+      add.push({ id: uid(), group: "", round: 0, roundLabel: label, city,
+        homeTeam: "—", homeCode: "", awayTeam: "—", awayCode: "", kickoff, finished: false, result: null });
+    }
+    if (!add.length) return flash("Faza pucharowa jest już wczytana.");
+    await persistMatches([...matches, ...add].sort((a, b) => new Date(a.kickoff) - new Date(b.kickoff)));
+    flash(`Wczytano fazę pucharową — ${add.length} slotów. Przypisz drużyny po fazie grupowej (ołówek przy meczu).`);
+  }
+  function toLocalInput(iso) { try { const d = new Date(iso); const p = (n) => String(n).padStart(2, "0"); return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate()) + "T" + p(d.getHours()) + ":" + p(d.getMinutes()); } catch (e) { return ""; } }
+  function beginEdit(m) {
+    const home = WC48.find((t) => t[0] === m.homeTeam) ? m.homeTeam : WC48[0][0];
+    const away = WC48.find((t) => t[0] === m.awayTeam) ? m.awayTeam : WC48[1][0];
+    setEditF({ home, away, kickoff: toLocalInput(m.kickoff) });
+    setEditId(m.id);
+  }
+  async function saveEdit(m) {
+    if (editF.home === editF.away) return flash("Wybierz dwie różne drużyny.");
+    if (!editF.kickoff) return flash("Ustaw datę i godzinę.");
+    const hc = (WC48.find((t) => t[0] === editF.home) || [, ""])[1];
+    const ac = (WC48.find((t) => t[0] === editF.away) || [, ""])[1];
+    const next = matches.map((x) => x.id === m.id ? { ...x, homeTeam: editF.home, homeCode: hc, awayTeam: editF.away, awayCode: ac, kickoff: new Date(editF.kickoff).toISOString() } : x);
+    await persistMatches(next.sort((a, b) => new Date(a.kickoff) - new Date(b.kickoff)));
+    setEditId(""); flash("Mecz zaktualizowany.");
+  }
+
+  // edytor wyniku
+  const [rdraft, setRdraft] = useState({}); // {matchId:{homeScore,awayScore,firstScorer}}
+  const setR = (id, patch) => setRdraft((s) => ({ ...s, [id]: { ...(s[id] || {}), ...patch } }));
+  const [espnBusy, setEspnBusy] = useState("");
+  async function pullEspn(m) {
+    setEspnBusy(m.id);
+    try {
+      const ymd = etDateKey(m.kickoff).replace(/-/g, "");
+      const codeOfComp = (x) => ENG2CODE[norm((x && x.team && (x.team.displayName || x.team.name || x.team.shortDisplayName)) || "")];
+      const events = [];
+      try {
+        const r = await fetch("https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=" + ymd);
+        const j = await r.json();
+        (j.events || []).forEach((e) => events.push(e));
+      } catch (e) {}
+      const ev = events.find((e) => {
+        const c = e.competitions && e.competitions[0]; if (!c) return false;
+        const codes = (c.competitors || []).map(codeOfComp);
+        return codes.indexOf(m.homeCode) >= 0 && codes.indexOf(m.awayCode) >= 0;
+      });
+      if (!ev) { flash("ESPN: nie znalazłem tego meczu — wpisz wynik ręcznie."); return; }
+      const c = ev.competitions[0];
+      const cs = c.competitors || [];
+      const home = cs.find((x) => codeOfComp(x) === m.homeCode);
+      const away = cs.find((x) => codeOfComp(x) === m.awayCode);
+      const done = ev.status && ev.status.type && ev.status.type.completed;
+      let scorer = "";
+      try {
+        const goals = (c.details || []).filter((x) => x.scoringPlay).sort((a, b) => (((a.clock && a.clock.value) != null ? a.clock.value : 1e9) - ((b.clock && b.clock.value) != null ? b.clock.value : 1e9)));
+        if (goals[0] && goals[0].athletesInvolved && goals[0].athletesInvolved[0]) scorer = goals[0].athletesInvolved[0].displayName || "";
+      } catch (e) {}
+      setRdraft((s) => ({ ...s, [m.id]: { homeScore: home && home.score != null ? Number(home.score) : "", awayScore: away && away.score != null ? Number(away.score) : "", firstScorer: scorer } }));
+      flash(done ? "ESPN: pobrano wynik — sprawdź i zatwierdź." : "ESPN: mecz jeszcze nie zakończony — zweryfikuj ręcznie.");
+    } catch (e) {
+      flash("ESPN: nie udało się pobrać — wpisz wynik ręcznie.");
+    } finally { setEspnBusy(""); }
+  }
+  async function confirmResult(m) {
+    const r = rdraft[m.id] || (m.result ? { homeScore: m.result.homeScore, awayScore: m.result.awayScore, firstScorer: m.result.firstScorer } : {});
+    if (r.homeScore === "" || r.homeScore == null || r.awayScore === "" || r.awayScore == null || isNaN(Number(r.homeScore)) || isNaN(Number(r.awayScore)))
+      return flash("Uzupełnij liczbowy wynik.");
+    const next = matches.map((x) => x.id === m.id ? { ...x, finished: true, result: { homeScore: Number(r.homeScore), awayScore: Number(r.awayScore), firstScorer: (r.firstScorer || "").trim() } } : x);
+    await persistMatches(next); flash("Wynik zatwierdzony — punkty naliczone.");
+  }
+  async function reopen(m) {
+    const next = matches.map((x) => x.id === m.id ? { ...x, finished: false, result: null } : x);
+    await persistMatches(next); flash("Mecz otwarty ponownie.");
+  }
+  async function toggleAdmin(u) {
+    const admins = users.filter((x) => x.isAdmin).length;
+    if (u.isAdmin && admins <= 1) return flash("Musi zostać co najmniej jeden admin.");
+    const next = users.map((x) => x.id === u.id ? { ...x, isAdmin: !x.isAdmin } : x);
+    await persistUsers(next);
+    if (me.id === u.id) setMe({ ...me, isAdmin: !me.isAdmin });
+  }
+  async function removeUser(u) {
+    if (u.id === me.id) return flash("Nie usuniesz własnego konta tutaj.");
+    await persistUsers(users.filter((x) => x.id !== u.id));
+    await store.set("bets:" + u.id, JSON.stringify({}));
+    flash("Gracz usunięty.");
+  }
+
+  /* =========================================================
+     WIDOKI
+     ========================================================= */
+  const winnerLabel = (m, w) => w === "home" ? m.homeTeam : w === "away" ? m.awayTeam : w === "draw" ? "Remis" : "—";
+  const statusChip = (m) => {
+    if (m.finished) return <span className="chip done"><Trophy size={13} /> Zakończony</span>;
+    if (isLocked(m)) return <span className="chip live"><Flame size={13} /> W toku</span>;
+    return <span className="chip soon"><Clock size={13} /> {fmtCountdown(new Date(m.kickoff).getTime() - now)}</span>;
+  };
+
+  function renderRevealTable(m) {
+    const rows = users
+      .map((u) => ({ u, b: (betsByUser[u.id] || {})[m.id] }))
+      .filter((x) => x.b);
+    if (!rows.length) return <div className="note"><Users size={15} /> Nikt nie obstawił tego meczu.</div>;
+    const r = m.result;
+    const aw = r ? (Number(r.homeScore) > Number(r.awayScore) ? "home" : Number(r.homeScore) < Number(r.awayScore) ? "away" : "draw") : null;
+    return (
+      <div style={{ overflowX: "auto" }}>
+        <table className="tbl">
+          <thead><tr>
+            <th>Gracz</th><th>Wynik</th><th>Zwycięzca</th><th>1. strzelec</th>{m.finished && <th style={{ textAlign: "right" }}>Pkt</th>}
+          </tr></thead>
+          <tbody>
+            {rows.map(({ u, b }) => {
+              const hasExact = b.exactHome !== "" && b.exactHome != null && b.exactAway !== "" && b.exactAway != null;
+              const exOK = r && hasExact && Number(b.exactHome) === Number(r.homeScore) && Number(b.exactAway) === Number(r.awayScore);
+              const diffOK = r && hasExact && (Number(b.exactHome) - Number(b.exactAway)) === (Number(r.homeScore) - Number(r.awayScore));
+              const wnOK = r && b.winner && b.winner === aw;
+              const scOK = r && b.firstScorer && scorerHit(b.firstScorer, r.firstScorer);
+              const p = m.finished ? (exOK ? points.exact : 0) + (diffOK ? points.diff : 0) + (wnOK ? points.winner : 0) + (scOK ? points.scorer : 0) : 0;
+              return (
+                <tr key={u.id}>
+                  <td className={u.id === me.id ? "you" : ""}>{u.name}{u.id === me.id ? " (Ty)" : ""}</td>
+                  <td><span className={exOK ? "hit" : diffOK ? "hit2" : ""} style={{ padding: "2px 7px", fontFamily: "var(--fd)", fontSize: 17 }}>
+                    {hasExact ? `${b.exactHome}:${b.exactAway}` : "—"}</span></td>
+                  <td><span className={wnOK ? "hit" : ""} style={{ padding: "2px 7px" }}>{winnerLabel(m, b.winner)}</span></td>
+                  <td><span className={scOK ? "hit" : ""} style={{ padding: "2px 7px" }}>{b.firstScorer || "—"}</span></td>
+                  {m.finished && <td style={{ textAlign: "right", fontFamily: "var(--fd)", fontSize: 18, color: p ? "var(--gold)" : "var(--muted)" }}>{p}</td>}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+
+  function renderMatchCard(m) {
+    const locked = isLocked(m);
+    const d = draft[m.id] || {};
+    const tbd = !m.homeCode && !m.awayCode;
+    return (
+      <div className="card" key={m.id}>
+        <div className="strip" />
+        <div className="card-b">
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, marginBottom: 6 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+              <span className="muted" style={{ fontSize: 13, fontWeight: 600 }}>{fmtDate(m.kickoff)}</span>
+              {(m.group || m.roundLabel) && <span className="gtag">{m.group ? `Grupa ${m.group}` : ""}{m.group && m.roundLabel ? " · " : ""}{m.roundLabel || ""}{m.city ? ` · ${m.city}` : ""}</span>}
+            </div>
+            {statusChip(m)}
+          </div>
+
+          <div className="vs">
+            <div className="team"><Flag code={m.homeCode} size="fl-lg" /><span className="nm">{m.homeTeam}</span></div>
+            {m.finished
+              ? <div style={{ textAlign: "center" }}><span className="score">{m.result.homeScore}:{m.result.awayScore}</span></div>
+              : <div className="vsbox">VS</div>}
+            <div className="team r"><Flag code={m.awayCode} size="fl-lg" /><span className="nm">{m.awayTeam}</span></div>
+          </div>
+
+          {m.finished && m.result.firstScorer &&
+            <div className="note" style={{ justifyContent: "center", marginTop: 4 }}><Target size={14} /> 1. gol: <b style={{ color: "var(--txt)" }}>{m.result.firstScorer}</b></div>}
+
+          <div className="divider" />
+
+          {!locked ? (
+            tbd ? (
+              <div className="note" style={{ padding: "4px 2px 2px" }}><Clock size={14} /> Drużyny zostaną wyłonione po fazie grupowej — typowanie ruszy, gdy administrator je przypisze.</div>
+            ) : (
+            <>
+              <div style={{ display: "grid", gap: 16 }}>
+                <div>
+                  <div className="lbl"><Target size={13} /> Dokładny wynik</div>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 14 }}>
+                    <Flag code={m.homeCode} size="fl-sm" />
+                    <input className="inp scoreinp" type="number" min="0" max="20" value={d.exactHome ?? ""}
+                      onChange={(e) => { const v = e.target.value; const ah = d.exactAway; let w = d.winner;
+                        if (v !== "" && ah !== "" && ah != null) w = +v > +ah ? "home" : +v < +ah ? "away" : "draw";
+                        setD(m.id, { exactHome: v, winner: w }); }} placeholder="-" />
+                    <span className="muted" style={{ fontFamily: "var(--fd)", fontSize: 22 }}>:</span>
+                    <input className="inp scoreinp" type="number" min="0" max="20" value={d.exactAway ?? ""}
+                      onChange={(e) => { const v = e.target.value; const hh = d.exactHome; let w = d.winner;
+                        if (v !== "" && hh !== "" && hh != null) w = +hh > +v ? "home" : +hh < +v ? "away" : "draw";
+                        setD(m.id, { exactAway: v, winner: w }); }} placeholder="-" />
+                    <Flag code={m.awayCode} size="fl-sm" />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="lbl"><Trophy size={13} /> Kto wygra</div>
+                  <div className="seg">
+                    {[["home", m.homeTeam, m.homeCode], ["draw", "Remis", null], ["away", m.awayTeam, m.awayCode]].map(([val, label, code]) => (
+                      <div key={val} className={`o ${d.winner === val ? "on" : ""}`} onClick={() => setD(m.id, { winner: val })}>
+                        {code && <Flag code={code} size="fl-sm" />}<span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{label}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <div className="lbl"><Target size={13} /> Strzelec pierwszego gola</div>
+                  {(() => {
+                    const players = [...(SQUADS[m.homeCode] || []), ...(SQUADS[m.awayCode] || [])];
+                    return (
+                      <>
+                        <input className="inp" list={players.length ? "dl-" + m.id : undefined} value={d.firstScorer ?? ""}
+                          onChange={(e) => setD(m.id, { firstScorer: e.target.value })}
+                          placeholder={players.length ? "wybierz z listy lub wpisz nazwisko" : "np. Robert Lewandowski"} />
+                        {players.length > 0 && <datalist id={"dl-" + m.id}>{players.map((p) => <option key={p} value={p} />)}</datalist>}
+                      </>
+                    );
+                  })()}
+                </div>
+              </div>
+
+              <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 16 }}>
+                <button className="btn grass" onClick={() => saveBet(m)}><Check size={16} /> Zapisz typ</button>
+                <span className="note"><Lock size={13} /> Edycja możliwa do pierwszego gwizdka.</span>
+              </div>
+            </>
+            )
+          ) : (
+            <>
+              <div className="note" style={{ marginBottom: 12 }}><Lock size={14} /> Typy zamknięte — poniżej typy wszystkich graczy.</div>
+              {renderRevealTable(m)}
+            </>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  function renderDayTable(day) {
+    const actual = (m) => { const r = m.result; return Number(r.homeScore) > Number(r.awayScore) ? "home" : Number(r.homeScore) < Number(r.awayScore) ? "away" : "draw"; };
+    return (
+      <div className="panel">
+        <h3 style={{ fontSize: 17, marginBottom: 4, display: "flex", alignItems: "center", gap: 8 }}><Trophy size={15} /> Podsumowanie dnia — typy zwycięzcy</h3>
+        <p className="muted" style={{ fontSize: 12, marginBottom: 12 }}>Flaga = drużyna typowana na zwycięzcę, „R" = remis. Zielona obwódka = trafiony typ.</p>
+        <div style={{ overflowX: "auto" }}>
+          <table className="xtab">
+            <thead>
+              <tr>
+                <th className="mcol">Mecz</th>
+                {users.map((u) => <th key={u.id} className={u.id === me.id ? "you" : ""}>{u.name}{u.id === me.id ? " (Ty)" : ""}</th>)}
+              </tr>
+            </thead>
+            <tbody>
+              {day.matches.map((m) => {
+                const aw = actual(m);
+                return (
+                  <tr key={m.id}>
+                    <td className="mcol">
+                      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                        <Flag code={m.homeCode} size="fl-sm" />
+                        <span className="muted" style={{ fontSize: 12, fontFamily: "var(--fd)" }}>{m.result.homeScore}:{m.result.awayScore}</span>
+                        <Flag code={m.awayCode} size="fl-sm" />
+                      </div>
+                    </td>
+                    {users.map((u) => {
+                      const b = (betsByUser[u.id] || {})[m.id];
+                      const w = b && b.winner;
+                      const ok = w && w === aw;
+                      let inner;
+                      if (!w) inner = <span className="muted">—</span>;
+                      else if (w === "draw") inner = <span className={`pickd ${ok ? "ok" : "no"}`}>R</span>;
+                      else inner = <span className={`pick ${ok ? "ok" : "no"}`}><Flag code={w === "home" ? m.homeCode : m.awayCode} size="fl-sm" /></span>;
+                      return <td key={u.id}>{inner}</td>;
+                    })}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    );
+  }
+
+  function renderTypuj() {
+    if (!matches.length) return (
+      <div className="panel" style={{ textAlign: "center", padding: 40 }}>
+        <Globe size={34} className="muted" style={{ margin: "0 auto 12px" }} />
+        <h3 style={{ fontSize: 22, marginBottom: 8 }}>Brak meczów</h3>
+        <p className="muted" style={{ fontSize: 14 }}>{me.isAdmin ? "Wczytaj terminarz MŚ 2026 w panelu admina." : "Poczekaj, aż administrator wczyta terminarz."}</p>
+      </div>
+    );
+    const day = days.find((d) => d.key === selDay) || days[0];
+    if (!day) return null;
+    const idx = days.findIndex((d) => d.key === day.key);
+    const cnt = day.matches.length;
+    const allDone = day.matches.every((m) => m.finished && m.result);
+    return (
+      <div style={{ display: "grid", gap: 16 }}>
+        <div className="daybar">
+          {days.map((d, i) => (
+            <button key={d.key} className={`daypill ${d.key === day.key ? "on" : ""}`} onClick={() => setSelDay(d.key)}>
+              <span className="dpn">Dzień {i + 1}</span>
+              <span className="dpd">{fmtDayShort(d.matches[0].kickoff)}</span>
+            </button>
+          ))}
+        </div>
+        <div className="panel" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
+          <button className="icobtn" disabled={idx <= 0} onClick={() => setSelDay(days[idx - 1].key)}><ChevronLeft size={18} /></button>
+          <div style={{ textAlign: "center" }}>
+            <div style={{ fontFamily: "var(--fd)", fontSize: 20, textTransform: "capitalize" }}>{fmtDayLabel(day.matches[0].kickoff)}</div>
+            <div className="muted" style={{ fontSize: 12 }}>{cnt} {cnt === 1 ? "mecz" : cnt < 5 ? "mecze" : "meczów"} · {allDone ? "zakończony" : "w toku"}</div>
+          </div>
+          <button className="icobtn" disabled={idx >= days.length - 1} onClick={() => setSelDay(days[idx + 1].key)}><ChevronRight size={18} /></button>
+        </div>
+        {allDone && renderDayTable(day)}
+        {day.matches.map(renderMatchCard)}
+      </div>
+    );
+  }
+
+  function renderRanking() {
+    const played = matches.filter((m) => m.finished).length;
+    if (!users.length) return <div className="panel">Brak graczy.</div>;
+    return (
+      <div>
+        <div className="panel" style={{ marginBottom: 16, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
+          <div>
+            <h2 style={{ fontSize: 24 }}>Klasyfikacja</h2>
+            <p className="muted" style={{ fontSize: 13 }}>Rozegrane mecze: <b style={{ color: "var(--txt)" }}>{played}</b> · Punktacja: dokł. {points.exact} / różnica {points.diff} / zwyc. {points.winner} / strzelec {points.scorer}{bonus.some((q) => (q.answer || "").trim()) ? " · z bonusem" : ""}</p>
+          </div>
+          <Crown size={30} style={{ color: "var(--gold)" }} />
+        </div>
+        {standingsFull.map((u, i) => (
+          <div className={`rank ${i === 0 && u.grand > 0 ? "top" : ""}`} key={u.id} style={{ animationDelay: `${i * 40}ms` }}>
+            <div className={`pos ${i === 0 ? "g" : i === 1 ? "s" : i === 2 ? "b" : ""}`}>{i + 1}</div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontWeight: 800, fontSize: 16 }} className={u.id === me.id ? "you" : ""}>
+                {u.name}{u.id === me.id ? " (Ty)" : ""}{u.isAdmin ? <Shield size={13} style={{ marginLeft: 6, color: "var(--gold)", verticalAlign: "middle" }} /> : null}
+              </div>
+              <div style={{ display: "flex", gap: 14, marginTop: 4, flexWrap: "wrap" }}>
+                <span className="kpi"><Target size={13} /> dokł. <b>{u.ex}</b></span>
+                <span className="kpi">± różnica <b>{u.df}</b></span>
+                <span className="kpi"><Trophy size={13} /> zwyc. <b>{u.wn}</b></span>
+                <span className="kpi"><Flame size={13} /> strzelec <b>{u.sc}</b></span>
+                {u.bonusPts > 0 && <span className="kpi"><Crown size={13} /> bonus <b>{u.bonusPts}</b></span>}
+              </div>
+            </div>
+            <div style={{ textAlign: "right" }}><div className="pts">{u.grand}</div><div className="muted" style={{ fontSize: 11, letterSpacing: 1 }}>PKT</div></div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  function renderBonus() {
+    const myAns = bonusByUser[me.id] || {};
+    const settledCount = bonus.filter((q) => (q.answer || "").trim()).length;
+    const allPlayers = bonus.some((q) => q.type === "text") ? [...new Set(Object.values(SQUADS).flat())] : [];
+    const myBonus = bonusFor(myAns, bonus);
+    const deadlineTxt = fmtDate(bonusDeadline);
+    return (
+      <div style={{ display: "grid", gap: 16 }}>
+        <div className="panel" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+          <div>
+            <h2 style={{ fontSize: 24 }}>Typy bonusowe</h2>
+            <p className="muted" style={{ fontSize: 13 }}>Typy na cały turniej, rozliczane na koniec. {bonusLocked ? "Typowanie zamknięte." : <>Zamknięcie: <b style={{ color: "var(--txt)" }}>{deadlineTxt}</b></>}</p>
+          </div>
+          <Crown size={30} style={{ color: "var(--gold)" }} />
+        </div>
+
+        {!bonusLocked && (
+          <div className="note"><Clock size={14} /> Do zamknięcia typów: <b style={{ color: "var(--txt)", marginLeft: 4, fontFamily: "var(--fd)", fontSize: 16 }}>{fmtDur(new Date(bonusDeadline).getTime() - now)}</b></div>
+        )}
+
+        <div className="panel">
+          {!bonusLocked ? (
+            <>
+              <div style={{ display: "grid", gap: 16 }}>
+                {bonus.map((q) => (
+                  <div key={q.id}>
+                    <div className="lbl"><Crown size={13} /> {q.label} · {q.points} pkt</div>
+                    {q.type === "team" ? (
+                      <select className="inp" value={bonusDraft[q.id] ?? ""} onChange={(e) => setBonusDraft((d) => ({ ...d, [q.id]: e.target.value }))}>
+                        <option value="">— wybierz drużynę —</option>
+                        {WC48.map(([n]) => <option key={n} value={n}>{n}</option>)}
+                      </select>
+                    ) : (
+                      <>
+                        <input className="inp" list={"bdl-" + q.id} value={bonusDraft[q.id] ?? ""} onChange={(e) => setBonusDraft((d) => ({ ...d, [q.id]: e.target.value }))} placeholder="wpisz nazwisko zawodnika" />
+                        <datalist id={"bdl-" + q.id}>{allPlayers.map((p) => <option key={p} value={p} />)}</datalist>
+                      </>
+                    )}
+                  </div>
+                ))}
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 16, flexWrap: "wrap" }}>
+                <button className="btn grass" onClick={saveBonus}><Check size={16} /> Zapisz typy bonusowe</button>
+                <span className="note"><Lock size={13} /> Możesz zmieniać do {deadlineTxt}.</span>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="note" style={{ marginBottom: 12 }}><Lock size={14} /> Typy zamknięte — poniżej typy wszystkich graczy{settledCount ? " (zielono = trafione)" : ""}.</div>
+              <div style={{ overflowX: "auto" }}>
+                <table className="xtab">
+                  <thead>
+                    <tr><th className="mcol">Pytanie</th>{users.map((u) => <th key={u.id} className={u.id === me.id ? "you" : ""}>{u.name}{u.id === me.id ? " (Ty)" : ""}</th>)}<th>Wynik</th></tr>
+                  </thead>
+                  <tbody>
+                    {bonus.map((q) => (
+                      <tr key={q.id}>
+                        <td className="mcol"><b>{q.label}</b><div className="muted" style={{ fontSize: 11 }}>{q.points} pkt</div></td>
+                        {users.map((u) => {
+                          const a = ((bonusByUser[u.id] || {})[q.id] || "").trim();
+                          const ok = q.answer && (q.type === "text" ? scorerHit(a, q.answer) : a === q.answer);
+                          return <td key={u.id} className={ok ? "hit" : ""} style={{ textAlign: "left" }}>{a || "—"}</td>;
+                        })}
+                        <td style={{ textAlign: "left" }}>{(q.answer || "").trim() ? <b style={{ color: "var(--gold)" }}>{q.answer}</b> : <span className="muted">—</span>}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )}
+        </div>
+
+        {settledCount > 0 && (
+          <div className="panel" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <span style={{ fontWeight: 700 }}>Twoje punkty bonusowe</span>
+            <span className="pts" style={{ color: "var(--gold)" }}>{myBonus.total}</span>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  function renderPodglad() {
+    const du = [{ id: "d1", name: "Kuba" }, { id: "d2", name: "Ola" }, { id: "d3", name: "Piotr" }, { id: "d4", name: "Marek" }, { id: "d5", name: "Zofia" }];
+    const dm = [
+      { hc: "mx", ac: "za", hs: 2, as: 1, p: { d1: "home", d2: "home", d3: "away", d4: "home", d5: "draw" } },
+      { hc: "kr", ac: "cz", hs: 1, as: 1, p: { d1: "home", d2: "draw", d3: "draw", d4: "away", d5: "home" } },
+      { hc: "fr", ac: "sn", hs: 0, as: 2, p: { d1: "away", d2: "home", d3: "away", d4: "away" } },
+      { hc: "de", ac: "ec", hs: 3, as: 1, p: { d1: "home", d2: "home", d3: "away", d4: "home", d5: "home" } },
+    ];
+    const aw = (m) => m.hs > m.as ? "home" : m.hs < m.as ? "away" : "draw";
+    return (
+      <div style={{ display: "grid", gap: 16 }}>
+        <div className="panel" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
+          <div><h2 style={{ fontSize: 24 }}>Podgląd</h2><p className="muted" style={{ fontSize: 13 }}>Przykładowe dane — tak wygląda tabela dnia po zatwierdzeniu wszystkich wyników.</p></div>
+          <Eye size={28} style={{ color: "var(--gold)" }} />
+        </div>
+        <div className="panel">
+          <h3 style={{ fontSize: 17, marginBottom: 4, display: "flex", alignItems: "center", gap: 8 }}><Trophy size={15} /> Podsumowanie dnia — typy zwycięzcy</h3>
+          <p className="muted" style={{ fontSize: 12, marginBottom: 12 }}>Flaga = drużyna typowana na zwycięzcę, „R" = remis. Zielona obwódka = trafiony typ.</p>
+          <div style={{ overflowX: "auto" }}>
+            <table className="xtab">
+              <thead>
+                <tr><th className="mcol">Mecz</th>{du.map((u) => <th key={u.id}>{u.name}</th>)}</tr>
+              </thead>
+              <tbody>
+                {dm.map((m, i) => {
+                  const a = aw(m);
+                  return (
+                    <tr key={i}>
+                      <td className="mcol">
+                        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                          <Flag code={m.hc} size="fl-sm" />
+                          <span className="muted" style={{ fontSize: 12, fontFamily: "var(--fd)" }}>{m.hs}:{m.as}</span>
+                          <Flag code={m.ac} size="fl-sm" />
+                        </div>
+                      </td>
+                      {du.map((u) => {
+                        const w = m.p[u.id];
+                        const ok = w && w === a;
+                        let inner;
+                        if (!w) inner = <span className="muted">—</span>;
+                        else if (w === "draw") inner = <span className={`pickd ${ok ? "ok" : "no"}`}>R</span>;
+                        else inner = <span className={`pick ${ok ? "ok" : "no"}`}><Flag code={w === "home" ? m.hc : m.ac} size="fl-sm" /></span>;
+                        return <td key={u.id}>{inner}</td>;
+                      })}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          <p className="note" style={{ marginTop: 14 }}><Trophy size={13} /> Prawdziwa tabela pojawia się w zakładce „Typuj" przy danym dniu, gdy wszystkie jego wyniki są zatwierdzone.</p>
+        </div>
+      </div>
+    );
+  }
+
+  function renderHistoria() {
+    if (!checkpoints.length) return (
+      <div className="panel" style={{ textAlign: "center", padding: 40 }}>
+        <History size={34} className="muted" style={{ margin: "0 auto 12px" }} />
+        <h3 style={{ fontSize: 22, marginBottom: 8 }}>Jeszcze nic tu nie ma</h3>
+        <p className="muted" style={{ fontSize: 14 }}>Historia prowadzenia pojawi się po zatwierdzeniu wyników pierwszej kolejki.</p>
+      </div>
+    );
+    return (
+      <div style={{ display: "grid", gap: 16 }}>
+        <div className="panel" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
+          <div><h2 style={{ fontSize: 24 }}>Kto prowadził</h2><p className="muted" style={{ fontSize: 13 }}>Tabela liczona narastająco po każdej kolejce.</p></div>
+          <History size={28} style={{ color: "var(--gold)" }} />
+        </div>
+        {checkpoints.map((cp, i) => {
+          const leader = cp.table[0];
+          return (
+            <div className="card" key={i} style={{ animationDelay: `${i * 50}ms` }}>
+              <div className="strip" />
+              <div className="card-b">
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, marginBottom: 10, flexWrap: "wrap" }}>
+                  <h3 style={{ fontSize: 18 }}>{cp.label}</h3>
+                  {leader && leader.total > 0 && <span className="chip done"><Crown size={13} /> Prowadzi: {leader.name} ({leader.total})</span>}
+                </div>
+                <div style={{ overflowX: "auto" }}>
+                  <table className="tbl">
+                    <thead><tr><th>#</th><th>Gracz</th><th style={{ textAlign: "right" }}>Punkty</th></tr></thead>
+                    <tbody>
+                      {cp.table.map((u, idx) => (
+                        <tr key={u.id}>
+                          <td style={{ fontFamily: "var(--fd)", fontSize: 16, color: idx === 0 ? "var(--gold)" : "var(--muted)" }}>{idx + 1}</td>
+                          <td className={u.id === me.id ? "you" : ""}>{u.name}{u.id === me.id ? " (Ty)" : ""}</td>
+                          <td style={{ textAlign: "right", fontFamily: "var(--fd)", fontSize: 18, color: "var(--gold)" }}>{u.total}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+
+  function renderAdmin() {
+    return (
+      <div style={{ display: "grid", gap: 16 }}>
+        {/* dodaj mecz */}
+        <div className="panel">
+          <h2 style={{ fontSize: 19, marginBottom: 14, display: "flex", alignItems: "center", gap: 8 }}><Plus size={18} /> Dodaj mecz</h2>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+            <div><div className="lbl">Gospodarz</div>
+              <select className="inp" value={addF.home} onChange={(e) => setAddF((f) => ({ ...f, home: e.target.value }))}>
+                {TEAMS.map(([n]) => <option key={n} value={n}>{n}</option>)}
+              </select></div>
+            <div><div className="lbl">Gość</div>
+              <select className="inp" value={addF.away} onChange={(e) => setAddF((f) => ({ ...f, away: e.target.value }))}>
+                {TEAMS.map(([n]) => <option key={n} value={n}>{n}</option>)}
+              </select></div>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 12 }}>
+            <div><div className="lbl"><Clock size={13} /> Pierwszy gwizdek</div>
+              <input className="inp" type="datetime-local" value={addF.kickoff} onChange={(e) => setAddF((f) => ({ ...f, kickoff: e.target.value }))} /></div>
+            <div><div className="lbl">Etap (opcjonalnie)</div>
+              <input className="inp" value={addF.stage} onChange={(e) => setAddF((f) => ({ ...f, stage: e.target.value }))} placeholder="np. 1/8 finału" /></div>
+          </div>
+          <div style={{ display: "flex", gap: 10, marginTop: 14, flexWrap: "wrap" }}>
+            <button className="btn grass" onClick={addMatch}><Plus size={16} /> Dodaj mecz</button>
+            <button className="btn gold" onClick={seedWorldCup}><Download size={16} /> Wczytaj terminarz MŚ 2026</button>
+            <button className="btn ghost" onClick={seedKnockout}><Trophy size={16} /> Wczytaj fazę pucharową</button>
+          </div>
+        </div>
+
+        {/* mecze + wyniki */}
+        <div className="panel">
+          <h2 style={{ fontSize: 19, marginBottom: 14, display: "flex", alignItems: "center", gap: 8 }}><Trophy size={18} /> Mecze i wyniki</h2>
+          {!matches.length && <div className="note"><Globe size={15} /> Brak meczów.</div>}
+          <div style={{ display: "grid", gap: 12 }}>
+            {[...matches].sort((a, b) => new Date(a.kickoff) - new Date(b.kickoff)).map((m) => {
+              const r = rdraft[m.id] || (m.result ? { homeScore: m.result.homeScore, awayScore: m.result.awayScore, firstScorer: m.result.firstScorer } : {});
+              return (
+                <div key={m.id} style={{ border: "1px solid var(--line)", borderRadius: 14, padding: 14, background: "rgba(0,0,0,.18)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, justifyContent: "space-between", flexWrap: "wrap" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, fontWeight: 700 }}>
+                      <Flag code={m.homeCode} size="fl-sm" /> {m.homeTeam}
+                      <span className="muted">–</span>
+                      <Flag code={m.awayCode} size="fl-sm" /> {m.awayTeam}
+                    </div>
+                    <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+                      <span className="muted" style={{ fontSize: 12 }}>{fmtDate(m.kickoff)}{m.city ? " · " + m.city : ""}</span>
+                      <button className="icobtn" title="Przypisz drużyny / popraw termin" onClick={() => beginEdit(m)}><Pencil size={16} /></button>
+                      <button className="icobtn" title="Usuń mecz" onClick={() => delMatch(m.id)}><Trash2 size={16} /></button>
+                    </div>
+                  </div>
+
+                  {editId === m.id && (
+                    <div style={{ marginTop: 12, padding: 12, borderRadius: 12, background: "rgba(0,0,0,.22)", border: "1px solid var(--line)" }}>
+                      <div className="lbl">Przypisz drużyny / popraw termin</div>
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                        <select className="inp" value={editF.home} onChange={(e) => setEditF((f) => ({ ...f, home: e.target.value }))}>
+                          {WC48.map(([n]) => <option key={n} value={n}>{n}</option>)}
+                        </select>
+                        <select className="inp" value={editF.away} onChange={(e) => setEditF((f) => ({ ...f, away: e.target.value }))}>
+                          {WC48.map(([n]) => <option key={n} value={n}>{n}</option>)}
+                        </select>
+                      </div>
+                      <div style={{ marginTop: 10 }}>
+                        <input className="inp" type="datetime-local" value={editF.kickoff} onChange={(e) => setEditF((f) => ({ ...f, kickoff: e.target.value }))} />
+                      </div>
+                      <div style={{ display: "flex", gap: 10, marginTop: 12, flexWrap: "wrap" }}>
+                        <button className="btn grass sm" onClick={() => saveEdit(m)}><Check size={15} /> Zapisz</button>
+                        <button className="btn ghost sm" onClick={() => setEditId("")}><X size={15} /> Anuluj</button>
+                      </div>
+                    </div>
+                  )}
+
+                  <div style={{ display: "flex", gap: 10, alignItems: "flex-end", marginTop: 12, flexWrap: "wrap" }}>
+                    <div><div className="lbl">Gosp.</div><input className="inp" style={{ width: 70 }} type="number" min="0" value={r.homeScore ?? ""} onChange={(e) => setRdraft((s) => ({ ...s, [m.id]: { ...r, homeScore: e.target.value } }))} /></div>
+                    <div><div className="lbl">Gość</div><input className="inp" style={{ width: 70 }} type="number" min="0" value={r.awayScore ?? ""} onChange={(e) => setRdraft((s) => ({ ...s, [m.id]: { ...r, awayScore: e.target.value } }))} /></div>
+                    <div style={{ flex: 1, minWidth: 160 }}><div className="lbl">1. strzelec</div><input className="inp" value={r.firstScorer ?? ""} onChange={(e) => setRdraft((s) => ({ ...s, [m.id]: { ...r, firstScorer: e.target.value } }))} placeholder="imię i nazwisko" /></div>
+                  </div>
+
+                  <div style={{ display: "flex", gap: 10, marginTop: 12, flexWrap: "wrap" }}>
+                    <button className="btn ghost sm" disabled={espnBusy === m.id} onClick={() => pullEspn(m)}>{espnBusy === m.id ? <RefreshCw size={15} className="spin" /> : <Globe size={15} />} Pobierz z ESPN</button>
+                    <button className="btn gold sm" onClick={() => confirmResult(m)}><Check size={15} /> {m.finished ? "Zapisz zmiany" : "Zatwierdź wynik"}</button>
+                    {m.finished && <button className="btn danger sm" onClick={() => reopen(m)}><X size={15} /> Cofnij wynik</button>}
+                    {m.finished && <span className="chip done" style={{ alignSelf: "center" }}><Check size={13} /> naliczone</span>}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* punktacja */}
+        <div className="panel">
+          <h2 style={{ fontSize: 19, marginBottom: 14, display: "flex", alignItems: "center", gap: 8 }}><Target size={18} /> Punktacja</h2>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+            {[["exact", "Dokładny wynik"], ["diff", "Różnica bramek"], ["winner", "Trafiony zwycięzca"], ["scorer", "Trafiony 1. strzelec"]].map(([k, label]) => (
+              <div key={k}><div className="lbl">{label}</div>
+                <input className="inp" type="number" min="0" value={points[k]} onChange={(e) => setSettings((s) => ({ ...s, points: { ...s.points, [k]: Number(e.target.value) || 0 } }))} /></div>
+            ))}
+          </div>
+          <button className="btn grass" style={{ marginTop: 14 }} onClick={async () => { await store.set("settings", JSON.stringify(settings)); flash("Punktacja zapisana."); }}><Check size={16} /> Zapisz punktację</button>
+        </div>
+
+        {/* typy bonusowe */}
+        <div className="panel">
+          <h2 style={{ fontSize: 19, marginBottom: 6, display: "flex", alignItems: "center", gap: 8 }}><Crown size={18} /> Typy bonusowe (cały turniej)</h2>
+          <p className="muted" style={{ fontSize: 12.5, marginBottom: 12 }}>Ustaw termin zamknięcia i punkty. Poprawne odpowiedzi wpisz po turnieju — punkty naliczą się automatycznie w rankingu.</p>
+          <div className="lbl"><Clock size={13} /> Zamknięcie typów bonusowych</div>
+          <input className="inp" type="datetime-local" value={toLocalInput(bonusDeadline)} onChange={(e) => setSettings((s) => ({ ...s, bonusDeadline: e.target.value ? new Date(e.target.value).toISOString() : DEFAULT_BONUS_DEADLINE }))} />
+          <div className="divider" />
+          <div style={{ display: "grid", gap: 12 }}>
+            {bonus.map((q) => (
+              <div key={q.id} style={{ display: "grid", gap: 8, padding: 12, borderRadius: 12, background: "rgba(0,0,0,.18)", border: "1px solid var(--line)" }}>
+                <div style={{ fontWeight: 800 }}>{q.label} <span className="muted" style={{ fontWeight: 400, fontSize: 12 }}>({q.type === "team" ? "drużyna" : "zawodnik"})</span></div>
+                <div style={{ display: "grid", gridTemplateColumns: "110px 1fr", gap: 10, alignItems: "end" }}>
+                  <div><div className="lbl">Punkty</div>
+                    <input className="inp" type="number" min="0" value={q.points} onChange={(e) => { const v = Number(e.target.value) || 0; setSettings((s) => ({ ...s, bonus: bonus.map((x) => x.id === q.id ? { ...x, points: v } : x) })); }} /></div>
+                  <div><div className="lbl">Poprawna odpowiedź</div>
+                    {q.type === "team" ? (
+                      <select className="inp" value={q.answer || ""} onChange={(e) => setSettings((s) => ({ ...s, bonus: bonus.map((x) => x.id === q.id ? { ...x, answer: e.target.value } : x) }))}>
+                        <option value="">— nierozstrzygnięte —</option>
+                        {WC48.map(([n]) => <option key={n} value={n}>{n}</option>)}
+                      </select>
+                    ) : (
+                      <input className="inp" value={q.answer || ""} onChange={(e) => setSettings((s) => ({ ...s, bonus: bonus.map((x) => x.id === q.id ? { ...x, answer: e.target.value } : x) }))} placeholder="nazwisko zawodnika" />
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <button className="btn grass" style={{ marginTop: 14 }} onClick={async () => { await store.set("settings", JSON.stringify({ ...settings, bonus, bonusDeadline })); flash("Typy bonusowe zapisane."); }}><Check size={16} /> Zapisz typy bonusowe</button>
+        </div>
+
+        {/* gracze */}
+        <div className="panel">
+          <h2 style={{ fontSize: 19, marginBottom: 14, display: "flex", alignItems: "center", gap: 8 }}><Users size={18} /> Gracze</h2>
+          <div style={{ display: "grid", gap: 8 }}>
+            {users.map((u) => (
+              <div key={u.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 12px", border: "1px solid var(--line)", borderRadius: 11, background: "rgba(0,0,0,.16)" }}>
+                <span style={{ fontWeight: 700 }}>{u.name}{u.isAdmin ? <Shield size={13} style={{ marginLeft: 6, color: "var(--gold)", verticalAlign: "middle" }} /> : null}{u.id === me.id ? <span className="muted" style={{ fontWeight: 400 }}> (Ty)</span> : null}</span>
+                <div style={{ display: "flex", gap: 8 }}>
+                  <button className="btn ghost sm" onClick={() => toggleAdmin(u)}>{u.isAdmin ? "Odbierz admina" : "Nadaj admina"}</button>
+                  {u.id !== me.id && <button className="icobtn" title="Usuń gracza" onClick={() => removeUser(u)}><Trash2 size={16} /></button>}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  /* ---------------- LOGOWANIE ---------------- */
+  function renderLogin() {
+    const reg = auth.mode === "register";
+    return (
+      <div className="ms-root" style={{ display: "grid", placeItems: "center", padding: "40px 16px" }}>
+        <div style={{ width: "100%", maxWidth: 420 }}>
+          <div style={{ textAlign: "center", marginBottom: 22 }}>
+            <div className="crest" style={{ width: 64, height: 64, borderRadius: 18, margin: "0 auto 14px" }}><Trophy size={32} /></div>
+            <h1 style={{ fontSize: 40 }}>Typer MŚ <span style={{ color: "var(--gold)" }}>2026</span></h1>
+            <p className="brand-sub" style={{ marginTop: 6 }}>Pula typerska · mistrzostwa świata</p>
+          </div>
+          <div className="panel">
+            <div className="seg" style={{ gridTemplateColumns: "1fr 1fr", marginBottom: 16 }}>
+              <div className={`o ${!reg ? "on" : ""}`} onClick={() => setAuth((a) => ({ ...a, mode: "login", err: "" }))}><LogIn size={16} /> Zaloguj</div>
+              <div className={`o ${reg ? "on" : ""}`} onClick={() => setAuth((a) => ({ ...a, mode: "register", err: "" }))}><UserPlus size={16} /> Nowe konto</div>
+            </div>
+            <div style={{ display: "grid", gap: 12 }}>
+              <div><div className="lbl">Imię / ksywa</div>
+                {reg
+                  ? <input className="inp" value={auth.name} onChange={(e) => setAuth((a) => ({ ...a, name: e.target.value, err: "" }))} placeholder="np. Kuba" />
+                  : <select className="inp" value={auth.name} onChange={(e) => setAuth((a) => ({ ...a, name: e.target.value, err: "" }))}>
+                      <option value="">— wybierz gracza —</option>
+                      {users.map((u) => <option key={u.id} value={u.name}>{u.name}</option>)}
+                    </select>}
+              </div>
+              <div><div className="lbl">PIN (4 cyfry)</div>
+                <input className="inp" type="password" inputMode="numeric" maxLength={4} value={auth.pin}
+                  onChange={(e) => setAuth((a) => ({ ...a, pin: e.target.value.replace(/\D/g, "").slice(0, 4), err: "" }))} placeholder="••••"
+                  onKeyDown={(e) => e.key === "Enter" && (reg ? doRegister() : doLogin())} />
+              </div>
+              {auth.err && <div style={{ color: "var(--coral)", fontSize: 13, fontWeight: 600 }}>{auth.err}</div>}
+              <button className="btn gold" onClick={reg ? doRegister : doLogin} style={{ marginTop: 4 }}>
+                {reg ? <><UserPlus size={16} /> Załóż konto</> : <><LogIn size={16} /> Wejdź</>}
+              </button>
+              {reg && users.length === 0 && <div className="note"><Crown size={14} /> Pierwsze konto zostaje administratorem turnieju.</div>}
+            </div>
+          </div>
+          <p className="note" style={{ marginTop: 14, justifyContent: "center", textAlign: "center" }}>
+            <Users size={13} /> Udostępnij ten sam link znajomym — gracie na wspólnej tabeli.
+          </p>
+        </div>
+        {toast && <div className="toast">{toast}</div>}
+      </div>
+    );
+  }
+
+  /* ---------------- RENDER GŁÓWNY ---------------- */
+  if (loading) return (
+    <div className="ms-root" style={{ display: "grid", placeItems: "center" }}>
+      <style>{CSS}</style>
+      <div style={{ textAlign: "center" }}>
+        <RefreshCw size={40} className="spin" style={{ color: "var(--gold)" }} />
+        <p className="muted" style={{ marginTop: 14 }}>Wczytywanie turnieju…</p>
+      </div>
+    </div>
+  );
+
+  if (!me) return (<><style>{CSS}</style>{renderLogin()}</>);
+
+  const upcomingMine = matches.filter((m) => m.homeCode && m.awayCode && !m.finished && now < new Date(m.kickoff).getTime());
+  const nextMatch = upcomingMine.slice().sort((a, b) => new Date(a.kickoff) - new Date(b.kickoff))[0];
+  const myBets = betsByUser[me.id] || {};
+  const hasBet = (m) => { const b = myBets[m.id]; return !!(b && ((b.winner && b.winner !== "") || (b.exactHome !== "" && b.exactHome != null) || (b.firstScorer && b.firstScorer !== ""))); };
+  const unbetCount = upcomingMine.filter((m) => !hasBet(m)).length;
+
+  const tabs = [["typuj", "Typuj", Target], ["ranking", "Ranking", Trophy], ["historia", "Historia", History], ["bonus", "Bonus", Crown], ["podglad", "Podgląd", Eye]];
+  if (me.isAdmin) tabs.push(["admin", "Panel admina", Shield]);
+
+  return (
+    <div className="ms-root">
+      <style>{CSS}</style>
+      <header className="hdr">
+        <div className="wrap" style={{ padding: "12px 16px 0" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
+            <div className="brand">
+              <div className="crest"><Trophy size={22} /></div>
+              <div><div className="brand-tt">Typer MŚ <span style={{ color: "var(--gold)" }}>2026</span></div><div className="brand-sub">pula typerska</div></div>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span className="muted" style={{ fontSize: 13, fontWeight: 600 }}>{me.name}{me.isAdmin ? " 👑" : ""}</span>
+              <button className="icobtn" title="Odśwież" onClick={loadShared}><RefreshCw size={17} /></button>
+              <button className="icobtn" title="Wyloguj" onClick={() => { setMe(null); setDraft({}); }}><LogOut size={17} /></button>
+            </div>
+          </div>
+          <div className="tabs">
+            {tabs.map(([id, label, Ico]) => (
+              <div key={id} className={`tab ${tab === id ? "on" : ""}`} onClick={() => setTab(id)}><Ico size={16} /> {label}</div>
+            ))}
+          </div>
+        </div>
+      </header>
+
+      <main className="wrap" style={{ padding: "22px 16px 60px" }}>
+        <div style={{ marginBottom: 18, display: "flex", gap: 12, flexWrap: "wrap", alignItems: "stretch" }}>
+          <div className="pot">
+            <div className="pot-ic"><Coins size={21} /></div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              <span className="pot-l">Pula nagród</span>
+              <span className="pot-sub">{users.length} {plGracz(users.length)} × {STAKE} zł</span>
+            </div>
+            <span className="pot-amt">{(users.length * STAKE).toLocaleString("pl-PL")} zł</span>
+          </div>
+          {nextMatch && (
+            <div className="ministat">
+              <div className="ms-ic ms-blue"><Clock size={18} /></div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 2, minWidth: 0 }}>
+                <span className="pot-l">Najbliższy gwizdek</span>
+                <span className="ms-big">{fmtDur(new Date(nextMatch.kickoff).getTime() - now)}</span>
+                <span className="pot-sub" style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 200 }}>{nextMatch.homeTeam} – {nextMatch.awayTeam}</span>
+              </div>
+            </div>
+          )}
+          {unbetCount > 0 && (
+            <button className="ministat ms-warn" onClick={() => setTab("typuj")} title="Przejdź do typowania">
+              <div className="ms-ic ms-red"><Flame size={18} /></div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 2, textAlign: "left" }}>
+                <span className="pot-l">Do obstawienia</span>
+                <span className="ms-big">{unbetCount}</span>
+                <span className="pot-sub">{plMecz(unbetCount)} bez typu</span>
+              </div>
+            </button>
+          )}
+        </div>
+        {tab === "typuj" && renderTypuj()}
+        {tab === "ranking" && renderRanking()}
+        {tab === "historia" && renderHistoria()}
+        {tab === "bonus" && renderBonus()}
+        {tab === "podglad" && renderPodglad()}
+        {tab === "admin" && me.isAdmin && renderAdmin()}
+      </main>
+
+      {toast && <div className="toast">{toast}</div>}
+    </div>
+  );
+}
+
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(React.createElement(App));
+</script>
+</body>
+</html>
