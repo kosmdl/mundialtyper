@@ -7,12 +7,12 @@
 <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
-<style>html,body{margin:0;padding:0;background:#04150f}#root{min-height:100vh}#boot{color:#8fb0a1;font-family:system-ui,sans-serif;display:grid;place-items:center;height:100vh;font-size:15px}</style>
+<style>html,body{margin:0;padding:0;background:#081230}#root{min-height:100vh}#boot{color:#7589a8;font-family:system-ui,sans-serif;display:grid;place-items:center;height:100vh;font-size:15px}</style>
 </head>
 <body>
 <div id="root"><div id="boot">Ładowanie aplikacji…</div></div>
 <script type="text/babel" data-presets="react">
-const ICONS = {"check":"<path d=\"M20 6 9 17l-5-5\" />","chevron-left":"<path d=\"m15 18-6-6 6-6\" />","chevron-right":"<path d=\"m9 18 6-6-6-6\" />","clock":"<circle cx=\"12\" cy=\"12\" r=\"10\" /><path d=\"M12 6v6l4 2\" />","crown":"<path d=\"M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z\" /><path d=\"M5 21h14\" />","download":"<path d=\"M12 15V3\" /><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\" /><path d=\"m7 10 5 5 5-5\" />","eye":"<path d=\"M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0\" /><circle cx=\"12\" cy=\"12\" r=\"3\" />","flame":"<path d=\"M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4\" />","globe":"<circle cx=\"12\" cy=\"12\" r=\"10\" /><path d=\"M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20\" /><path d=\"M2 12h20\" />","history":"<path d=\"M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8\" /><path d=\"M3 3v5h5\" /><path d=\"M12 7v5l4 2\" />","lock":"<rect width=\"18\" height=\"11\" x=\"3\" y=\"11\" rx=\"2\" ry=\"2\" /><path d=\"M7 11V7a5 5 0 0 1 10 0v4\" />","log-in":"<path d=\"m10 17 5-5-5-5\" /><path d=\"M15 12H3\" /><path d=\"M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4\" />","log-out":"<path d=\"m16 17 5-5-5-5\" /><path d=\"M21 12H9\" /><path d=\"M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4\" />","pencil":"<path d=\"M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z\" /><path d=\"m15 5 4 4\" />","plus":"<path d=\"M5 12h14\" /><path d=\"M12 5v14\" />","refresh-cw":"<path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\" /><path d=\"M21 3v5h-5\" /><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\" /><path d=\"M8 16H3v5\" />","shield":"<path d=\"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z\" />","target":"<circle cx=\"12\" cy=\"12\" r=\"10\" /><circle cx=\"12\" cy=\"12\" r=\"6\" /><circle cx=\"12\" cy=\"12\" r=\"2\" />","trash-2":"<path d=\"M10 11v6\" /><path d=\"M14 11v6\" /><path d=\"M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6\" /><path d=\"M3 6h18\" /><path d=\"M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2\" />","trophy":"<path d=\"M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978\" /><path d=\"M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978\" /><path d=\"M18 9h1.5a1 1 0 0 0 0-5H18\" /><path d=\"M4 22h16\" /><path d=\"M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z\" /><path d=\"M6 9H4.5a1 1 0 0 1 0-5H6\" />","user-plus":"<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\" /><circle cx=\"9\" cy=\"7\" r=\"4\" /><line x1=\"19\" x2=\"19\" y1=\"8\" y2=\"14\" /><line x1=\"22\" x2=\"16\" y1=\"11\" y2=\"11\" />","users":"<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\" /><path d=\"M16 3.128a4 4 0 0 1 0 7.744\" /><path d=\"M22 21v-2a4 4 0 0 0-3-3.87\" /><circle cx=\"9\" cy=\"7\" r=\"4\" />","x":"<path d=\"M18 6 6 18\" /><path d=\"m6 6 12 12\" />","coins":"<circle cx=\"8\" cy=\"8\" r=\"6\" /><path d=\"M18.09 10.37A6 6 0 1 1 10.34 18\" /><path d=\"M7 6h1v4\" /><path d=\"m16.71 13.88.7.71-2.82 2.82\" />"};
+const ICONS = {"check":"<path d=\"M20 6 9 17l-5-5\" />","chevron-left":"<path d=\"m15 18-6-6 6-6\" />","chevron-right":"<path d=\"m9 18 6-6-6-6\" />","clock":"<circle cx=\"12\" cy=\"12\" r=\"10\" /><path d=\"M12 6v6l4 2\" />","crown":"<path d=\"M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z\" /><path d=\"M5 21h14\" />","download":"<path d=\"M12 15V3\" /><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\" /><path d=\"m7 10 5 5 5-5\" />","eye":"<path d=\"M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0\" /><circle cx=\"12\" cy=\"12\" r=\"3\" />","flame":"<path d=\"M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4\" />","globe":"<circle cx=\"12\" cy=\"12\" r=\"10\" /><path d=\"M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20\" /><path d=\"M2 12h20\" />","history":"<path d=\"M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8\" /><path d=\"M3 3v5h5\" /><path d=\"M12 7v5l4 2\" />","lock":"<rect width=\"18\" height=\"11\" x=\"3\" y=\"11\" rx=\"2\" ry=\"2\" /><path d=\"M7 11V7a5 5 0 0 1 10 0v4\" />","log-in":"<path d=\"m10 17 5-5-5-5\" /><path d=\"M15 12H3\" /><path d=\"M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4\" />","log-out":"<path d=\"m16 17 5-5-5-5\" /><path d=\"M21 12H9\" /><path d=\"M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4\" />","pencil":"<path d=\"M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z\" /><path d=\"m15 5 4 4\" />","plus":"<path d=\"M5 12h14\" /><path d=\"M12 5v14\" />","refresh-cw":"<path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\" /><path d=\"M21 3v5h-5\" /><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\" /><path d=\"M8 16H3v5\" />","shield":"<path d=\"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z\" />","target":"<circle cx=\"12\" cy=\"12\" r=\"10\" /><circle cx=\"12\" cy=\"12\" r=\"6\" /><circle cx=\"12\" cy=\"12\" r=\"2\" />","trash-2":"<path d=\"M10 11v6\" /><path d=\"M14 11v6\" /><path d=\"M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6\" /><path d=\"M3 6h18\" /><path d=\"M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2\" />","trophy":"<path d=\"M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978\" /><path d=\"M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978\" /><path d=\"M18 9h1.5a1 1 0 0 0 0-5H18\" /><path d=\"M4 22h16\" /><path d=\"M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z\" /><path d=\"M6 9H4.5a1 1 0 0 1 0-5H6\" />","user-plus":"<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\" /><circle cx=\"9\" cy=\"7\" r=\"4\" /><line x1=\"19\" x2=\"19\" y1=\"8\" y2=\"14\" /><line x1=\"22\" x2=\"16\" y1=\"11\" y2=\"11\" />","users":"<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\" /><path d=\"M16 3.128a4 4 0 0 1 0 7.744\" /><path d=\"M22 21v-2a4 4 0 0 0-3-3.87\" /><circle cx=\"9\" cy=\"7\" r=\"4\" />","x":"<path d=\"M18 6 6 18\" /><path d=\"m6 6 12 12\" />","coins":"<circle cx=\"8\" cy=\"8\" r=\"6\" /><path d=\"M18.09 10.37A6 6 0 1 1 10.34 18\" /><path d=\"M7 6h1v4\" /><path d=\"m16.71 13.88.7.71-2.82 2.82\" />","calendar":"<path d=\"M8 2v4\"/><path d=\"M16 2v4\"/><rect width=\"18\" height=\"18\" x=\"3\" y=\"4\" rx=\"2\"/><path d=\"M3 10h18\"/>","book-open":"<path d=\"M12 7v14\"/><path d=\"M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z\"/>","settings":"<path d=\"M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>"};
 const { useState, useEffect, useMemo, useCallback } = React;
 function Ic({ n, size = 16, style, className }) {
   return React.createElement("svg", { className: className, style: style, width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round", dangerouslySetInnerHTML: { __html: ICONS[n] || "" } });
@@ -41,6 +41,9 @@ const ChevronLeft = (p) => React.createElement(Ic, Object.assign({ n: "chevron-l
 const ChevronRight = (p) => React.createElement(Ic, Object.assign({ n: "chevron-right" }, p));
 const Eye = (p) => React.createElement(Ic, Object.assign({ n: "eye" }, p));
 const Coins = (p) => React.createElement(Ic, Object.assign({ n: "coins" }, p));
+const Calendar = (p) => React.createElement(Ic, Object.assign({ n: "calendar" }, p));
+const BookOpen = (p) => React.createElement(Ic, Object.assign({ n: "book-open" }, p));
+const Settings = (p) => React.createElement(Ic, Object.assign({ n: "settings" }, p));
 
 
 /* ============================================================
@@ -225,42 +228,95 @@ const WC_TEAM = {
 };
 /* 48 drużyn MŚ 2026 (do przypisywania w fazie pucharowej) — [nazwa PL, kod flagi] */
 const WC48 = Object.values(WC_TEAM).slice().sort((a, b) => a[0].localeCompare(b[0], "pl"));
+const CODE2PL = Object.fromEntries(Object.values(WC_TEAM).map(([pl, code]) => [code, pl]));
+
+/* ---- oficjalna struktura drabinki pucharowej MŚ 2026 (mecze 73–104) ---- */
+const GROUP_LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"];
+const R32_DEF = [
+  { m: 73, a: ["ru", "A"], b: ["ru", "B"] },
+  { m: 74, a: ["win", "E"], b: ["third"] },
+  { m: 75, a: ["win", "F"], b: ["ru", "C"] },
+  { m: 76, a: ["win", "C"], b: ["ru", "F"] },
+  { m: 77, a: ["win", "I"], b: ["third"] },
+  { m: 78, a: ["ru", "E"], b: ["ru", "I"] },
+  { m: 79, a: ["win", "A"], b: ["third"] },
+  { m: 80, a: ["win", "L"], b: ["third"] },
+  { m: 81, a: ["win", "D"], b: ["third"] },
+  { m: 82, a: ["win", "G"], b: ["third"] },
+  { m: 83, a: ["ru", "K"], b: ["ru", "L"] },
+  { m: 84, a: ["win", "H"], b: ["ru", "J"] },
+  { m: 85, a: ["win", "B"], b: ["third"] },
+  { m: 86, a: ["win", "J"], b: ["ru", "H"] },
+  { m: 87, a: ["win", "K"], b: ["third"] },
+  { m: 88, a: ["ru", "D"], b: ["ru", "G"] },
+];
+const R32_THIRD_SLOTS = [
+  { m: 74, allowed: ["A", "B", "C", "D", "F"] },
+  { m: 77, allowed: ["C", "D", "F", "G", "H"] },
+  { m: 79, allowed: ["C", "E", "F", "H", "I"] },
+  { m: 80, allowed: ["E", "H", "I", "J", "K"] },
+  { m: 81, allowed: ["B", "E", "F", "I", "J"] },
+  { m: 82, allowed: ["A", "E", "H", "I", "J"] },
+  { m: 85, allowed: ["E", "F", "G", "I", "J"] },
+  { m: 87, allowed: ["D", "E", "I", "J", "L"] },
+];
+const R16_DEF = [{ m: 89, a: 74, b: 77 }, { m: 90, a: 73, b: 75 }, { m: 91, a: 76, b: 78 }, { m: 92, a: 79, b: 80 }, { m: 93, a: 83, b: 84 }, { m: 94, a: 81, b: 82 }, { m: 95, a: 86, b: 88 }, { m: 96, a: 85, b: 87 }];
+const QF_DEF = [{ m: 97, a: 89, b: 90 }, { m: 98, a: 91, b: 92 }, { m: 99, a: 93, b: 94 }, { m: 100, a: 95, b: 96 }];
+const SF_DEF = [{ m: 101, a: 97, b: 98 }, { m: 102, a: 99, b: 100 }];
+const FIN_DEF = { m: 104, a: 101, b: 102 };
+/* przydział 8 najlepszych trzecich miejsc do slotów wg dozwolonych grup (reguła z Aneksu C FIFA) */
+function assignThirds(qual) {
+  const slots = R32_THIRD_SLOTS.map((s) => ({ m: s.m, opts: s.allowed.filter((g) => qual.indexOf(g) >= 0) }))
+    .sort((a, b) => a.opts.length - b.opts.length);
+  const used = {}, res = {};
+  const bt = (i) => {
+    if (i === slots.length) return true;
+    for (const g of slots[i].opts) {
+      if (used[g]) continue;
+      used[g] = true; res[slots[i].m] = g;
+      if (bt(i + 1)) return true;
+      used[g] = false; delete res[slots[i].m];
+    }
+    return false;
+  };
+  return bt(0) ? res : null;
+}
 
 /* terminarz fazy pucharowej MŚ 2026 — [etap, "MM-DD", godzina ET (EDT, UTC-4), miasto]; pary zostaną przypisane po fazie grupowej.
    Źródło dat/godzin: oficjalny terminarz FIFA (czas wschodni EDT). */
 const WC_KO = [
-  ["1/16 finału", "06-28", "15:00", "Los Angeles"],
-  ["1/16 finału", "06-29", "13:00", "Houston"],
-  ["1/16 finału", "06-29", "16:00", "Boston"],
-  ["1/16 finału", "06-29", "21:00", "Monterrey"],
-  ["1/16 finału", "06-30", "13:00", "Dallas"],
-  ["1/16 finału", "06-30", "17:00", "Nowy Jork/NJ"],
-  ["1/16 finału", "06-30", "21:00", "Meksyk"],
-  ["1/16 finału", "07-01", "12:00", "Atlanta"],
-  ["1/16 finału", "07-01", "16:00", "Seattle"],
-  ["1/16 finału", "07-01", "20:00", "San Francisco"],
-  ["1/16 finału", "07-02", "15:00", "Los Angeles"],
-  ["1/16 finału", "07-02", "19:00", "Toronto"],
-  ["1/16 finału", "07-02", "21:00", "Vancouver"],
-  ["1/16 finału", "07-03", "14:00", "Dallas"],
-  ["1/16 finału", "07-03", "18:00", "Miami"],
-  ["1/16 finału", "07-03", "21:30", "Kansas City"],
-  ["1/8 finału", "07-04", "13:00", "Houston"],
-  ["1/8 finału", "07-04", "17:00", "Filadelfia"],
-  ["1/8 finału", "07-05", "16:00", "Nowy Jork/NJ"],
-  ["1/8 finału", "07-05", "20:00", "Meksyk"],
-  ["1/8 finału", "07-06", "12:00", "Atlanta"],
-  ["1/8 finału", "07-06", "15:00", "Dallas"],
-  ["1/8 finału", "07-06", "20:00", "Seattle"],
-  ["1/8 finału", "07-07", "16:00", "Vancouver"],
-  ["Ćwierćfinał", "07-09", "16:00", "Boston"],
-  ["Ćwierćfinał", "07-10", "15:00", "Los Angeles"],
-  ["Ćwierćfinał", "07-11", "17:00", "Miami"],
-  ["Ćwierćfinał", "07-11", "21:00", "Kansas City"],
-  ["Półfinał", "07-14", "15:00", "Dallas"],
-  ["Półfinał", "07-15", "15:00", "Atlanta"],
-  ["Mecz o 3. miejsce", "07-18", "17:00", "Miami"],
-  ["Finał", "07-19", "15:00", "Nowy Jork/NJ"],
+  ["1/16 finału", "06-28", "15:00", "Los Angeles", 73],
+  ["1/16 finału", "06-29", "13:00", "Houston", 76],
+  ["1/16 finału", "06-29", "16:00", "Boston", 74],
+  ["1/16 finału", "06-29", "21:00", "Monterrey", 75],
+  ["1/16 finału", "06-30", "13:00", "Dallas", 78],
+  ["1/16 finału", "06-30", "17:00", "Nowy Jork/NJ", 77],
+  ["1/16 finału", "06-30", "21:00", "Meksyk", 79],
+  ["1/16 finału", "07-01", "12:00", "Atlanta", 80],
+  ["1/16 finału", "07-01", "16:00", "Seattle", 82],
+  ["1/16 finału", "07-01", "20:00", "San Francisco", 81],
+  ["1/16 finału", "07-02", "15:00", "Los Angeles", 84],
+  ["1/16 finału", "07-02", "19:00", "Toronto", 83],
+  ["1/16 finału", "07-02", "21:00", "Vancouver", 85],
+  ["1/16 finału", "07-03", "14:00", "Dallas", 87],
+  ["1/16 finału", "07-03", "18:00", "Miami", 86],
+  ["1/16 finału", "07-03", "21:30", "Kansas City", 88],
+  ["1/8 finału", "07-04", "13:00", "Houston", 90],
+  ["1/8 finału", "07-04", "17:00", "Filadelfia", 89],
+  ["1/8 finału", "07-05", "16:00", "Nowy Jork/NJ", 91],
+  ["1/8 finału", "07-05", "20:00", "Meksyk", 92],
+  ["1/8 finału", "07-06", "12:00", "Atlanta", 95],
+  ["1/8 finału", "07-06", "15:00", "Dallas", 93],
+  ["1/8 finału", "07-06", "20:00", "Seattle", 94],
+  ["1/8 finału", "07-07", "16:00", "Vancouver", 96],
+  ["Ćwierćfinał", "07-09", "16:00", "Boston", 97],
+  ["Ćwierćfinał", "07-10", "15:00", "Los Angeles", 98],
+  ["Ćwierćfinał", "07-11", "17:00", "Miami", 99],
+  ["Ćwierćfinał", "07-11", "21:00", "Kansas City", 100],
+  ["Półfinał", "07-14", "15:00", "Dallas", 101],
+  ["Półfinał", "07-15", "15:00", "Atlanta", 102],
+  ["Mecz o 3. miejsce", "07-18", "17:00", "Miami", 103],
+  ["Finał", "07-19", "15:00", "Nowy Jork/NJ", 104],
 ];
 // [grupa, kolejka, dzień(czerwiec), godzina ET (EDT, UTC-4), gospodarz, gość]
 const WC_FIXTURES = [
@@ -496,7 +552,36 @@ button.ministat:hover{background:var(--panel-2);border-color:rgba(255,255,255,.2
 .ms-ic{display:grid;place-items:center;width:38px;height:38px;border-radius:11px;flex:0 0 auto;color:#081226;box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
 .ms-blue{background:linear-gradient(140deg,#60a5fa,#3b82f6)}
 .ms-red{background:linear-gradient(140deg,#f87171,var(--coral))}
+.ms-gold{background:linear-gradient(140deg,#f7d774,var(--gold-d))}
 .ms-big{font-family:var(--fd);font-size:23px;line-height:1.05;color:var(--txt)}
+.live-panel{border-color:rgba(232,64,58,.4)}
+.livedot{width:10px;height:10px;border-radius:50%;background:var(--coral);animation:lpulse 1.4s infinite}
+@keyframes lpulse{0%{box-shadow:0 0 0 0 rgba(232,64,58,.55)}70%{box-shadow:0 0 0 9px rgba(232,64,58,0)}100%{box-shadow:0 0 0 0 rgba(232,64,58,0)}}
+.liverow{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:rgba(0,0,0,.18)}
+.liverow .lt{display:flex;align-items:center;gap:8px;min-width:0}
+.liverow .rt{justify-content:flex-end}
+.liverow .ln{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.liverow .lscore{font-family:var(--fd);font-size:22px;color:var(--gold);white-space:nowrap}
+.liverow .lsep{margin:0 5px;color:var(--muted)}
+.liverow .lmin{grid-column:1 / -1;text-align:center;font-size:11px;color:#ff9a9a;font-weight:700;text-transform:uppercase;letter-spacing:.6px}
+.tbl.grp th,.tbl.grp td{padding:7px 8px;font-size:13px}
+.tbl tr.adv td{background:rgba(39,213,134,.09)}
+.tbl tr.adv3 td{background:rgba(244,201,93,.10)}
+.bkt{display:flex;min-width:max-content;height:940px;--cw:22px;--bl:rgba(255,255,255,.24)}
+.bkt .rnd{display:flex;flex-direction:column;width:188px}
+.bkt .rnd:not(:first-child){margin-left:var(--cw)}
+.bkt .rh{height:24px;display:flex;align-items:center;font-size:11px;text-transform:uppercase;letter-spacing:1.1px;color:var(--muted)}
+.bkt .col{flex:1;display:flex;flex-direction:column}
+.bkt .m{flex:1;display:flex;align-items:center;position:relative}
+.bkt .mb{width:100%;background:rgba(0,0,0,.24);border:1px solid var(--line);border-radius:9px;padding:4px 9px}
+.bkt .rnd:not(:last-child) .m::after{content:"";position:absolute;left:100%;top:50%;width:var(--cw);height:2px;background:var(--bl)}
+.bkt .rnd:not(:last-child) .m:nth-child(odd)::before{content:"";position:absolute;left:100%;top:50%;width:var(--cw);height:50%;border-right:2px solid var(--bl)}
+.bkt .rnd:not(:last-child) .m:nth-child(even)::before{content:"";position:absolute;left:100%;bottom:50%;width:var(--cw);height:50%;border-right:2px solid var(--bl)}
+.bno{font-size:9px;color:var(--muted);font-family:var(--fd);letter-spacing:.5px;display:block;margin-bottom:1px}
+.bteam{display:flex;align-items:center;gap:6px;padding:0}
+.bteam .bnm{font-size:12px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bdot{width:16px;height:12px;border-radius:2px;background:rgba(255,255,255,.08);flex:0 0 auto;display:inline-block}
+.dfn{font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:42%}
 input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 input[type=number]{-moz-appearance:textfield}
 ::-webkit-scrollbar{height:10px;width:10px}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.14);border-radius:8px}
@@ -527,12 +612,15 @@ function App() {
   const [betsByUser, setBetsByUser] = useState({}); // {userId:{matchId:bet}}
   const [bonusByUser, setBonusByUser] = useState({}); // {userId:{questionId:answer}}
   const [bonusDraft, setBonusDraft] = useState({});   // moje edytowalne typy bonusowe
+  const [live, setLive] = useState([]);               // mecze na żywo (z ESPN, wersja standalone)
 
   const [me, setMe] = useState(() => { try { const s = localStorage.getItem("ms2026_me"); return s ? JSON.parse(s) : null; } catch (e) { return null; } });           // sesja (tylko w pamięci)
   const [tab, setTab] = useState("typuj");
   const [draft, setDraft] = useState({});       // mój edytowalny typ {matchId:{...}}
   /* składy zawodników są wbudowane (stała SQUADS) — bez stanu i bez pobierania */
   const [selDay, setSelDay] = useState(null);   // wybrany dzień (klucz daty ET)
+  const [selDay2, setSelDay2] = useState(null); // wybrany dzień w zakładce „Dni"
+  const [prof, setProf] = useState({ name: "", pin: "", pin2: "", err: "", ok: "" }); // edycja konta
 
   const flash = (m) => { setToast(m); setTimeout(() => setToast(""), 2600); };
 
@@ -617,6 +705,40 @@ function App() {
       .sort((a, b) => b.grand - a.grand || a.name.localeCompare(b.name, "pl")),
     [standings, bonusPtsByUser]);
 
+  const grpData = useMemo(() => {
+    const tables = {}, complete = {};
+    for (const L of GROUP_LETTERS) {
+      const ms = matches.filter((m) => m.group === L);
+      const teams = {};
+      const add = (code, name) => { if (code && !teams[code]) teams[code] = { name, code, p: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, pts: 0 }; };
+      ms.forEach((m) => { add(m.homeCode, m.homeTeam); add(m.awayCode, m.awayTeam); });
+      ms.forEach((m) => {
+        if (!m.finished || !m.result || !teams[m.homeCode] || !teams[m.awayCode]) return;
+        const h = teams[m.homeCode], a = teams[m.awayCode];
+        const hs = Number(m.result.homeScore), as = Number(m.result.awayScore);
+        h.p++; a.p++; h.gf += hs; h.ga += as; a.gf += as; a.ga += hs;
+        if (hs > as) { h.w++; h.pts += 3; a.l++; } else if (hs < as) { a.w++; a.pts += 3; h.l++; } else { h.d++; a.d++; h.pts++; a.pts++; }
+      });
+      tables[L] = Object.values(teams).sort((x, y) => y.pts - x.pts || (y.gf - y.ga) - (x.gf - x.ga) || y.gf - x.gf || x.name.localeCompare(y.name, "pl"));
+      complete[L] = ms.length >= 6 && ms.every((m) => m.finished && m.result);
+    }
+    const allComplete = GROUP_LETTERS.every((L) => complete[L] && tables[L].length >= 3);
+    const thirdsRank = GROUP_LETTERS.map((L) => ({ L, t: tables[L][2] })).filter((x) => x.t)
+      .sort((a, b) => b.t.pts - a.t.pts || (b.t.gf - b.t.ga) - (a.t.gf - a.t.ga) || b.t.gf - a.t.gf || a.L.localeCompare(b.L));
+    const thirdAssign = (allComplete && thirdsRank.length >= 8) ? assignThirds(thirdsRank.slice(0, 8).map((x) => x.L)) : null;
+    const resolveSide = (def, mNo) => {
+      if (def[0] === "win") return complete[def[1]] && tables[def[1]][0] ? { label: tables[def[1]][0].name, code: tables[def[1]][0].code } : { label: "Zw. " + def[1], code: "" };
+      if (def[0] === "ru") return complete[def[1]] && tables[def[1]][1] ? { label: tables[def[1]][1].name, code: tables[def[1]][1].code } : { label: "2. " + def[1], code: "" };
+      const g = thirdAssign && thirdAssign[mNo];
+      return g && tables[g][2] ? { label: tables[g][2].name, code: tables[g][2].code } : { label: "3. miejsce", code: "" };
+    };
+    const sides = {};
+    for (const r of R32_DEF) { sides[r.m + "a"] = resolveSide(r.a, r.m); sides[r.m + "b"] = resolveSide(r.b, r.m); }
+    return { tables, complete, thirdsRank, thirdAssign, sides };
+  }, [matches]);
+
+  const koMatchById = useMemo(() => { const x = {}; matches.forEach((m) => { if (m.ko) x[m.ko] = m; }); return x; }, [matches]);
+
   const days = useMemo(() => {
     const map = new Map();
     for (const m of matches) { const key = etDateKey(m.kickoff); if (!map.has(key)) map.set(key, []); map.get(key).push(m); }
@@ -633,6 +755,16 @@ function App() {
     const def = days.find((d) => d.key >= todayET) || days[days.length - 1];
     setSelDay(def.key);
   }, [days, selDay]);
+
+  useEffect(() => {
+    if (!days.length) return;
+    if (selDay2 && days.some((d) => d.key === selDay2)) return;
+    const withRes = days.filter((d) => d.matches.some((m) => m.finished && m.result));
+    const def = withRes.length ? withRes[withRes.length - 1] : days[days.length - 1];
+    setSelDay2(def.key);
+  }, [days, selDay2]);
+
+  useEffect(() => { if (me) setProf({ name: me.name, pin: "", pin2: "", err: "", ok: "" }); }, [me && me.id]);
 
   /* ---------------- AUTORYZACJA ---------------- */
   const [auth, setAuth] = useState({ mode: "login", name: "", pin: "", err: "" });
@@ -653,6 +785,22 @@ function App() {
     if (!u) return setAuth((a) => ({ ...a, err: "Nie ma takiego gracza." }));
     if (u.pin !== hashPin(auth.pin)) return setAuth((a) => ({ ...a, err: "Błędny PIN." }));
     setMe(u); setAuth({ mode: "login", name: "", pin: "", err: "" });
+  }
+  async function saveProfile() {
+    const name = prof.name.trim();
+    if (name.length < 2) return setProf((p) => ({ ...p, ok: "", err: "Nick musi mieć min. 2 znaki." }));
+    if (users.some((u) => u.id !== me.id && norm(u.name) === norm(name))) return setProf((p) => ({ ...p, ok: "", err: "Ten nick jest już zajęty." }));
+    let pinHash = me.pin;
+    if (prof.pin || prof.pin2) {
+      if (!/^\d{4}$/.test(prof.pin)) return setProf((p) => ({ ...p, ok: "", err: "Nowy PIN to 4 cyfry." }));
+      if (prof.pin !== prof.pin2) return setProf((p) => ({ ...p, ok: "", err: "PIN-y się różnią." }));
+      pinHash = hashPin(prof.pin);
+    }
+    const updated = { ...me, name, pin: pinHash };
+    await persistUsers(users.map((u) => (u.id === me.id ? updated : u)));
+    setMe(updated);
+    setProf((p) => ({ ...p, pin: "", pin2: "", err: "", ok: "Zapisano zmiany." }));
+    flash("Zapisano zmiany konta.");
   }
 
   /* ---------------- ZAPIS TYPU ---------------- */
@@ -709,17 +857,17 @@ function App() {
     flash(`Wczytano terminarz MŚ 2026 — ${add.length} meczów grupowych.`);
   }
   async function seedKnockout() {
-    const have = new Set(matches.map((m) => (m.roundLabel || "") + "|" + m.kickoff));
-    const add = [];
-    for (const [label, md, time, city] of WC_KO) {
+    const out = matches.map((m) => ({ ...m }));
+    let added = 0, patched = 0;
+    for (const [label, md, time, city, ko] of WC_KO) {
       const kickoff = new Date(`2026-${md}T${time}:00-04:00`).toISOString();
-      if (have.has(label + "|" + kickoff)) continue;
-      add.push({ id: uid(), group: "", round: 0, roundLabel: label, city,
-        homeTeam: "—", homeCode: "", awayTeam: "—", awayCode: "", kickoff, finished: false, result: null });
+      const ex = out.find((m) => (m.roundLabel || "") === label && m.kickoff === kickoff);
+      if (ex) { if (ex.ko !== ko) { ex.ko = ko; patched++; } if (!ex.city) ex.city = city; }
+      else { out.push({ id: uid(), group: "", round: 0, ko, roundLabel: label, city, homeTeam: "", homeCode: "", awayTeam: "", awayCode: "", kickoff, finished: false, result: null }); added++; }
     }
-    if (!add.length) return flash("Faza pucharowa jest już wczytana.");
-    await persistMatches([...matches, ...add].sort((a, b) => new Date(a.kickoff) - new Date(b.kickoff)));
-    flash(`Wczytano fazę pucharową — ${add.length} slotów. Przypisz drużyny po fazie grupowej (ołówek przy meczu).`);
+    if (!added && !patched) return flash("Faza pucharowa jest już wczytana.");
+    await persistMatches(out.sort((a, b) => new Date(a.kickoff) - new Date(b.kickoff)));
+    flash(`Faza pucharowa: dodano ${added}, zaktualizowano ${patched}. Opisy par są już widoczne w „Typuj" i „Dni".`);
   }
   function toLocalInput(iso) { try { const d = new Date(iso); const p = (n) => String(n).padStart(2, "0"); return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate()) + "T" + p(d.getHours()) + ":" + p(d.getMinutes()); } catch (e) { return ""; } }
   function beginEdit(m) {
@@ -775,6 +923,80 @@ function App() {
       flash("ESPN: nie udało się pobrać — wpisz wynik ręcznie.");
     } finally { setEspnBusy(""); }
   }
+  /* automatyczne pobieranie wyniku z ESPN ~2 h po pierwszym gwizdku (działa, gdy admin ma otwartą apkę) */
+  const AUTO_ESPN_DELAY_MS = 2 * 60 * 60 * 1000;
+  useEffect(() => {
+    if (!me || !me.isAdmin) return;
+    let cancelled = false;
+    (async () => {
+      const t = Date.now();
+      const due = matches.filter((m) => m.homeCode && m.awayCode && !m.finished && t >= new Date(m.kickoff).getTime() + AUTO_ESPN_DELAY_MS);
+      if (!due.length) return;
+      const byDate = {};
+      for (const m of due) { const ymd = etDateKey(m.kickoff).replace(/-/g, ""); (byDate[ymd] = byDate[ymd] || []).push(m); }
+      const codeOfComp = (x) => ENG2CODE[norm((x && x.team && (x.team.displayName || x.team.name || x.team.shortDisplayName)) || "")];
+      const confirmed = [];
+      for (const ymd of Object.keys(byDate)) {
+        let events = [];
+        try { const r = await fetch("https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=" + ymd); const j = await r.json(); events = j.events || []; } catch (e) { continue; }
+        if (cancelled) return;
+        for (const m of byDate[ymd]) {
+          const ev = events.find((e) => { const c = e.competitions && e.competitions[0]; if (!c) return false; const codes = (c.competitors || []).map(codeOfComp); return codes.indexOf(m.homeCode) >= 0 && codes.indexOf(m.awayCode) >= 0; });
+          if (!ev) continue;
+          const done = ev.status && ev.status.type && ev.status.type.completed;
+          if (!done) continue;
+          const c = ev.competitions[0]; const cs = c.competitors || [];
+          const home = cs.find((x) => codeOfComp(x) === m.homeCode);
+          const away = cs.find((x) => codeOfComp(x) === m.awayCode);
+          if (!home || home.score == null || !away || away.score == null) continue;
+          let scorer = "";
+          try { const goals = (c.details || []).filter((x) => x.scoringPlay).sort((a, b) => (((a.clock && a.clock.value) != null ? a.clock.value : 1e9) - ((b.clock && b.clock.value) != null ? b.clock.value : 1e9))); if (goals[0] && goals[0].athletesInvolved && goals[0].athletesInvolved[0]) scorer = goals[0].athletesInvolved[0].displayName || ""; } catch (e) {}
+          confirmed.push({ id: m.id, result: { homeScore: Number(home.score), awayScore: Number(away.score), firstScorer: scorer } });
+        }
+      }
+      if (cancelled || !confirmed.length) return;
+      const map = {}; confirmed.forEach((x) => { map[x.id] = x.result; });
+      const next = matches.map((x) => map[x.id] ? { ...x, finished: true, result: map[x.id] } : x);
+      await persistMatches(next);
+      flash("Auto-ESPN: zatwierdzono " + confirmed.length + " " + (confirmed.length === 1 ? "wynik" : confirmed.length < 5 ? "wyniki" : "wyników") + ".");
+    })();
+    return () => { cancelled = true; };
+  }, [matches, me]);
+  /* wyniki na żywo z ESPN — częste odświeżanie, niezależne od Supabase (pauzuje, gdy karta w tle) */
+  useEffect(() => {
+    let stop = false;
+    const tick = async () => {
+      if (typeof document !== "undefined" && document.hidden) return;
+      try {
+        const ymd = etDateKey(Date.now()).replace(/-/g, "");
+        const r = await fetch("https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=" + ymd);
+        const j = await r.json();
+        const codeOfComp = (x) => ENG2CODE[norm((x && x.team && (x.team.displayName || x.team.name || x.team.shortDisplayName)) || "")] || "";
+        const out = [];
+        for (const e of (j.events || [])) {
+          const st = e.status && e.status.type;
+          if (!st || st.state !== "in") continue;
+          const c = e.competitions && e.competitions[0]; if (!c) continue;
+          const cs = c.competitors || [];
+          const h = cs.find((x) => x.homeAway === "home") || cs[0];
+          const a = cs.find((x) => x.homeAway === "away") || cs[1];
+          if (!h || !a) continue;
+          out.push({
+            id: e.id,
+            homeName: (h.team && (h.team.displayName || h.team.name || h.team.shortDisplayName)) || "",
+            awayName: (a.team && (a.team.displayName || a.team.name || a.team.shortDisplayName)) || "",
+            homeCode: codeOfComp(h), awayCode: codeOfComp(a),
+            homeScore: h.score != null ? h.score : "", awayScore: a.score != null ? a.score : "",
+            detail: st.shortDetail || st.detail || ""
+          });
+        }
+        if (!stop) setLive(out);
+      } catch (e) { /* offline / CORS — pomiń ten cykl */ }
+    };
+    tick();
+    const iv = setInterval(tick, 20000);
+    return () => { stop = true; clearInterval(iv); };
+  }, []);
   async function confirmResult(m) {
     const r = rdraft[m.id] || (m.result ? { homeScore: m.result.homeScore, awayScore: m.result.awayScore, firstScorer: m.result.firstScorer } : {});
     if (r.homeScore === "" || r.homeScore == null || r.awayScore === "" || r.awayScore == null || isNaN(Number(r.homeScore)) || isNaN(Number(r.awayScore)))
@@ -848,10 +1070,39 @@ function App() {
     );
   }
 
+  function koSide(ko, which) {
+    if (ko >= 73 && ko <= 88) return grpData.sides[ko + which] || { label: "?", code: "" };
+    const winOf = (mn) => {
+      const fm = koMatchById[mn];
+      if (fm && fm.finished && fm.result && fm.homeCode && fm.awayCode) {
+        const homeWin = Number(fm.result.homeScore) > Number(fm.result.awayScore);
+        return homeWin ? { label: fm.homeTeam, code: fm.homeCode } : { label: fm.awayTeam, code: fm.awayCode };
+      }
+      return { label: "Zw. M" + mn, code: "" };
+    };
+    const loseOf = (mn) => {
+      const fm = koMatchById[mn];
+      if (fm && fm.finished && fm.result && fm.homeCode && fm.awayCode) {
+        const homeWin = Number(fm.result.homeScore) > Number(fm.result.awayScore);
+        return homeWin ? { label: fm.awayTeam, code: fm.awayCode } : { label: fm.homeTeam, code: fm.homeCode };
+      }
+      return { label: "Przegr. M" + mn, code: "" };
+    };
+    if (ko === 103) return which === "a" ? loseOf(101) : loseOf(102);
+    const def = [...R16_DEF, ...QF_DEF, ...SF_DEF, FIN_DEF].find((d) => d.m === ko);
+    if (!def) return { label: "?", code: "" };
+    return winOf(which === "a" ? def.a : def.b);
+  }
+  function sidesOf(m) {
+    if (m.homeCode || m.awayCode || !m.ko) return [{ label: m.homeTeam, code: m.homeCode }, { label: m.awayTeam, code: m.awayCode }];
+    return [koSide(m.ko, "a"), koSide(m.ko, "b")];
+  }
+
   function renderMatchCard(m) {
     const locked = isLocked(m);
     const d = draft[m.id] || {};
     const tbd = !m.homeCode && !m.awayCode;
+    const [SA, SB] = sidesOf(m);
     return (
       <div className="card" key={m.id}>
         <div className="strip" />
@@ -865,11 +1116,11 @@ function App() {
           </div>
 
           <div className="vs">
-            <div className="team"><Flag code={m.homeCode} size="fl-lg" /><span className="nm">{m.homeTeam}</span></div>
+            <div className="team"><Flag code={SA.code} size="fl-lg" /><span className="nm">{SA.label}</span></div>
             {m.finished
               ? <div style={{ textAlign: "center" }}><span className="score">{m.result.homeScore}:{m.result.awayScore}</span></div>
               : <div className="vsbox">VS</div>}
-            <div className="team r"><Flag code={m.awayCode} size="fl-lg" /><span className="nm">{m.awayTeam}</span></div>
+            <div className="team r"><Flag code={SB.code} size="fl-lg" /><span className="nm">{SB.label}</span></div>
           </div>
 
           {m.finished && m.result.firstScorer &&
@@ -879,7 +1130,7 @@ function App() {
 
           {!locked ? (
             tbd ? (
-              <div className="note" style={{ padding: "4px 2px 2px" }}><Clock size={14} /> Drużyny zostaną wyłonione po fazie grupowej — typowanie ruszy, gdy administrator je przypisze.</div>
+              <div className="note" style={{ padding: "4px 2px 2px" }}><Clock size={14} /> Skład wyłoni się z fazy grupowej / drabinki. Typowanie ruszy, gdy administrator przypisze drużyny.</div>
             ) : (
             <>
               <div style={{ display: "grid", gap: 16 }}>
@@ -944,6 +1195,32 @@ function App() {
     );
   }
 
+  function renderDayFixtures(day) {
+    const ms = day.matches.slice().sort((a, b) => new Date(a.kickoff) - new Date(b.kickoff));
+    const tm = (iso) => { try { return new Date(iso).toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" }); } catch (e) { return ""; } };
+    return (
+      <div className="panel">
+        <h3 style={{ fontSize: 17, marginBottom: 10, display: "flex", alignItems: "center", gap: 8 }}><Calendar size={15} /> Mecze dnia</h3>
+        <div style={{ display: "grid", gap: 8 }}>
+          {ms.map((m) => {
+            const [A, B] = sidesOf(m);
+            return (
+              <div key={m.id} style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 10px", background: "rgba(0,0,0,.18)", border: "1px solid var(--line)", borderRadius: 10, flexWrap: "wrap" }}>
+                <span style={{ fontFamily: "var(--fd)", fontSize: 13, color: "var(--gold)", minWidth: 42 }}>{tm(m.kickoff)}</span>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, flex: 1, minWidth: 140 }}>
+                  <Flag code={A.code} size="fl-sm" /><span className="dfn">{A.label}</span>
+                  <span className="muted" style={{ fontSize: 12, margin: "0 2px", fontFamily: "var(--fd)" }}>{m.finished ? `${m.result.homeScore}:${m.result.awayScore}` : "vs"}</span>
+                  <Flag code={B.code} size="fl-sm" /><span className="dfn">{B.label}</span>
+                </div>
+                {(m.group || m.roundLabel) && <span className="gtag" style={{ flex: "0 0 auto" }}>{m.group ? `Gr. ${m.group}` : m.roundLabel}{m.city ? ` · ${m.city}` : ""}</span>}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
   function renderDayTable(day) {
     const actual = (m) => { const r = m.result; return Number(r.homeScore) > Number(r.awayScore) ? "home" : Number(r.homeScore) < Number(r.awayScore) ? "away" : "draw"; };
     return (
@@ -959,7 +1236,7 @@ function App() {
               </tr>
             </thead>
             <tbody>
-              {day.matches.map((m) => {
+              {day.matches.filter((m) => m.finished && m.result).map((m) => {
                 const aw = actual(m);
                 return (
                   <tr key={m.id}>
@@ -1021,7 +1298,6 @@ function App() {
           </div>
           <button className="icobtn" disabled={idx >= days.length - 1} onClick={() => setSelDay(days[idx + 1].key)}><ChevronRight size={18} /></button>
         </div>
-        {allDone && renderDayTable(day)}
         {day.matches.map(renderMatchCard)}
       </div>
     );
@@ -1246,6 +1522,277 @@ function App() {
     );
   }
 
+  function renderGroupCard(L) {
+    const t = grpData.tables[L];
+    return (
+      <div className="panel" key={L} style={{ padding: 14 }}>
+        <h3 style={{ fontSize: 17, marginBottom: 8 }}>Grupa {L}</h3>
+        <table className="tbl grp">
+          <thead><tr><th>#</th><th>Drużyna</th><th>M</th><th>Br</th><th>RB</th><th>Pkt</th></tr></thead>
+          <tbody>
+            {t.map((r, i) => {
+              const gd = r.gf - r.ga;
+              return (
+                <tr key={r.code} className={i < 2 ? "adv" : i === 2 ? "adv3" : ""}>
+                  <td style={{ color: "var(--muted)", fontFamily: "var(--fd)" }}>{i + 1}</td>
+                  <td><div style={{ display: "flex", alignItems: "center", gap: 7 }}><Flag code={r.code} size="fl-sm" /><span style={{ fontWeight: 600, whiteSpace: "nowrap" }}>{r.name}</span></div></td>
+                  <td>{r.p}</td>
+                  <td style={{ whiteSpace: "nowrap" }}>{r.gf}:{r.ga}</td>
+                  <td>{gd > 0 ? "+" + gd : gd}</td>
+                  <td style={{ fontFamily: "var(--fd)", fontSize: 16, color: "var(--gold)" }}>{r.pts}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+
+  function renderBracket() {
+    const R32_ORDER = [74, 77, 73, 75, 76, 78, 79, 80, 83, 84, 81, 82, 86, 88, 85, 87];
+    const Side = ({ s }) => (<div className="bteam">{s.code ? <Flag code={s.code} size="fl-sm" /> : <span className="bdot" />}<span className="bnm">{s.label}</span></div>);
+    const Card = (ko) => (<div className="m" key={ko}><div className="mb"><span className="bno">M{ko}</span><Side s={koSide(ko, "a")} /><Side s={koSide(ko, "b")} /></div></div>);
+    return (
+      <div className="panel">
+        <h3 style={{ fontSize: 18, marginBottom: 4, display: "flex", alignItems: "center", gap: 8 }}><Trophy size={16} /> Drabinka pucharowa</h3>
+        <p className="muted" style={{ fontSize: 12, marginBottom: 12 }}>Liczona na bieżąco z tabel grup. 1/16 finału wypełnia się, gdy grupy są rozstrzygnięte; dalsze rundy zależą od wyników pucharu. Pary trzecich miejsc wg reguł FIFA (orientacyjnie). Przewiń w bok, aby zobaczyć całą drabinkę.</p>
+        <div style={{ overflowX: "auto", paddingBottom: 6 }}>
+          <div className="bkt">
+            <div className="rnd"><div className="rh">1/16 finału</div><div className="col">{R32_ORDER.map(Card)}</div></div>
+            <div className="rnd"><div className="rh">1/8 finału</div><div className="col">{R16_DEF.map((r) => Card(r.m))}</div></div>
+            <div className="rnd"><div className="rh">Ćwierćfinały</div><div className="col">{QF_DEF.map((r) => Card(r.m))}</div></div>
+            <div className="rnd"><div className="rh">Półfinały</div><div className="col">{SF_DEF.map((r) => Card(r.m))}</div></div>
+            <div className="rnd"><div className="rh">Finał</div><div className="col">{Card(FIN_DEF.m)}</div></div>
+          </div>
+        </div>
+        <div style={{ marginTop: 10, display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+          <span className="muted" style={{ fontSize: 12 }}>Mecz o 3. miejsce:</span>
+          <div style={{ width: 188, background: "rgba(0,0,0,.24)", border: "1px solid var(--line)", borderRadius: 9, padding: "4px 9px" }}>
+            <span className="bno">M103 · 3. miejsce</span>
+            <div className="bteam"><span className="bdot" /><span className="bnm">Przegr. M101</span></div>
+            <div className="bteam"><span className="bdot" /><span className="bnm">Przegr. M102</span></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  function renderGrupy() {
+    const seeded = matches.some((m) => m.group);
+    if (!seeded) return (
+      <div className="panel" style={{ textAlign: "center", padding: 40 }}>
+        <Globe size={34} className="muted" style={{ margin: "0 auto 12px" }} />
+        <h3 style={{ fontSize: 22, marginBottom: 8 }}>Brak grup</h3>
+        <p className="muted" style={{ fontSize: 14 }}>{me.isAdmin ? "Wczytaj terminarz MŚ 2026 w panelu admina." : "Poczekaj, aż administrator wczyta terminarz grup."}</p>
+      </div>
+    );
+    const tr = grpData.thirdsRank;
+    return (
+      <div style={{ display: "grid", gap: 16 }}>
+        <div className="panel" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
+          <div><h2 style={{ fontSize: 24 }}>Grupy</h2><p className="muted" style={{ fontSize: 13 }}>Tabele grup i drabinka pucharowa — liczone z wpisanych wyników.</p></div>
+          <Globe size={28} style={{ color: "var(--gold)" }} />
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(290px,1fr))", gap: 14 }}>
+          {GROUP_LETTERS.map((L) => renderGroupCard(L))}
+        </div>
+        <p className="note"><span style={{ display: "inline-block", width: 10, height: 10, borderRadius: 2, background: "rgba(39,213,134,.5)", marginRight: 5 }} />miejsca 1–2 = awans · <span style={{ display: "inline-block", width: 10, height: 10, borderRadius: 2, background: "rgba(244,201,93,.5)", margin: "0 5px" }} />3. miejsce = szansa na awans. Kolejność: punkty → różnica → bramki.</p>
+        {tr.length > 0 && (
+          <div className="panel">
+            <h3 style={{ fontSize: 17, marginBottom: 8, display: "flex", alignItems: "center", gap: 8 }}><Crown size={15} /> Ranking 3. miejsc — 8 najlepszych awansuje</h3>
+            <div style={{ overflowX: "auto" }}>
+              <table className="tbl">
+                <thead><tr><th>#</th><th>Drużyna</th><th>Gr.</th><th>M</th><th>RB</th><th>Pkt</th></tr></thead>
+                <tbody>
+                  {tr.map((x, i) => { const gd = x.t.gf - x.t.ga; return (
+                    <tr key={x.L} className={i < 8 ? "adv" : ""}>
+                      <td style={{ fontFamily: "var(--fd)", color: i < 8 ? "var(--grass)" : "var(--muted)" }}>{i + 1}</td>
+                      <td><div style={{ display: "flex", alignItems: "center", gap: 7 }}><Flag code={x.t.code} size="fl-sm" /><span style={{ fontWeight: 600 }}>{x.t.name}</span></div></td>
+                      <td>{x.L}</td><td>{x.t.p}</td><td>{gd > 0 ? "+" + gd : gd}</td>
+                      <td style={{ fontFamily: "var(--fd)", fontSize: 16, color: "var(--gold)" }}>{x.t.pts}</td>
+                    </tr>
+                  ); })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+        {renderBracket()}
+      </div>
+    );
+  }
+
+  function renderDni() {
+    if (!matches.length) return (
+      <div className="panel" style={{ textAlign: "center", padding: 40 }}>
+        <Calendar size={34} className="muted" style={{ margin: "0 auto 12px" }} />
+        <h3 style={{ fontSize: 22, marginBottom: 8 }}>Brak meczów</h3>
+        <p className="muted" style={{ fontSize: 14 }}>Tabele dni pojawią się, gdy będzie terminarz i pierwsze wyniki.</p>
+      </div>
+    );
+    const day = days.find((d) => d.key === selDay2) || days[0];
+    if (!day) return null;
+    const idx = days.findIndex((d) => d.key === day.key);
+    const dayDone = day.matches.filter((m) => m.finished && m.result);
+    const dayTbl = tally(users, dayDone, betsByUser, points);
+    const dayEndTs = day.matches.reduce((mx, m) => Math.max(mx, new Date(m.kickoff).getTime()), 0);
+    const cumMap = {};
+    tally(users, matches.filter((m) => m.finished && m.result && new Date(m.kickoff).getTime() <= dayEndTs), betsByUser, points).forEach((u) => { cumMap[u.id] = u.total; });
+    return (
+      <div style={{ display: "grid", gap: 16 }}>
+        <div className="panel" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
+          <div><h2 style={{ fontSize: 24 }}>Tabele dni</h2><p className="muted" style={{ fontSize: 13 }}>Podsumowanie każdego dnia: typy zwycięzcy i zdobyte punkty.</p></div>
+          <Calendar size={28} style={{ color: "var(--gold)" }} />
+        </div>
+        <div className="daybar">
+          {days.map((d, i) => (
+            <button key={d.key} className={`daypill ${d.key === day.key ? "on" : ""}`} onClick={() => setSelDay2(d.key)}>
+              <span className="dpn">Dzień {i + 1}</span>
+              <span className="dpd">{fmtDayShort(d.matches[0].kickoff)}</span>
+            </button>
+          ))}
+        </div>
+        <div className="panel" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
+          <button className="icobtn" disabled={idx <= 0} onClick={() => setSelDay2(days[idx - 1].key)}><ChevronLeft size={18} /></button>
+          <div style={{ textAlign: "center" }}>
+            <div style={{ fontFamily: "var(--fd)", fontSize: 20, textTransform: "capitalize" }}>{fmtDayLabel(day.matches[0].kickoff)}</div>
+            <div className="muted" style={{ fontSize: 12 }}>{dayDone.length}/{day.matches.length} {plMecz(day.matches.length)} rozliczone</div>
+          </div>
+          <button className="icobtn" disabled={idx >= days.length - 1} onClick={() => setSelDay2(days[idx + 1].key)}><ChevronRight size={18} /></button>
+        </div>
+        {renderDayFixtures(day)}
+        {dayDone.length > 0 && renderDayTable(day)}
+        {dayDone.length > 0 && (
+          <div className="panel">
+            <h3 style={{ fontSize: 17, marginBottom: 10, display: "flex", alignItems: "center", gap: 8 }}><Target size={15} /> Punkty tego dnia</h3>
+            <div style={{ overflowX: "auto" }}>
+              <table className="tbl">
+                <thead><tr><th>#</th><th>Gracz</th><th style={{ textAlign: "right" }}>Pkt dnia</th><th style={{ textAlign: "right" }}>Łącznie</th></tr></thead>
+                <tbody>
+                  {dayTbl.map((u, i) => (
+                    <tr key={u.id}>
+                      <td style={{ fontFamily: "var(--fd)", fontSize: 16, color: i === 0 && u.total > 0 ? "var(--gold)" : "var(--muted)" }}>{i + 1}</td>
+                      <td className={u.id === me.id ? "you" : ""}>{u.name}{u.id === me.id ? " (Ty)" : ""}</td>
+                      <td style={{ textAlign: "right", fontFamily: "var(--fd)", fontSize: 18, color: u.total > 0 ? "var(--grass)" : "var(--muted)" }}>{u.total > 0 ? "+" + u.total : "0"}</td>
+                      <td style={{ textAlign: "right", fontFamily: "var(--fd)", fontSize: 18, color: "var(--gold)" }}>{cumMap[u.id] || 0}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  function renderRegulamin() {
+    const pot = users.length * STAKE;
+    const first = Math.max(pot - STAKE, 0);
+    const second = users.length >= 2 ? STAKE : 0;
+    const maxMatch = (points.exact || 0) + (points.diff || 0) + (points.winner || 0);
+    const note = (settings.rulesNote || "").trim();
+    const Row = ({ l, v, c }) => (
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, padding: "9px 0", borderBottom: "1px solid var(--line)" }}>
+        <span>{l}</span><b style={{ fontFamily: "var(--fd)", fontSize: 18, color: c || "var(--gold)" }}>{v}</b>
+      </div>
+    );
+    return (
+      <div style={{ display: "grid", gap: 16 }}>
+        <div className="panel" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
+          <div><h2 style={{ fontSize: 24 }}>Regulamin</h2><p className="muted" style={{ fontSize: 13 }}>Zasady, punktacja i podział puli.</p></div>
+          <BookOpen size={28} style={{ color: "var(--gold)" }} />
+        </div>
+
+        <div className="panel">
+          <h3 style={{ fontSize: 17, marginBottom: 6, display: "flex", alignItems: "center", gap: 8 }}><Coins size={16} /> Wpisowe i pula</h3>
+          <Row l="Wpisowe od osoby" v={STAKE + " zł"} />
+          <Row l="Liczba graczy" v={String(users.length)} c="var(--txt)" />
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, paddingTop: 9 }}>
+            <span>Łączna pula</span><b style={{ fontFamily: "var(--fd)", fontSize: 22, color: "var(--gold)" }}>{pot.toLocaleString("pl-PL")} zł</b>
+          </div>
+        </div>
+
+        <div className="panel">
+          <h3 style={{ fontSize: 17, marginBottom: 6, display: "flex", alignItems: "center", gap: 8 }}><Crown size={16} /> Podział nagród</h3>
+          <Row l="🥇 1. miejsce" v={first.toLocaleString("pl-PL") + " zł"} />
+          <Row l="🥈 2. miejsce — zwrot wpisowego" v={second.toLocaleString("pl-PL") + " zł"} />
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, paddingTop: 9 }}>
+            <span className="muted">Pozostali</span><span className="muted">bez nagrody</span>
+          </div>
+          <p className="note" style={{ marginTop: 10 }}>Zwycięzca bierze większość puli, drugie miejsce odzyskuje wpisowe. Kwoty przeliczają się same wraz z liczbą graczy.</p>
+        </div>
+
+        <div className="panel">
+          <h3 style={{ fontSize: 17, marginBottom: 6, display: "flex", alignItems: "center", gap: 8 }}><Target size={16} /> Punktacja meczowa</h3>
+          <Row l="Dokładny wynik" v={"+" + points.exact} c="var(--grass)" />
+          <Row l="Różnica bramek" v={"+" + points.diff} c="var(--grass)" />
+          <Row l="Trafiony zwycięzca / remis" v={"+" + points.winner} c="var(--grass)" />
+          <Row l="Pierwszy strzelec" v={"+" + points.scorer} c="var(--grass)" />
+          <p className="note" style={{ marginTop: 10 }}>Punkty się sumują — trafiony dokładny wynik daje też punkty za różnicę i zwycięzcę (maks. {maxMatch} pkt + {points.scorer} za strzelca = {maxMatch + (points.scorer || 0)} pkt za mecz).</p>
+        </div>
+
+        <div className="panel">
+          <h3 style={{ fontSize: 17, marginBottom: 6, display: "flex", alignItems: "center", gap: 8 }}><Crown size={16} /> Typy bonusowe (cały turniej)</h3>
+          {bonus.map((q) => <Row key={q.id} l={q.label} v={"+" + q.points} />)}
+          <p className="note" style={{ marginTop: 10 }}>Wypełniasz w zakładce „Bonus" do {fmtDate(bonusDeadline)}. Punkty doliczane po rozstrzygnięciu turnieju.</p>
+          {bonus.some((q) => q.id === "darkhorse") && (
+            <p className="note" style={{ marginTop: 8 }}>⚑ „Czarny koń turnieju" to drużyna-niespodzianka — nierozstawiona/niefaworyzowana, która zaszła dalej, niż się spodziewano (np. awans z grupy mimo roli outsidera albo wejście do ćwierćfinału). Zwycięską odpowiedź ustala prowadzący po turnieju; punkt dostaje każdy, kto wskazał tę drużynę.</p>
+          )}
+        </div>
+
+        <div className="panel">
+          <h3 style={{ fontSize: 17, marginBottom: 8, display: "flex", alignItems: "center", gap: 8 }}><Shield size={16} /> Zasady typowania</h3>
+          <ul style={{ margin: 0, paddingLeft: 18, display: "grid", gap: 7, fontSize: 14, lineHeight: 1.5 }}>
+            <li>Typy edytujesz do pierwszego gwizdka meczu — potem są zablokowane i widoczne dla wszystkich.</li>
+            <li>Ranking liczony jest automatycznie po zatwierdzeniu wyników.</li>
+            <li>W fazie pucharowej liczy się wynik zapisany przez prowadzącego (po dogrywce/karnych decyduje awans).</li>
+            <li>Wyniki wpadają z ESPN albo są wpisywane ręcznie przez prowadzącego.</li>
+          </ul>
+        </div>
+
+        {note && (
+          <div className="panel">
+            <h3 style={{ fontSize: 17, marginBottom: 8, display: "flex", alignItems: "center", gap: 8 }}><BookOpen size={16} /> Dodatkowe zasady</h3>
+            <p style={{ whiteSpace: "pre-wrap", margin: 0, fontSize: 14, lineHeight: 1.55 }}>{note}</p>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  function renderUstawienia() {
+    return (
+      <div style={{ display: "grid", gap: 16 }}>
+        <div className="panel" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
+          <div><h2 style={{ fontSize: 24 }}>Ustawienia konta</h2><p className="muted" style={{ fontSize: 13 }}>Zmień swój nick lub PIN.</p></div>
+          <Settings size={28} style={{ color: "var(--gold)" }} />
+        </div>
+        <div className="panel" style={{ display: "grid", gap: 14, maxWidth: 460 }}>
+          <div>
+            <div className="lbl">Nick</div>
+            <input className="inp" value={prof.name} maxLength={24} onChange={(e) => setProf((p) => ({ ...p, name: e.target.value, err: "", ok: "" }))} />
+          </div>
+          <div>
+            <div className="lbl">Nowy PIN (4 cyfry — zostaw puste, by nie zmieniać)</div>
+            <input className="inp" type="password" inputMode="numeric" maxLength={4} value={prof.pin} onChange={(e) => setProf((p) => ({ ...p, pin: e.target.value.replace(/\D/g, ""), err: "", ok: "" }))} placeholder="••••" />
+          </div>
+          <div>
+            <div className="lbl">Powtórz nowy PIN</div>
+            <input className="inp" type="password" inputMode="numeric" maxLength={4} value={prof.pin2} onChange={(e) => setProf((p) => ({ ...p, pin2: e.target.value.replace(/\D/g, ""), err: "", ok: "" }))} placeholder="••••" />
+          </div>
+          {prof.err && <div className="note" style={{ color: "#ff9a9a" }}><X size={14} /> {prof.err}</div>}
+          {prof.ok && <div className="note" style={{ color: "var(--grass)" }}><Check size={14} /> {prof.ok}</div>}
+          <div><button className="btn grass" onClick={saveProfile}><Check size={16} /> Zapisz zmiany</button></div>
+        </div>
+        <div className="panel">
+          <p className="note"><Shield size={13} /> Logowanie jest lekkie (nick + PIN) — nie używaj ważnego hasła. Typy i punkty są powiązane z kontem, więc zmiana nicku ich nie kasuje.</p>
+        </div>
+      </div>
+    );
+  }
+
   function renderAdmin() {
     return (
       <div style={{ display: "grid", gap: 16 }}>
@@ -1379,6 +1926,14 @@ function App() {
           <button className="btn grass" style={{ marginTop: 14 }} onClick={async () => { await store.set("settings", JSON.stringify({ ...settings, bonus, bonusDeadline })); flash("Typy bonusowe zapisane."); }}><Check size={16} /> Zapisz typy bonusowe</button>
         </div>
 
+        {/* regulamin — dodatkowe zasady */}
+        <div className="panel">
+          <h2 style={{ fontSize: 19, marginBottom: 6, display: "flex", alignItems: "center", gap: 8 }}><BookOpen size={18} /> Regulamin — dodatkowe zasady</h2>
+          <p className="muted" style={{ fontSize: 12.5, marginBottom: 12 }}>Dowolny tekst widoczny w zakładce „Regulamin" (np. zasady domowe, termin wpłat).</p>
+          <textarea className="inp" rows={4} style={{ resize: "vertical", fontFamily: "var(--fb)" }} value={settings.rulesNote || ""} onChange={(e) => setSettings((s) => ({ ...s, rulesNote: e.target.value }))} placeholder="np. Wpłaty do 10 czerwca, wygrana wypłacana po finale…" />
+          <button className="btn grass" style={{ marginTop: 12 }} onClick={async () => { await store.set("settings", JSON.stringify(settings)); flash("Regulamin zapisany."); }}><Check size={16} /> Zapisz regulamin</button>
+        </div>
+
         {/* gracze */}
         <div className="panel">
           <h2 style={{ fontSize: 19, marginBottom: 14, display: "flex", alignItems: "center", gap: 8 }}><Users size={18} /> Gracze</h2>
@@ -1463,7 +2018,7 @@ function App() {
   const hasBet = (m) => { const b = myBets[m.id]; return !!(b && ((b.winner && b.winner !== "") || (b.exactHome !== "" && b.exactHome != null) || (b.firstScorer && b.firstScorer !== ""))); };
   const unbetCount = upcomingMine.filter((m) => !hasBet(m)).length;
 
-  const tabs = [["typuj", "Typuj", Target], ["ranking", "Ranking", Trophy], ["historia", "Historia", History], ["bonus", "Bonus", Crown], ["podglad", "Podgląd", Eye]];
+  const tabs = [["typuj", "Typuj", Target], ["ranking", "Ranking", Trophy], ["grupy", "Grupy", Globe], ["dni", "Dni", Calendar], ["historia", "Historia", History], ["bonus", "Bonus", Crown], ["regulamin", "Regulamin", BookOpen], ["ustawienia", "Ustawienia", Settings]];
   if (me.isAdmin) tabs.push(["admin", "Panel admina", Shield]);
 
   return (
@@ -1491,6 +2046,24 @@ function App() {
       </header>
 
       <main className="wrap" style={{ padding: "22px 16px 60px" }}>
+        {live.length > 0 && (
+          <div className="panel live-panel" style={{ marginBottom: 18 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+              <span className="livedot" /><b style={{ letterSpacing: 1 }}>NA ŻYWO</b>
+              <span className="muted" style={{ fontSize: 12 }}>· {live.length} {plMecz(live.length)} · odświeża się automatycznie</span>
+            </div>
+            <div style={{ display: "grid", gap: 8 }}>
+              {live.map((g) => (
+                <div key={g.id} className="liverow">
+                  <div className="lt"><Flag code={g.homeCode} size="fl-sm" /><span className="ln">{CODE2PL[g.homeCode] || g.homeName}</span></div>
+                  <div className="lscore">{g.homeScore}<span className="lsep">:</span>{g.awayScore}</div>
+                  <div className="lt rt"><span className="ln">{CODE2PL[g.awayCode] || g.awayName}</span><Flag code={g.awayCode} size="fl-sm" /></div>
+                  {g.detail && <div className="lmin">{g.detail}</div>}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
         <div style={{ marginBottom: 18, display: "flex", gap: 12, flexWrap: "wrap", alignItems: "stretch" }}>
           <div className="pot">
             <div className="pot-ic"><Coins size={21} /></div>
@@ -1500,13 +2073,27 @@ function App() {
             </div>
             <span className="pot-amt">{(users.length * STAKE).toLocaleString("pl-PL")} zł</span>
           </div>
+          {(() => {
+            const ld = standingsFull[0];
+            const hasPts = ld && ld.grand > 0;
+            return (
+              <button className="ministat" onClick={() => setTab("ranking")} title="Zobacz ranking">
+                <div className="ms-ic ms-gold"><Crown size={18} /></div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 2, textAlign: "left", minWidth: 0 }}>
+                  <span className="pot-l">Lider</span>
+                  <span className="ms-big" style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 170 }}>{hasPts ? ld.name : "—"}</span>
+                  <span className="pot-sub">{hasPts ? `${ld.grand} pkt` : "przed 1. meczami"}</span>
+                </div>
+              </button>
+            );
+          })()}
           {nextMatch && (
             <div className="ministat">
               <div className="ms-ic ms-blue"><Clock size={18} /></div>
               <div style={{ display: "flex", flexDirection: "column", gap: 2, minWidth: 0 }}>
                 <span className="pot-l">Najbliższy gwizdek</span>
                 <span className="ms-big">{fmtDur(new Date(nextMatch.kickoff).getTime() - now)}</span>
-                <span className="pot-sub" style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 200 }}>{nextMatch.homeTeam} – {nextMatch.awayTeam}</span>
+                <span className="pot-sub" style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 200 }}>{(() => { const [a, b] = sidesOf(nextMatch); return `${a.label} – ${b.label}`; })()}</span>
               </div>
             </div>
           )}
@@ -1523,9 +2110,12 @@ function App() {
         </div>
         {tab === "typuj" && renderTypuj()}
         {tab === "ranking" && renderRanking()}
+        {tab === "grupy" && renderGrupy()}
+        {tab === "dni" && renderDni()}
         {tab === "historia" && renderHistoria()}
         {tab === "bonus" && renderBonus()}
-        {tab === "podglad" && renderPodglad()}
+        {tab === "regulamin" && renderRegulamin()}
+        {tab === "ustawienia" && renderUstawienia()}
         {tab === "admin" && me.isAdmin && renderAdmin()}
       </main>
 
