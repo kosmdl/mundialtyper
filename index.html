@@ -851,12 +851,6 @@ function App() {
 
   const koMatchById = useMemo(() => { const x = {}; matches.forEach((m) => { if (m.ko) x[m.ko] = m; }); return x; }, [matches]);
 
-  const dailyTop3 = useMemo(() => days.map((d) => {
-    const done = d.matches.filter((m) => m.finished && m.result);
-    if (!done.length) return new Set();
-    return new Set(tally(users, done, betsByUser, points).filter((u) => u.total > 0).slice(0, 3).map((u) => u.id));
-  }), [days, users, betsByUser, points]);
-
   function longestPodium(uid) { let best = 0, cur = 0; for (const s of dailyTop3) { if (s.has(uid)) { cur++; if (cur > best) best = cur; } else cur = 0; } return best; }
 
   function statsFor(uid) {
@@ -917,6 +911,12 @@ function App() {
       return { key, matches: ms };
     }).sort((a, b) => a.key.localeCompare(b.key));
   }, [matches]);
+
+  const dailyTop3 = useMemo(() => days.map((d) => {
+    const done = d.matches.filter((m) => m.finished && m.result);
+    if (!done.length) return new Set();
+    return new Set(tally(users, done, betsByUser, points).filter((u) => u.total > 0).slice(0, 3).map((u) => u.id));
+  }), [days, users, betsByUser, points]);
 
   useEffect(() => {
     if (!days.length) return;
