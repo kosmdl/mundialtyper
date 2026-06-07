@@ -582,6 +582,9 @@ button.ministat:hover{background:var(--panel-2);border-color:rgba(255,255,255,.2
 .bteam .bnm{font-size:12px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .bdot{width:16px;height:12px;border-radius:2px;background:rgba(255,255,255,.08);flex:0 0 auto;display:inline-block}
 .dfn{font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:42%}
+.scorer-sel{cursor:pointer}
+.scorer-sel option,.scorer-sel optgroup{background:var(--panel-2);color:var(--txt)}
+.scorer-sel optgroup{font-weight:800;color:var(--gold);font-family:var(--fb)}
 input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 input[type=number]{-moz-appearance:textfield}
 ::-webkit-scrollbar{height:10px;width:10px}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.14);border-radius:8px}
@@ -1165,16 +1168,20 @@ function App() {
                 <div>
                   <div className="lbl"><Target size={13} /> Strzelec pierwszego gola</div>
                   {(() => {
-                    const players = [...(SQUADS[m.homeCode] || []), ...(SQUADS[m.awayCode] || [])];
+                    const home = SQUADS[m.homeCode] || [], away = SQUADS[m.awayCode] || [];
+                    if (!home.length && !away.length) return (
+                      <input className="inp" value={d.firstScorer ?? ""} onChange={(e) => setD(m.id, { firstScorer: e.target.value })} placeholder="np. Robert Lewandowski" />
+                    );
+                    const sortPl = (arr) => [...arr].sort((a, b) => a.localeCompare(b, "pl"));
                     return (
-                      <>
-                        <input className="inp" list={players.length ? "dl-" + m.id : undefined} value={d.firstScorer ?? ""}
-                          onChange={(e) => setD(m.id, { firstScorer: e.target.value })}
-                          placeholder={players.length ? "wybierz z listy lub wpisz nazwisko" : "np. Robert Lewandowski"} />
-                        {players.length > 0 && <datalist id={"dl-" + m.id}>{players.map((p) => <option key={p} value={p} />)}</datalist>}
-                      </>
+                      <select className="inp scorer-sel" value={d.firstScorer ?? ""} onChange={(e) => setD(m.id, { firstScorer: e.target.value })}>
+                        <option value="">— wybierz strzelca z listy —</option>
+                        {home.length > 0 && <optgroup label={m.homeTeam}>{sortPl(home).map((p) => <option key={"h" + p} value={p}>{p}</option>)}</optgroup>}
+                        {away.length > 0 && <optgroup label={m.awayTeam}>{sortPl(away).map((p) => <option key={"a" + p} value={p}>{p}</option>)}</optgroup>}
+                      </select>
                     );
                   })()}
+                  <p className="note" style={{ marginTop: 6 }}>Wybierasz dokładnie jednego zawodnika z listy. Typujesz 0:0 albo nie chcesz wskazać strzelca? Zostaw „— wybierz strzelca z listy —".</p>
                 </div>
               </div>
 
@@ -1868,7 +1875,17 @@ function App() {
                   <div style={{ display: "flex", gap: 10, alignItems: "flex-end", marginTop: 12, flexWrap: "wrap" }}>
                     <div><div className="lbl">Gosp.</div><input className="inp" style={{ width: 70 }} type="number" min="0" value={r.homeScore ?? ""} onChange={(e) => setRdraft((s) => ({ ...s, [m.id]: { ...r, homeScore: e.target.value } }))} /></div>
                     <div><div className="lbl">Gość</div><input className="inp" style={{ width: 70 }} type="number" min="0" value={r.awayScore ?? ""} onChange={(e) => setRdraft((s) => ({ ...s, [m.id]: { ...r, awayScore: e.target.value } }))} /></div>
-                    <div style={{ flex: 1, minWidth: 160 }}><div className="lbl">1. strzelec</div><input className="inp" value={r.firstScorer ?? ""} onChange={(e) => setRdraft((s) => ({ ...s, [m.id]: { ...r, firstScorer: e.target.value } }))} placeholder="imię i nazwisko" /></div>
+                    <div style={{ flex: 1, minWidth: 160 }}><div className="lbl">1. strzelec</div>{(() => {
+                      const home = SQUADS[m.homeCode] || [], away = SQUADS[m.awayCode] || [], sortPl = (arr) => [...arr].sort((a, b) => a.localeCompare(b, "pl"));
+                      if (!home.length && !away.length) return <input className="inp" value={r.firstScorer ?? ""} onChange={(e) => setRdraft((s) => ({ ...s, [m.id]: { ...r, firstScorer: e.target.value } }))} placeholder="imię i nazwisko" />;
+                      return (
+                        <select className="inp scorer-sel" value={r.firstScorer ?? ""} onChange={(e) => setRdraft((s) => ({ ...s, [m.id]: { ...r, firstScorer: e.target.value } }))}>
+                          <option value="">— brak / nie dotyczy —</option>
+                          {home.length > 0 && <optgroup label={m.homeTeam}>{sortPl(home).map((p) => <option key={"h" + p} value={p}>{p}</option>)}</optgroup>}
+                          {away.length > 0 && <optgroup label={m.awayTeam}>{sortPl(away).map((p) => <option key={"a" + p} value={p}>{p}</option>)}</optgroup>}
+                        </select>
+                      );
+                    })()}</div>
                   </div>
 
                   <div style={{ display: "flex", gap: 10, marginTop: 12, flexWrap: "wrap" }}>
