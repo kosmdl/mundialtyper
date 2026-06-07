@@ -613,7 +613,13 @@ button.ministat:hover{background:var(--panel-2);border-color:rgba(255,255,255,.2
 .liverow .lscore{font-family:var(--fd);font-size:22px;color:var(--gold);white-space:nowrap}
 .liverow .lsep{margin:0 5px;color:var(--muted)}
 .liverow .lmin{grid-column:1 / -1;text-align:center;font-size:11px;color:#ff9a9a;font-weight:700;text-transform:uppercase;letter-spacing:.6px}
+.tbl.grp{table-layout:fixed}
 .tbl.grp th,.tbl.grp td{padding:7px 8px;font-size:13px}
+.tbl.grp th:nth-child(1),.tbl.grp td:nth-child(1){width:22px}
+.tbl.grp th:nth-child(3),.tbl.grp td:nth-child(3){width:30px}
+.tbl.grp th:nth-child(4),.tbl.grp td:nth-child(4){width:46px}
+.tbl.grp th:nth-child(5),.tbl.grp td:nth-child(5){width:38px}
+.tbl.grp th:nth-child(6),.tbl.grp td:nth-child(6){width:42px}
 .tbl tr.adv td{background:rgba(39,213,134,.09)}
 .tbl tr.adv3 td{background:rgba(244,201,93,.10)}
 .bkt{display:flex;min-width:max-content;height:940px;--cw:22px;--bl:rgba(255,255,255,.24)}
@@ -1887,7 +1893,7 @@ function App() {
               return (
                 <tr key={r.code} className={i < 2 ? "adv" : i === 2 ? "adv3" : ""}>
                   <td style={{ color: "var(--muted)", fontFamily: "var(--fd)" }}>{i + 1}</td>
-                  <td><div style={{ display: "flex", alignItems: "center", gap: 7 }}><Flag code={r.code} size="fl-sm" /><span style={{ fontWeight: 600, whiteSpace: "nowrap" }}>{r.name}</span></div></td>
+                  <td><div style={{ display: "flex", alignItems: "center", gap: 7, minWidth: 0 }}><Flag code={r.code} size="fl-sm" /><span style={{ fontWeight: 600, lineHeight: 1.15, overflowWrap: "anywhere", wordBreak: "break-word", minWidth: 0 }}>{r.name}</span></div></td>
                   <td>{r.p}</td>
                   <td style={{ whiteSpace: "nowrap" }}>{r.gf}:{r.ga}</td>
                   <td>{gd > 0 ? "+" + gd : gd}</td>
