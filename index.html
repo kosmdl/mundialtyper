@@ -211,6 +211,51 @@ function tally(users, matchList, betsByUser, points) {
   }).sort((a, b) => b.total - a.total || a.name.localeCompare(b.name, "pl"));
 }
 
+/* konfetti (czysty DOM, bez bibliotek) */
+function fireConfetti() {
+  try {
+    const colors = ["#27d586", "#f4c95d", "#e8403a", "#3b82f6", "#ffffff"];
+    const wrap = document.createElement("div");
+    wrap.style.cssText = "position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden";
+    document.body.appendChild(wrap);
+    for (let i = 0; i < 90; i++) {
+      const p = document.createElement("div");
+      const c = colors[i % colors.length];
+      const left = Math.random() * 100, size = 6 + Math.random() * 8, dur = 1800 + Math.random() * 1500, delay = Math.random() * 300, rot = Math.random() * 360;
+      p.style.cssText = "position:absolute;top:-18px;left:" + left + "vw;width:" + size + "px;height:" + (size * 0.6) + "px;background:" + c + ";opacity:.95;transform:rotate(" + rot + "deg);border-radius:1px;animation:confFall " + dur + "ms " + delay + "ms ease-in forwards";
+      wrap.appendChild(p);
+    }
+    setTimeout(() => wrap.remove(), 3800);
+  } catch (e) {}
+}
+
+/* ranking grupy z mini-tabelą bezpośrednich meczów dla remisów (zbliżone do reguł FIFA) */
+function rankGroup(teams, ms) {
+  const h2h = (subset) => {
+    const codes = new Set(subset.map((t) => t.code));
+    const st = {}; subset.forEach((t) => { st[t.code] = { pts: 0, gf: 0, ga: 0 }; });
+    for (const m of ms) {
+      if (!m.finished || !m.result || !codes.has(m.homeCode) || !codes.has(m.awayCode)) continue;
+      const hs = Number(m.result.homeScore), as = Number(m.result.awayScore);
+      st[m.homeCode].gf += hs; st[m.homeCode].ga += as; st[m.awayCode].gf += as; st[m.awayCode].ga += hs;
+      if (hs > as) st[m.homeCode].pts += 3; else if (hs < as) st[m.awayCode].pts += 3; else { st[m.homeCode].pts++; st[m.awayCode].pts++; }
+    }
+    return subset.slice().sort((x, y) =>
+      st[y.code].pts - st[x.code].pts ||
+      (st[y.code].gf - st[y.code].ga) - (st[x.code].gf - st[x.code].ga) ||
+      st[y.code].gf - st[x.code].gf ||
+      (y.gf - y.ga) - (x.gf - x.ga) || y.gf - x.gf || x.name.localeCompare(y.name, "pl"));
+  };
+  const clusters = {};
+  teams.forEach((t) => { (clusters[t.pts] = clusters[t.pts] || []).push(t); });
+  let out = [];
+  for (const lvl of Object.keys(clusters).map(Number).sort((a, b) => b - a)) {
+    const cl = clusters[lvl];
+    out = out.concat(cl.length > 1 ? h2h(cl) : cl);
+  }
+  return out;
+}
+
 /* ---------- terminarz fazy grupowej MŚ 2026 (źródło: oficjalny terminarz FIFA, godziny ET) ---------- */
 const WC_TEAM = {
   "Mexico": ["Meksyk", "mx"], "South Africa": ["RPA", "za"], "Korea Republic": ["Korea Płd.", "kr"], "Czechia": ["Czechy", "cz"],
@@ -589,6 +634,36 @@ button.ministat:hover{background:var(--panel-2);border-color:rgba(255,255,255,.2
 .scorer-sel{cursor:pointer}
 .scorer-sel option,.scorer-sel optgroup{background:var(--panel-2);color:var(--txt)}
 .scorer-sel optgroup{font-weight:800;color:var(--gold);font-family:var(--fb)}
+@keyframes confFall{to{transform:translateY(110vh) rotate(680deg);opacity:.15}}
+.rank{cursor:pointer}
+.rank:hover{border-color:rgba(255,255,255,.22);transform:translateY(-1px)}
+.bdg{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:999px;background:rgba(244,201,93,.12);border:1px solid rgba(244,201,93,.35);font-size:12px;font-weight:700;color:var(--txt)}
+.kontra{display:inline-block;margin-left:6px;padding:1px 6px;border-radius:6px;font-size:10px;font-weight:800;background:rgba(232,64,58,.18);border:1px solid rgba(232,64,58,.4);color:#ff9a9a;text-transform:uppercase;letter-spacing:.5px;vertical-align:middle}
+.cons{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px;font-size:13px}
+.cons .cpill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:rgba(0,0,0,.2);border:1px solid var(--line)}
+.modal-bg{position:fixed;inset:0;background:rgba(3,6,16,.74);backdrop-filter:blur(4px);z-index:200;display:flex;align-items:flex-start;justify-content:center;padding:24px 14px;overflow-y:auto}
+.modal{width:100%;max-width:560px;background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:0 30px 80px rgba(0,0,0,.5);overflow:hidden}
+.modal-h{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px 18px;border-bottom:1px solid var(--line);background:linear-gradient(135deg,rgba(244,201,93,.1),transparent)}
+.modal-b{padding:18px}
+.statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px}
+.statbox{background:rgba(0,0,0,.2);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.statbox .sv{font-family:var(--fd);font-size:24px;color:var(--gold);line-height:1}
+.statbox .sl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
+.bar{height:8px;border-radius:6px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:5px}
+.bar>span{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--grass),#3fe39a)}
+.chartwrap{overflow-x:auto}
+.chleg{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;font-size:12px}
+.chleg span{display:inline-flex;align-items:center;gap:5px}
+.chdot{width:11px;height:11px;border-radius:3px;display:inline-block}
+.chatscroll{max-height:62vh;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:4px 2px}
+.cmsg{max-width:84%;padding:8px 12px;border-radius:14px;background:var(--panel-2);border:1px solid var(--line)}
+.cmsg.mine{align-self:flex-end;background:linear-gradient(135deg,rgba(39,213,134,.16),rgba(39,213,134,.05));border-color:rgba(39,213,134,.3)}
+.cmsg .cn{font-size:12px;font-weight:800;color:var(--gold)}
+.cmsg.mine .cn{color:var(--grass)}
+.cmsg .ct{font-size:14px;margin-top:2px;white-space:pre-wrap;word-break:break-word}
+.cmsg .cd{font-size:10px;color:var(--muted);margin-top:3px}
+.chatbar{display:flex;gap:8px;margin-top:12px}
+.chatbar textarea{flex:1;resize:none;min-height:46px}
 input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 input[type=number]{-moz-appearance:textfield}
 ::-webkit-scrollbar{height:10px;width:10px}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.14);border-radius:8px}
@@ -617,6 +692,10 @@ function App() {
   const [matches, setMatches] = useState([]);
   const [settings, setSettings] = useState({ points: DEFAULT_POINTS });
   const [betsByUser, setBetsByUser] = useState({}); // {userId:{matchId:bet}}
+  const [profileId, setProfileId] = useState(null); // otwarty profil gracza
+  const [cmpId, setCmpId] = useState("");           // gracz do porównania w profilu
+  const [chatMsgs, setChatMsgs] = useState([]);     // wiadomości czatu
+  const [chatInput, setChatInput] = useState("");
   const [bonusByUser, setBonusByUser] = useState({}); // {userId:{questionId:answer}}
   const [bonusDraft, setBonusDraft] = useState({});   // moje edytowalne typy bonusowe
   const [live, setLive] = useState([]);               // mecze na żywo (z ESPN, wersja standalone)
@@ -651,6 +730,11 @@ function App() {
       if (v) allB[k.slice(6)] = JSON.parse(v);
     }
     setBonusByUser(allB);
+    const ckeys = await store.list("chat:");
+    const cm = [];
+    for (const k of ckeys) { const v = await store.get(k); if (v) { try { cm.push(JSON.parse(v)); } catch (e) {} } }
+    cm.sort((a, b) => a.ts - b.ts);
+    setChatMsgs(cm.slice(-150));
   }, []);
 
   useEffect(() => {
@@ -670,6 +754,27 @@ function App() {
       return next;
     });
   }, [me, betsByUser]);
+
+  useEffect(() => {
+    if (!me) return;
+    let seen; try { seen = new Set(JSON.parse(localStorage.getItem("sn_confetti") || "[]")); } catch (e) { seen = new Set(); }
+    const mine = betsByUser[me.id] || {};
+    const fresh = [];
+    for (const m of matches) {
+      if (!m.finished || !m.result) continue;
+      const b = mine[m.id]; if (!b) continue;
+      const hasExact = b.exactHome !== "" && b.exactHome != null && b.exactAway !== "" && b.exactAway != null;
+      if (hasExact && Number(b.exactHome) === Number(m.result.homeScore) && Number(b.exactAway) === Number(m.result.awayScore) && !seen.has(m.id)) fresh.push(m.id);
+    }
+    if (fresh.length) {
+      fireConfetti();
+      flash("Dokładny wynik trafiony! +" + ((points.exact || 0) + (points.diff || 0) + (points.winner || 0)) + " pkt");
+      fresh.forEach((id) => seen.add(id));
+      try { localStorage.setItem("sn_confetti", JSON.stringify([...seen])); } catch (e) {}
+    }
+  }, [matches, betsByUser, me]);
+
+  useEffect(() => { const el = document.getElementById("chatscroll"); if (el) el.scrollTop = el.scrollHeight; }, [chatMsgs, tab]);
 
   useEffect(() => {
     if (!me) return;
@@ -726,7 +831,7 @@ function App() {
         h.p++; a.p++; h.gf += hs; h.ga += as; a.gf += as; a.ga += hs;
         if (hs > as) { h.w++; h.pts += 3; a.l++; } else if (hs < as) { a.w++; a.pts += 3; h.l++; } else { h.d++; a.d++; h.pts++; a.pts++; }
       });
-      tables[L] = Object.values(teams).sort((x, y) => y.pts - x.pts || (y.gf - y.ga) - (x.gf - x.ga) || y.gf - x.gf || x.name.localeCompare(y.name, "pl"));
+      tables[L] = rankGroup(Object.values(teams), ms);
       complete[L] = ms.length >= 6 && ms.every((m) => m.finished && m.result);
     }
     const allComplete = GROUP_LETTERS.every((L) => complete[L] && tables[L].length >= 3);
@@ -745,6 +850,64 @@ function App() {
   }, [matches]);
 
   const koMatchById = useMemo(() => { const x = {}; matches.forEach((m) => { if (m.ko) x[m.ko] = m; }); return x; }, [matches]);
+
+  const dailyTop3 = useMemo(() => days.map((d) => {
+    const done = d.matches.filter((m) => m.finished && m.result);
+    if (!done.length) return new Set();
+    return new Set(tally(users, done, betsByUser, points).filter((u) => u.total > 0).slice(0, 3).map((u) => u.id));
+  }), [days, users, betsByUser, points]);
+
+  function longestPodium(uid) { let best = 0, cur = 0; for (const s of dailyTop3) { if (s.has(uid)) { cur++; if (cur > best) best = cur; } else cur = 0; } return best; }
+
+  function statsFor(uid) {
+    const mine = betsByUser[uid] || {};
+    let ex = 0, df = 0, wn = 0, sc = 0, scBets = 0, perfect = 0;
+    const hist = [];
+    for (const m of matches) {
+      if (!m.finished || !m.result) continue;
+      const b = mine[m.id]; if (!b) continue;
+      const r = m.result;
+      const hasExact = b.exactHome !== "" && b.exactHome != null && b.exactAway !== "" && b.exactAway != null;
+      const exOK = hasExact && Number(b.exactHome) === Number(r.homeScore) && Number(b.exactAway) === Number(r.awayScore);
+      const dfOK = hasExact && (Number(b.exactHome) - Number(b.exactAway)) === (Number(r.homeScore) - Number(r.awayScore));
+      const aw = Number(r.homeScore) > Number(r.awayScore) ? "home" : Number(r.homeScore) < Number(r.awayScore) ? "away" : "draw";
+      const wnOK = b.winner && b.winner === aw;
+      const hasSc = !!b.firstScorer; if (hasSc) scBets++;
+      const scOK = hasSc && r.firstScorer && scorerHit(b.firstScorer, r.firstScorer);
+      if (exOK) ex++; if (dfOK) df++; if (wnOK) wn++; if (scOK) sc++; if (exOK && wnOK) perfect++;
+      const p = (exOK ? points.exact : 0) + (dfOK ? points.diff : 0) + (wnOK ? points.winner : 0) + (scOK ? points.scorer : 0);
+      hist.push({ m, b, p, exOK, dfOK, wnOK, scOK });
+    }
+    const bets = hist.length;
+    const dayPts = {};
+    for (const h of hist) { const k = matchDayKey(h.m.kickoff); dayPts[k] = (dayPts[k] || 0) + h.p; }
+    const dayArr = Object.entries(dayPts).map(([k, v]) => ({ k, v }));
+    const best = dayArr.length ? dayArr.reduce((a, b) => b.v > a.v ? b : a) : null;
+    const worst = dayArr.length ? dayArr.reduce((a, b) => b.v < a.v ? b : a) : null;
+    const total = hist.reduce((s, h) => s + h.p, 0);
+    return { bets, ex, df, wn, sc, scBets, perfect, total, hist, best, worst };
+  }
+
+  function badgesFor(uid) {
+    const s = statsFor(uid);
+    const out = [];
+    if (s.perfect > 0) out.push({ ic: "🎯", t: "Komplet ×" + s.perfect, d: "trafiony dokładny wynik" });
+    if (s.ex >= 5) out.push({ ic: "🔮", t: "Jasnowidz", d: "5+ dokładnych wyników" });
+    if (s.sc >= 3) out.push({ ic: "⚽", t: "Snajper", d: "3+ trafionych strzelców" });
+    const lp = longestPodium(uid);
+    if (lp >= 2) out.push({ ic: "🔥", t: "Forma ×" + lp, d: lp + " dni z rzędu na podium dnia" });
+    if (standingsFull[0] && standingsFull[0].id === uid && standingsFull[0].grand > 0) out.push({ ic: "👑", t: "Lider", d: "1. miejsce w klasyfikacji" });
+    return out;
+  }
+
+  async function postChat() {
+    const txt = (chatInput || "").trim();
+    if (!txt || !me) return;
+    const msg = { id: uid(), uid: me.id, name: me.name, text: txt.slice(0, 500), ts: Date.now() };
+    try { await store.set("chat:" + msg.ts + ":" + msg.id, JSON.stringify(msg)); } catch (e) {}
+    setChatMsgs((c) => [...c, msg]);
+    setChatInput("");
+  }
 
   const days = useMemo(() => {
     const map = new Map();
@@ -1046,33 +1209,49 @@ function App() {
     if (!rows.length) return <div className="note"><Users size={15} /> Nikt nie obstawił tego meczu.</div>;
     const r = m.result;
     const aw = r ? (Number(r.homeScore) > Number(r.awayScore) ? "home" : Number(r.homeScore) < Number(r.awayScore) ? "away" : "draw") : null;
+    const wc = { home: 0, away: 0, draw: 0 }, sl = {};
+    rows.forEach(({ b }) => {
+      if (b.winner) wc[b.winner] = (wc[b.winner] || 0) + 1;
+      const hasE = b.exactHome !== "" && b.exactHome != null && b.exactAway !== "" && b.exactAway != null;
+      if (hasE) { const k = b.exactHome + ":" + b.exactAway; sl[k] = (sl[k] || 0) + 1; }
+    });
+    const wTop = Object.entries(wc).filter(([, n]) => n > 0).sort((a, b) => b[1] - a[1])[0];
+    const slTop = Object.entries(sl).sort((a, b) => b[1] - a[1])[0];
+    const consWinner = wTop && wTop[1] > rows.length / 2 ? wTop[0] : null;
     return (
-      <div style={{ overflowX: "auto" }}>
-        <table className="tbl">
-          <thead><tr>
-            <th>Gracz</th><th>Wynik</th><th>Zwycięzca</th><th>1. strzelec</th>{m.finished && <th style={{ textAlign: "right" }}>Pkt</th>}
-          </tr></thead>
-          <tbody>
-            {rows.map(({ u, b }) => {
-              const hasExact = b.exactHome !== "" && b.exactHome != null && b.exactAway !== "" && b.exactAway != null;
-              const exOK = r && hasExact && Number(b.exactHome) === Number(r.homeScore) && Number(b.exactAway) === Number(r.awayScore);
-              const diffOK = r && hasExact && (Number(b.exactHome) - Number(b.exactAway)) === (Number(r.homeScore) - Number(r.awayScore));
-              const wnOK = r && b.winner && b.winner === aw;
-              const scOK = r && b.firstScorer && scorerHit(b.firstScorer, r.firstScorer);
-              const p = m.finished ? (exOK ? points.exact : 0) + (diffOK ? points.diff : 0) + (wnOK ? points.winner : 0) + (scOK ? points.scorer : 0) : 0;
-              return (
-                <tr key={u.id}>
-                  <td className={u.id === me.id ? "you" : ""}>{u.name}{u.id === me.id ? " (Ty)" : ""}</td>
-                  <td><span className={exOK ? "hit" : diffOK ? "hit2" : ""} style={{ padding: "2px 7px", fontFamily: "var(--fd)", fontSize: 17 }}>
-                    {hasExact ? `${b.exactHome}:${b.exactAway}` : "—"}</span></td>
-                  <td><span className={wnOK ? "hit" : ""} style={{ padding: "2px 7px" }}>{winnerLabel(m, b.winner)}</span></td>
-                  <td><span className={scOK ? "hit" : ""} style={{ padding: "2px 7px" }}>{b.firstScorer || "—"}</span></td>
-                  {m.finished && <td style={{ textAlign: "right", fontFamily: "var(--fd)", fontSize: 18, color: p ? "var(--gold)" : "var(--muted)" }}>{p}</td>}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+      <div>
+        <div className="cons">
+          <span className="muted">Typów: {rows.length}</span>
+          {wTop && <span className="cpill">Faworyt: <b>{winnerLabel(m, wTop[0])}</b> ({wTop[1]}/{rows.length})</span>}
+          {slTop && slTop[1] > 1 && <span className="cpill">Najczęstszy wynik: <b style={{ fontFamily: "var(--fd)" }}>{slTop[0]}</b> ({slTop[1]}×)</span>}
+        </div>
+        <div style={{ overflowX: "auto" }}>
+          <table className="tbl">
+            <thead><tr>
+              <th>Gracz</th><th>Wynik</th><th>Zwycięzca</th><th>1. strzelec</th>{m.finished && <th style={{ textAlign: "right" }}>Pkt</th>}
+            </tr></thead>
+            <tbody>
+              {rows.map(({ u, b }) => {
+                const hasExact = b.exactHome !== "" && b.exactHome != null && b.exactAway !== "" && b.exactAway != null;
+                const exOK = r && hasExact && Number(b.exactHome) === Number(r.homeScore) && Number(b.exactAway) === Number(r.awayScore);
+                const diffOK = r && hasExact && (Number(b.exactHome) - Number(b.exactAway)) === (Number(r.homeScore) - Number(r.awayScore));
+                const wnOK = r && b.winner && b.winner === aw;
+                const scOK = r && b.firstScorer && scorerHit(b.firstScorer, r.firstScorer);
+                const p = m.finished ? (exOK ? points.exact : 0) + (diffOK ? points.diff : 0) + (wnOK ? points.winner : 0) + (scOK ? points.scorer : 0) : 0;
+                const kontra = consWinner && b.winner && b.winner !== consWinner;
+                return (
+                  <tr key={u.id}>
+                    <td className={u.id === me.id ? "you" : ""}>{u.name}{u.id === me.id ? " (Ty)" : ""}</td>
+                    <td><span className={exOK ? "hit" : diffOK ? "hit2" : ""} style={{ padding: "2px 7px", fontFamily: "var(--fd)", fontSize: 17 }}>{hasExact ? `${b.exactHome}:${b.exactAway}` : "—"}</span></td>
+                    <td><span className={wnOK ? "hit" : ""} style={{ padding: "2px 7px" }}>{winnerLabel(m, b.winner)}</span>{kontra && <span className="kontra">kontra</span>}</td>
+                    <td><span className={scOK ? "hit" : ""} style={{ padding: "2px 7px" }}>{b.firstScorer || "—"}</span></td>
+                    {m.finished && <td style={{ textAlign: "right", fontFamily: "var(--fd)", fontSize: 18, color: p ? "var(--gold)" : "var(--muted)" }}>{p}</td>}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
     );
   }
@@ -1322,12 +1501,12 @@ function App() {
         <div className="panel" style={{ marginBottom: 16, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
           <div>
             <h2 style={{ fontSize: 24 }}>Klasyfikacja</h2>
-            <p className="muted" style={{ fontSize: 13 }}>Rozegrane mecze: <b style={{ color: "var(--txt)" }}>{played}</b> · Punktacja: dokł. {points.exact} / różnica {points.diff} / zwyc. {points.winner} / strzelec {points.scorer}{bonus.some((q) => (q.answer || "").trim()) ? " · z bonusem" : ""}</p>
+            <p className="muted" style={{ fontSize: 13 }}>Rozegrane mecze: <b style={{ color: "var(--txt)" }}>{played}</b> · Punktacja: dokł. {points.exact} / różnica {points.diff} / zwyc. {points.winner} / strzelec {points.scorer}{bonus.some((q) => (q.answer || "").trim()) ? " · z bonusem" : ""} · <span style={{ color: "var(--grass)" }}>kliknij gracza → profil</span></p>
           </div>
           <Crown size={30} style={{ color: "var(--gold)" }} />
         </div>
         {standingsFull.map((u, i) => (
-          <div className={`rank ${i === 0 && u.grand > 0 ? "top" : ""}`} key={u.id} style={{ animationDelay: `${i * 40}ms` }}>
+          <div className={`rank ${i === 0 && u.grand > 0 ? "top" : ""}`} key={u.id} style={{ animationDelay: `${i * 40}ms` }} onClick={() => setProfileId(u.id)} title="Zobacz profil gracza">
             <div className={`pos ${i === 0 ? "g" : i === 1 ? "s" : i === 2 ? "b" : ""}`}>{i + 1}</div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontWeight: 800, fontSize: 16 }} className={u.id === me.id ? "you" : ""}>
@@ -1344,6 +1523,167 @@ function App() {
             <div style={{ textAlign: "right" }}><div className="pts">{u.grand}</div><div className="muted" style={{ fontSize: 11, letterSpacing: 1 }}>PKT</div></div>
           </div>
         ))}
+      </div>
+    );
+  }
+
+  function renderProfile() {
+    const u = users.find((x) => x.id === profileId);
+    if (!u) return null;
+    const s = statsFor(u.id);
+    const badges = badgesFor(u.id);
+    const pct = (n) => s.bets ? Math.round(100 * n / s.bets) : 0;
+    const scPct = s.scBets ? Math.round(100 * s.sc / s.scBets) : 0;
+    const place = standingsFull.findIndex((x) => x.id === u.id) + 1;
+    const grand = (standingsFull.find((x) => x.id === u.id) || {}).grand || 0;
+    const cmp = cmpId && cmpId !== u.id ? users.find((x) => x.id === cmpId) : null;
+    const cs = cmp ? statsFor(cmp.id) : null;
+    const Row = ({ l, a, b }) => (<tr><td style={{ color: "var(--muted)" }}>{l}</td><td style={{ textAlign: "center", fontFamily: "var(--fd)", fontSize: 16 }}>{a}</td>{cs && <td style={{ textAlign: "center", fontFamily: "var(--fd)", fontSize: 16, color: "var(--usa)" }}>{b}</td>}</tr>);
+    return (
+      <div className="modal-bg" onClick={() => { setProfileId(null); setCmpId(""); }}>
+        <div className="modal" onClick={(e) => e.stopPropagation()}>
+          <div className="modal-h">
+            <div>
+              <div style={{ fontFamily: "var(--fd)", fontSize: 22 }}>{u.name}{u.id === me.id ? " (Ty)" : ""}</div>
+              <div className="muted" style={{ fontSize: 12 }}>{place ? place + ". miejsce" : "—"} · {grand} pkt łącznie</div>
+            </div>
+            <button className="icobtn" onClick={() => { setProfileId(null); setCmpId(""); }}><X size={18} /></button>
+          </div>
+          <div className="modal-b" style={{ display: "grid", gap: 16 }}>
+            {badges.length > 0 && (
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                {badges.map((bd, i) => <span className="bdg" key={i} title={bd.d}><span>{bd.ic}</span> {bd.t}</span>)}
+              </div>
+            )}
+            <div className="statgrid">
+              <div className="statbox"><div className="sv">{s.total}</div><div className="sl">pkt z meczów</div></div>
+              <div className="statbox"><div className="sv">{s.bets}</div><div className="sl">obstawione</div></div>
+              <div className="statbox"><div className="sv">{s.perfect}</div><div className="sl">komplety</div></div>
+            </div>
+            <div>
+              <div className="lbl" style={{ marginBottom: 6 }}>Skuteczność</div>
+              {[["Dokładny wynik", s.ex, pct(s.ex), s.bets], ["Różnica bramek", s.df, pct(s.df), s.bets], ["Zwycięzca", s.wn, pct(s.wn), s.bets], ["1. strzelec", s.sc, scPct, s.scBets]].map(([l, n, pc, den]) => (
+                <div key={l} style={{ marginBottom: 8 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13 }}><span>{l}</span><span className="muted">{n} / {den} · {pc}%</span></div>
+                  <div className="bar"><span style={{ width: pc + "%" }} /></div>
+                </div>
+              ))}
+            </div>
+            <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+              <div className="statbox" style={{ flex: 1, minWidth: 150 }}><div className="sl">Najlepszy dzień</div><div style={{ fontFamily: "var(--fd)", fontSize: 15, marginTop: 4 }}>{s.best && s.best.v > 0 ? fmtDayShort(dayAnchorTs(s.best.k)) + " · " + s.best.v + " pkt" : "—"}</div></div>
+              <div className="statbox" style={{ flex: 1, minWidth: 150 }}><div className="sl">Najsłabszy dzień</div><div style={{ fontFamily: "var(--fd)", fontSize: 15, marginTop: 4 }}>{s.worst && s.bets ? fmtDayShort(dayAnchorTs(s.worst.k)) + " · " + s.worst.v + " pkt" : "—"}</div></div>
+            </div>
+            <div>
+              <div className="lbl" style={{ marginBottom: 6 }}>Pojedynek 1 na 1</div>
+              <select className="inp scorer-sel" value={cmpId} onChange={(e) => setCmpId(e.target.value)}>
+                <option value="">— porównaj z graczem —</option>
+                {users.filter((x) => x.id !== u.id).map((x) => <option key={x.id} value={x.id}>{x.name}</option>)}
+              </select>
+              {cs && (
+                <div style={{ overflowX: "auto", marginTop: 10 }}>
+                  <table className="tbl">
+                    <thead><tr><th></th><th style={{ textAlign: "center" }}>{u.name}</th><th style={{ textAlign: "center", color: "var(--usa)" }}>{cmp.name}</th></tr></thead>
+                    <tbody>
+                      <Row l="Punkty (mecze)" a={s.total} b={cs.total} />
+                      <Row l="Komplety" a={s.perfect} b={cs.perfect} />
+                      <Row l="Dokładne" a={s.ex} b={cs.ex} />
+                      <Row l="Zwycięzcy" a={s.wn} b={cs.wn} />
+                      <Row l="Strzelcy" a={s.sc} b={cs.sc} />
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+            <div>
+              <div className="lbl" style={{ marginBottom: 6 }}>Historia typów ({s.hist.length})</div>
+              <div style={{ overflowX: "auto", maxHeight: 260, overflowY: "auto" }}>
+                <table className="tbl">
+                  <thead><tr><th>Mecz</th><th>Typ</th><th style={{ textAlign: "right" }}>Pkt</th></tr></thead>
+                  <tbody>
+                    {s.hist.slice().reverse().map((h, i) => (
+                      <tr key={i}>
+                        <td><div style={{ display: "flex", alignItems: "center", gap: 5 }}><Flag code={h.m.homeCode} size="fl-sm" /><span className="muted" style={{ fontSize: 12, fontFamily: "var(--fd)" }}>{h.m.result.homeScore}:{h.m.result.awayScore}</span><Flag code={h.m.awayCode} size="fl-sm" /></div></td>
+                        <td style={{ fontFamily: "var(--fd)" }}>{h.b.exactHome != null && h.b.exactHome !== "" ? h.b.exactHome + ":" + h.b.exactAway : "—"}</td>
+                        <td style={{ textAlign: "right", fontFamily: "var(--fd)", color: h.p ? "var(--gold)" : "var(--muted)" }}>{h.p}</td>
+                      </tr>
+                    ))}
+                    {!s.hist.length && <tr><td colSpan={3} className="muted">Brak rozliczonych typów.</td></tr>}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  function renderPointsChart() {
+    if (!days.length || !users.length) return null;
+    const colors = ["#27d586", "#f4c95d", "#e8403a", "#3b82f6", "#a78bfa", "#fb923c", "#22d3ee", "#f472b6", "#9ae6b4", "#fcd34d"];
+    const series = users.map((u, i) => ({ u, color: colors[i % colors.length], pts: [] }));
+    let cumMatches = [], maxY = 1;
+    for (const d of days) {
+      cumMatches = cumMatches.concat(d.matches.filter((m) => m.finished && m.result));
+      const map = {}; tally(users, cumMatches, betsByUser, points).forEach((x) => { map[x.id] = x.total; });
+      series.forEach((s) => { const v = map[s.u.id] || 0; s.pts.push(v); if (v > maxY) maxY = v; });
+    }
+    if (!series.some((s) => s.pts.some((v) => v > 0))) return null;
+    const n = days.length, W = Math.max(320, n * 70), H = 220, padL = 30, padR = 10, padT = 10, padB = 26;
+    const iw = W - padL - padR, ih = H - padT - padB;
+    const x = (i) => padL + (n === 1 ? iw / 2 : i * iw / (n - 1));
+    const y = (v) => padT + ih - (v / maxY) * ih;
+    return (
+      <div className="panel">
+        <h3 style={{ fontSize: 17, marginBottom: 4, display: "flex", alignItems: "center", gap: 8 }}><Trophy size={15} /> Punkty w czasie</h3>
+        <p className="muted" style={{ fontSize: 12, marginBottom: 10 }}>Dorobek punktowy narastająco po kolejnych dniach meczowych (numer = dzień).</p>
+        <div className="chartwrap">
+          <svg viewBox={`0 0 ${W} ${H}`} width={W} height={H} style={{ maxWidth: "100%", display: "block" }}>
+            {[0, 0.25, 0.5, 0.75, 1].map((f, i) => (
+              <g key={i}>
+                <line x1={padL} x2={W - padR} y1={padT + ih - f * ih} y2={padT + ih - f * ih} stroke="rgba(255,255,255,.08)" />
+                <text x={4} y={padT + ih - f * ih + 4} fill="#8fb0a1" fontSize="9">{Math.round(maxY * f)}</text>
+              </g>
+            ))}
+            {days.map((d, i) => <text key={i} x={x(i)} y={H - 8} fill="#8fb0a1" fontSize="9" textAnchor="middle">{i + 1}</text>)}
+            {series.map((s, si) => (
+              <g key={si}>
+                <polyline fill="none" stroke={s.color} strokeWidth="2.5" strokeLinejoin="round" strokeLinecap="round" points={s.pts.map((v, i) => x(i) + "," + y(v)).join(" ")} />
+                {s.pts.map((v, i) => <circle key={i} cx={x(i)} cy={y(v)} r="2.6" fill={s.color} />)}
+              </g>
+            ))}
+          </svg>
+        </div>
+        <div className="chleg">
+          {series.map((s, i) => <span key={i}><span className="chdot" style={{ background: s.color }} /> {s.u.name}{s.u.id === me.id ? " (Ty)" : ""} <b style={{ color: "var(--txt)" }}>{s.pts[s.pts.length - 1] || 0}</b></span>)}
+        </div>
+      </div>
+    );
+  }
+
+  function renderChat() {
+    return (
+      <div style={{ display: "grid", gap: 14 }}>
+        <div className="panel" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
+          <div><h2 style={{ fontSize: 24 }}>Czat</h2><p className="muted" style={{ fontSize: 13 }}>Wspólna tablica — komentarze i trash talk. Widzą wszyscy gracze.</p></div>
+          <Users size={28} style={{ color: "var(--gold)" }} />
+        </div>
+        <div className="panel">
+          <div className="chatscroll" id="chatscroll">
+            {chatMsgs.length === 0 && <div className="note"><Users size={15} /> Jeszcze pusto — napisz pierwszą wiadomość!</div>}
+            {chatMsgs.map((c) => (
+              <div key={c.id} className={"cmsg" + (c.uid === me.id ? " mine" : "")}>
+                {c.uid !== me.id && <div className="cn">{c.name}</div>}
+                <div className="ct">{c.text}</div>
+                <div className="cd">{new Date(c.ts).toLocaleString("pl-PL", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}</div>
+              </div>
+            ))}
+          </div>
+          <div className="chatbar">
+            <textarea className="inp" value={chatInput} maxLength={500} placeholder="Napisz wiadomość… (Enter wysyła)" onChange={(e) => setChatInput(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); postChat(); } }} />
+            <button className="btn grass" onClick={postChat} disabled={!chatInput.trim()}><Check size={16} /> Wyślij</button>
+          </div>
+        </div>
       </div>
     );
   }
@@ -1501,6 +1841,7 @@ function App() {
           <div><h2 style={{ fontSize: 24 }}>Kto prowadził</h2><p className="muted" style={{ fontSize: 13 }}>Tabela liczona narastająco po każdej kolejce.</p></div>
           <History size={28} style={{ color: "var(--gold)" }} />
         </div>
+        {renderPointsChart()}
         {checkpoints.map((cp, i) => {
           const leader = cp.table[0];
           return (
@@ -2039,7 +2380,7 @@ function App() {
   const hasBet = (m) => { const b = myBets[m.id]; return !!(b && ((b.winner && b.winner !== "") || (b.exactHome !== "" && b.exactHome != null) || (b.firstScorer && b.firstScorer !== ""))); };
   const unbetCount = upcomingMine.filter((m) => !hasBet(m)).length;
 
-  const tabs = [["typuj", "Typuj", Target], ["ranking", "Ranking", Trophy], ["grupy", "Grupy", Globe], ["dni", "Dni", Calendar], ["historia", "Historia", History], ["bonus", "Bonus", Crown], ["regulamin", "Regulamin", BookOpen], ["ustawienia", "Ustawienia", Settings]];
+  const tabs = [["typuj", "Typuj", Target], ["ranking", "Ranking", Trophy], ["grupy", "Grupy", Globe], ["dni", "Dni", Calendar], ["czat", "Czat", Users], ["historia", "Historia", History], ["bonus", "Bonus", Crown], ["regulamin", "Regulamin", BookOpen], ["ustawienia", "Ustawienia", Settings]];
   if (me.isAdmin) tabs.push(["admin", "Panel admina", Shield]);
 
   return (
@@ -2133,6 +2474,7 @@ function App() {
         {tab === "ranking" && renderRanking()}
         {tab === "grupy" && renderGrupy()}
         {tab === "dni" && renderDni()}
+        {tab === "czat" && renderChat()}
         {tab === "historia" && renderHistoria()}
         {tab === "bonus" && renderBonus()}
         {tab === "regulamin" && renderRegulamin()}
@@ -2141,6 +2483,7 @@ function App() {
       </main>
 
       {toast && <div className="toast">{toast}</div>}
+      {profileId && renderProfile()}
     </div>
   );
 }
