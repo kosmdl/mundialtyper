@@ -360,6 +360,10 @@ const WC_FIXTURES = [
 const WC_ENG = Object.fromEntries(Object.entries(WC_TEAM).map(([eng, v]) => [v[1], eng]));
 const engOf = (code, fallback) => WC_ENG[code] || fallback || "";
 const etDateKey = (ts) => { try { return new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(ts)); } catch { return ""; } };
+/* „Dzień meczowy" = okno 24h startujące o 07:00 ET (≈ 13:00 w Polsce). Dzięki temu mecze późnym wieczorem w USA (nad ranem w PL) trafiają do tej samej sesji. */
+const ET_CUTOFF_H = 7;
+const matchDayKey = (ts) => etDateKey(new Date(ts).getTime() - ET_CUTOFF_H * 3600 * 1000);
+const dayAnchorTs = (key) => { try { return new Date(key + "T12:00:00-04:00").getTime(); } catch { return Date.now(); } };
 const fmtDayLabel = (ts) => { try { return new Intl.DateTimeFormat("pl-PL", { timeZone: "America/New_York", weekday: "long", day: "numeric", month: "long" }).format(new Date(ts)); } catch { return ""; } };
 const fmtDayShort = (ts) => { try { return new Intl.DateTimeFormat("pl-PL", { timeZone: "America/New_York", weekday: "short", day: "2-digit", month: "2-digit" }).format(new Date(ts)); } catch { return ""; } };
 /* mapowanie nazw reprezentacji (ESPN / angielskich) -> kod flagi, do pobierania wyników z ESPN */
@@ -744,7 +748,7 @@ function App() {
 
   const days = useMemo(() => {
     const map = new Map();
-    for (const m of matches) { const key = etDateKey(m.kickoff); if (!map.has(key)) map.set(key, []); map.get(key).push(m); }
+    for (const m of matches) { const key = matchDayKey(m.kickoff); if (!map.has(key)) map.set(key, []); map.get(key).push(m); }
     return [...map.entries()].map(([key, ms]) => {
       ms.sort((a, b) => new Date(a.kickoff) - new Date(b.kickoff));
       return { key, matches: ms };
@@ -754,7 +758,7 @@ function App() {
   useEffect(() => {
     if (!days.length) return;
     if (selDay && days.some((d) => d.key === selDay)) return;
-    const todayET = etDateKey(Date.now());
+    const todayET = matchDayKey(Date.now());
     const def = days.find((d) => d.key >= todayET) || days[days.length - 1];
     setSelDay(def.key);
   }, [days, selDay]);
@@ -1293,14 +1297,14 @@ function App() {
           {days.map((d, i) => (
             <button key={d.key} className={`daypill ${d.key === day.key ? "on" : ""}`} onClick={() => setSelDay(d.key)}>
               <span className="dpn">Dzień {i + 1}</span>
-              <span className="dpd">{fmtDayShort(d.matches[0].kickoff)}</span>
+              <span className="dpd">{fmtDayShort(dayAnchorTs(d.key))}</span>
             </button>
           ))}
         </div>
         <div className="panel" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
           <button className="icobtn" disabled={idx <= 0} onClick={() => setSelDay(days[idx - 1].key)}><ChevronLeft size={18} /></button>
           <div style={{ textAlign: "center" }}>
-            <div style={{ fontFamily: "var(--fd)", fontSize: 20, textTransform: "capitalize" }}>{fmtDayLabel(day.matches[0].kickoff)}</div>
+            <div style={{ fontFamily: "var(--fd)", fontSize: 20, textTransform: "capitalize" }}>{fmtDayLabel(dayAnchorTs(day.key))}</div>
             <div className="muted" style={{ fontSize: 12 }}>{cnt} {cnt === 1 ? "mecz" : cnt < 5 ? "mecze" : "meczów"} · {allDone ? "zakończony" : "w toku"}</div>
           </div>
           <button className="icobtn" disabled={idx >= days.length - 1} onClick={() => setSelDay(days[idx + 1].key)}><ChevronRight size={18} /></button>
@@ -1656,14 +1660,14 @@ function App() {
           {days.map((d, i) => (
             <button key={d.key} className={`daypill ${d.key === day.key ? "on" : ""}`} onClick={() => setSelDay2(d.key)}>
               <span className="dpn">Dzień {i + 1}</span>
-              <span className="dpd">{fmtDayShort(d.matches[0].kickoff)}</span>
+              <span className="dpd">{fmtDayShort(dayAnchorTs(d.key))}</span>
             </button>
           ))}
         </div>
         <div className="panel" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
           <button className="icobtn" disabled={idx <= 0} onClick={() => setSelDay2(days[idx - 1].key)}><ChevronLeft size={18} /></button>
           <div style={{ textAlign: "center" }}>
-            <div style={{ fontFamily: "var(--fd)", fontSize: 20, textTransform: "capitalize" }}>{fmtDayLabel(day.matches[0].kickoff)}</div>
+            <div style={{ fontFamily: "var(--fd)", fontSize: 20, textTransform: "capitalize" }}>{fmtDayLabel(dayAnchorTs(day.key))}</div>
             <div className="muted" style={{ fontSize: 12 }}>{dayDone.length}/{day.matches.length} {plMecz(day.matches.length)} rozliczone</div>
           </div>
           <button className="icobtn" disabled={idx >= days.length - 1} onClick={() => setSelDay2(days[idx + 1].key)}><ChevronRight size={18} /></button>
