@@ -670,6 +670,38 @@ button.ministat:hover{background:var(--panel-2);border-color:rgba(255,255,255,.2
 .cmsg .cd{font-size:10px;color:var(--muted);margin-top:3px}
 .chatbar{display:flex;gap:8px;margin-top:12px}
 .chatbar textarea{flex:1;resize:none;min-height:46px}
+.filterbar{display:flex;gap:8px;flex-wrap:wrap}
+.fchip{padding:7px 13px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--muted);font-weight:700;font-size:13px;cursor:pointer;transition:.15s}
+.fchip:hover{color:var(--txt);border-color:rgba(255,255,255,.2)}
+.fchip.on{background:var(--grass);color:#04110b;border-color:var(--grass)}
+.botnav{display:none;position:fixed;left:0;right:0;bottom:0;z-index:80;background:rgba(8,14,28,.96);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom));justify-content:space-around;align-items:stretch}
+.bn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;border:none;background:none;color:var(--muted);font-size:10.5px;font-weight:700;cursor:pointer}
+.bn.on{color:var(--grass)}
+.bn.on .bnic{background:rgba(39,213,134,.16)}
+.bnic{display:flex;align-items:center;justify-content:center;width:34px;height:26px;border-radius:9px}
+.bn .bned{font-size:18px;line-height:1}
+.mainwrap{padding-bottom:60px}
+.tab.more{margin-left:auto}
+.tab .ted{font-size:17px;line-height:1;margin-right:2px}
+.menu-bg{position:fixed;inset:0;background:rgba(3,6,16,.6);z-index:120;display:flex;align-items:flex-end;justify-content:center}
+.menu-card{width:100%;max-width:520px;background:var(--panel);border:1px solid var(--line);border-bottom:none;border-radius:18px 18px 0 0;padding:10px;box-shadow:0 -20px 60px rgba(0,0,0,.5)}
+.menu-card .mh{display:flex;justify-content:space-between;align-items:center;padding:6px 8px 10px}
+.menu-item{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:13px 12px;border-radius:12px;border:1px solid transparent;background:none;color:var(--txt);font-size:15px;font-weight:700;cursor:pointer}
+.menu-item:hover{background:rgba(255,255,255,.05)}
+.menu-item.on{border-color:var(--line);background:rgba(244,201,93,.08)}
+@media(min-width:681px){.menu-bg{align-items:flex-start;justify-content:flex-end;padding:62px 18px}.menu-card{width:264px;border-radius:14px;border-bottom:1px solid var(--line)}}
+@media(max-width:680px){.tabs{display:none}.botnav{display:flex}.mainwrap{padding-bottom:90px}}
+.livebar{position:sticky;top:8px;z-index:60;display:flex;align-items:center;gap:9px;background:linear-gradient(135deg,rgba(232,64,58,.22),rgba(232,64,58,.08));border:1px solid rgba(232,64,58,.45);border-radius:12px;padding:7px 11px;margin-bottom:14px;backdrop-filter:blur(8px)}
+.livebar .lblab{letter-spacing:1px;font-size:12px;color:#ffb3b0;white-space:nowrap;font-weight:800}
+.livescroll{display:flex;gap:8px;overflow-x:auto}
+.livechip{display:flex;align-items:center;gap:6px;padding:4px 9px;border-radius:9px;background:rgba(0,0,0,.25);border:1px solid rgba(232,64,58,.3);color:var(--txt);font-family:var(--fd);font-size:15px;cursor:pointer;white-space:nowrap}
+.livechip .lmin2{font-family:var(--fb);font-size:10px;color:#ff9a9a;font-weight:800}
+.rank.meRow{border-color:var(--grass);box-shadow:inset 3px 0 0 var(--grass),0 0 0 1px rgba(39,213,134,.25)}
+.myposbar{display:flex;align-items:center;gap:8px;background:rgba(39,213,134,.1);border:1px solid rgba(39,213,134,.3);border-radius:12px;padding:9px 13px;margin-bottom:14px;font-size:14px}
+.segbar{display:inline-flex;background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:999px;padding:3px}
+.segbtn{padding:7px 16px;border-radius:999px;border:none;background:none;color:var(--muted);font-weight:700;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.segbtn.on{background:var(--gold);color:#1a1407}
+.todaybtn{padding:5px 11px;border-radius:8px;border:1px solid var(--line);background:rgba(59,130,246,.12);color:#bcd4ff;font-weight:700;font-size:12px;cursor:pointer}
 input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 input[type=number]{-moz-appearance:textfield}
 ::-webkit-scrollbar{height:10px;width:10px}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.14);border-radius:8px}
@@ -712,6 +744,9 @@ function App() {
   /* składy zawodników są wbudowane (stała SQUADS) — bez stanu i bez pobierania */
   const [selDay, setSelDay] = useState(null);   // wybrany dzień (klucz daty ET)
   const [selDay2, setSelDay2] = useState(null); // wybrany dzień w zakładce „Dni"
+  const [typFilter, setTypFilter] = useState("all"); // Typuj: all | open | done
+  const [grpView, setGrpView] = useState("tabele");   // Grupy: tabele | drabinka
+  const [moreOpen, setMoreOpen] = useState(false);    // menu „Więcej"
   const [prof, setProf] = useState({ name: "", pin: "", pin2: "", err: "", ok: "" }); // edycja konta
 
   const flash = (m) => { setToast(m); setTimeout(() => setToast(""), 2600); };
@@ -1471,11 +1506,46 @@ function App() {
         <p className="muted" style={{ fontSize: 14 }}>{me.isAdmin ? "Wczytaj terminarz MŚ 2026 w panelu admina." : "Poczekaj, aż administrator wczyta terminarz."}</p>
       </div>
     );
+    const openAll = upcomingMine.filter((m) => !hasBet(m)).slice().sort((a, b) => new Date(a.kickoff) - new Date(b.kickoff));
+    const Chips = () => (
+      <div className="filterbar">
+        {[["all", "Wszystkie"], ["open", "Do obstawienia"], ["done", "Zakończone"]].map(([k, l]) => (
+          <button key={k} className={`fchip ${typFilter === k ? "on" : ""}`} onClick={() => setTypFilter(k)}>{l}{k === "open" && openAll.length > 0 ? ` · ${openAll.length}` : ""}</button>
+        ))}
+      </div>
+    );
+    if (typFilter === "open") {
+      return (
+        <div style={{ display: "grid", gap: 16 }}>
+          <Chips />
+          {openAll.length === 0 ? (
+            <div className="panel" style={{ textAlign: "center", padding: 32 }}>
+              <Check size={30} style={{ color: "var(--grass)", margin: "0 auto 10px" }} />
+              <h3 style={{ fontSize: 20, marginBottom: 6 }}>Wszystko obstawione 🎉</h3>
+              <p className="muted" style={{ fontSize: 14 }}>Nie masz otwartych meczów bez typu. Zajrzyj tu, gdy zbliżą się kolejne spotkania.</p>
+            </div>
+          ) : (
+            <>
+              <p className="note"><Flame size={13} /> {openAll.length} {plMecz(openAll.length)} czeka na Twój typ — od najbliższego gwizdka.</p>
+              {openAll.map(renderMatchCard)}
+            </>
+          )}
+        </div>
+      );
+    }
     const day = days.find((d) => d.key === selDay) || days[0];
     if (!day) return null;
     const idx = days.findIndex((d) => d.key === day.key);
     const cnt = day.matches.length;
     const allDone = day.matches.every((m) => m.finished && m.result);
+    const todayKey = matchDayKey(Date.now());
+    const hasToday = days.some((d) => d.key === todayKey);
+    const dayDone = day.matches.filter((m) => m.finished && m.result);
+    const list = typFilter === "done" ? dayDone : day.matches;
+    const dayTbl = tally(users, dayDone, betsByUser, points);
+    const dayEndTs = day.matches.reduce((mx, m) => Math.max(mx, new Date(m.kickoff).getTime()), 0);
+    const cumMap = {};
+    tally(users, matches.filter((m) => m.finished && m.result && new Date(m.kickoff).getTime() <= dayEndTs), betsByUser, points).forEach((u) => { cumMap[u.id] = u.total; });
     return (
       <div style={{ display: "grid", gap: 16 }}>
         <div className="daybar">
@@ -1486,15 +1556,42 @@ function App() {
             </button>
           ))}
         </div>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+          <Chips />
+          {hasToday && day.key !== todayKey && <button className="todaybtn" onClick={() => setSelDay(todayKey)}>Dziś →</button>}
+        </div>
         <div className="panel" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
           <button className="icobtn" disabled={idx <= 0} onClick={() => setSelDay(days[idx - 1].key)}><ChevronLeft size={18} /></button>
           <div style={{ textAlign: "center" }}>
             <div style={{ fontFamily: "var(--fd)", fontSize: 20, textTransform: "capitalize" }}>{fmtDayLabel(dayAnchorTs(day.key))}</div>
-            <div className="muted" style={{ fontSize: 12 }}>{cnt} {cnt === 1 ? "mecz" : cnt < 5 ? "mecze" : "meczów"} · {allDone ? "zakończony" : "w toku"}</div>
+            <div className="muted" style={{ fontSize: 12 }}>{cnt} {plMecz(cnt)} · {allDone ? "zakończony" : "w toku"}</div>
           </div>
           <button className="icobtn" disabled={idx >= days.length - 1} onClick={() => setSelDay(days[idx + 1].key)}><ChevronRight size={18} /></button>
         </div>
-        {day.matches.map(renderMatchCard)}
+        {list.length === 0
+          ? <div className="note"><Calendar size={14} /> {typFilter === "done" ? "Żaden mecz tego dnia nie jest jeszcze rozliczony." : "Brak meczów w tym dniu."}</div>
+          : list.map(renderMatchCard)}
+        {dayDone.length > 0 && renderDayTable(day)}
+        {dayDone.length > 0 && (
+          <div className="panel">
+            <h3 style={{ fontSize: 17, marginBottom: 10, display: "flex", alignItems: "center", gap: 8 }}><Target size={15} /> Punkty tego dnia</h3>
+            <div style={{ overflowX: "auto" }}>
+              <table className="tbl">
+                <thead><tr><th>#</th><th>Gracz</th><th style={{ textAlign: "right" }}>Pkt dnia</th><th style={{ textAlign: "right" }}>Łącznie</th></tr></thead>
+                <tbody>
+                  {dayTbl.map((u, i) => (
+                    <tr key={u.id}>
+                      <td style={{ fontFamily: "var(--fd)", fontSize: 16, color: i === 0 && u.total > 0 ? "var(--gold)" : "var(--muted)" }}>{i + 1}</td>
+                      <td className={u.id === me.id ? "you" : ""}>{u.name}{u.id === me.id ? " (Ty)" : ""}</td>
+                      <td style={{ textAlign: "right", fontFamily: "var(--fd)", fontSize: 18, color: u.total > 0 ? "var(--grass)" : "var(--muted)" }}>{u.total > 0 ? "+" + u.total : "0"}</td>
+                      <td style={{ textAlign: "right", fontFamily: "var(--fd)", fontSize: 18, color: "var(--gold)" }}>{cumMap[u.id] || 0}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -1511,8 +1608,9 @@ function App() {
           </div>
           <Crown size={30} style={{ color: "var(--gold)" }} />
         </div>
+        {(() => { const r = standingsFull.findIndex((x) => x.id === me.id) + 1; const meU = standingsFull.find((x) => x.id === me.id); if (!r) return null; return (<div className="myposbar"><Target size={15} style={{ color: "var(--grass)" }} /><span>Twoja pozycja: <b style={{ fontFamily: "var(--fd)", fontSize: 16 }}>{r}.</b> z {standingsFull.length} · <b style={{ color: "var(--gold)" }}>{meU ? meU.grand : 0} pkt</b></span></div>); })()}
         {standingsFull.map((u, i) => (
-          <div className={`rank ${i === 0 && u.grand > 0 ? "top" : ""}`} key={u.id} style={{ animationDelay: `${i * 40}ms` }} onClick={() => setProfileId(u.id)} title="Zobacz profil gracza">
+          <div className={`rank ${i === 0 && u.grand > 0 ? "top" : ""} ${u.id === me.id ? "meRow" : ""}`} key={u.id} style={{ animationDelay: `${i * 40}ms` }} onClick={() => setProfileId(u.id)} title="Zobacz profil gracza">
             <div className={`pos ${i === 0 ? "g" : i === 1 ? "s" : i === 2 ? "b" : ""}`}>{i + 1}</div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontWeight: 800, fontSize: 16 }} className={u.id === me.id ? "you" : ""}>
@@ -1948,15 +2046,18 @@ function App() {
     const tr = grpData.thirdsRank;
     return (
       <div style={{ display: "grid", gap: 16 }}>
-        <div className="panel" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
+        <div className="panel" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
           <div><h2 style={{ fontSize: 24 }}>Grupy</h2><p className="muted" style={{ fontSize: 13 }}>Tabele grup i drabinka pucharowa — liczone z wpisanych wyników.</p></div>
-          <Globe size={28} style={{ color: "var(--gold)" }} />
+          <div className="segbar">
+            <button className={`segbtn ${grpView === "tabele" ? "on" : ""}`} onClick={() => setGrpView("tabele")}><Globe size={14} /> Tabele</button>
+            <button className={`segbtn ${grpView === "drabinka" ? "on" : ""}`} onClick={() => setGrpView("drabinka")}><Trophy size={14} /> Drabinka</button>
+          </div>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(290px,1fr))", gap: 14 }}>
+        {grpView === "tabele" && (<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(290px,1fr))", gap: 14 }}>
           {GROUP_LETTERS.map((L) => renderGroupCard(L))}
-        </div>
-        <p className="note"><span style={{ display: "inline-block", width: 10, height: 10, borderRadius: 2, background: "rgba(39,213,134,.5)", marginRight: 5 }} />miejsca 1–2 = awans · <span style={{ display: "inline-block", width: 10, height: 10, borderRadius: 2, background: "rgba(244,201,93,.5)", margin: "0 5px" }} />3. miejsce = szansa na awans. Kolejność: punkty → różnica → bramki.</p>
-        {tr.length > 0 && (
+        </div>)}
+        {grpView === "tabele" && <p className="note"><span style={{ display: "inline-block", width: 10, height: 10, borderRadius: 2, background: "rgba(39,213,134,.5)", marginRight: 5 }} />miejsca 1–2 = awans · <span style={{ display: "inline-block", width: 10, height: 10, borderRadius: 2, background: "rgba(244,201,93,.5)", margin: "0 5px" }} />3. miejsce = szansa na awans. Kolejność: punkty → bezpośrednie mecze → różnica → bramki.</p>}
+        {grpView === "tabele" && tr.length > 0 && (
           <div className="panel">
             <h3 style={{ fontSize: 17, marginBottom: 8, display: "flex", alignItems: "center", gap: 8 }}><Crown size={15} /> Ranking 3. miejsc — 8 najlepszych awansuje</h3>
             <div style={{ overflowX: "auto" }}>
@@ -1976,7 +2077,7 @@ function App() {
             </div>
           </div>
         )}
-        {renderBracket()}
+        {grpView === "drabinka" && renderBracket()}
       </div>
     );
   }
@@ -2386,8 +2487,11 @@ function App() {
   const hasBet = (m) => { const b = myBets[m.id]; return !!(b && ((b.winner && b.winner !== "") || (b.exactHome !== "" && b.exactHome != null) || (b.firstScorer && b.firstScorer !== ""))); };
   const unbetCount = upcomingMine.filter((m) => !hasBet(m)).length;
 
-  const tabs = [["typuj", "Typuj", Target], ["ranking", "Ranking", Trophy], ["grupy", "Grupy", Globe], ["dni", "Dni", Calendar], ["czat", "Czat", Users], ["historia", "Historia", History], ["bonus", "Bonus", Crown], ["regulamin", "Regulamin", BookOpen], ["ustawienia", "Ustawienia", Settings]];
-  if (me.isAdmin) tabs.push(["admin", "Panel admina", Shield]);
+  const primaryTabs = [["typuj", "Typuj", Target], ["ranking", "Ranking", Trophy], ["grupy", "Grupy", Globe], ["czat", "Czat", Users], ["historia", "Historia", History]];
+  const moreTabs = [["bonus", "Bonus", Crown], ["regulamin", "Regulamin", BookOpen], ["ustawienia", "Ustawienia", Settings]];
+  if (me.isAdmin) moreTabs.push(["admin", "Panel admina", Shield]);
+  const moreActive = moreTabs.some((t) => t[0] === tab);
+  const goTab = (id) => { setTab(id); setMoreOpen(false); };
 
   return (
     <div className="ms-root">
@@ -2406,34 +2510,31 @@ function App() {
             </div>
           </div>
           <div className="tabs">
-            {tabs.map(([id, label, Ico]) => (
-              <div key={id} className={`tab ${tab === id ? "on" : ""}`} onClick={() => setTab(id)}><Ico size={16} /> {label}</div>
+            {primaryTabs.map(([id, label, Ico]) => (
+              <div key={id} className={`tab ${tab === id ? "on" : ""}`} onClick={() => goTab(id)}><Ico size={16} /> {label}</div>
             ))}
+            <div className={`tab more ${moreActive || moreOpen ? "on" : ""}`} onClick={() => setMoreOpen((v) => !v)}><span className="ted">⋯</span> Więcej</div>
           </div>
         </div>
       </header>
 
-      <main className="wrap" style={{ padding: "22px 16px 60px" }}>
+      <main className="wrap mainwrap" style={{ padding: "22px 16px 0" }}>
         {live.length > 0 && (
-          <div className="panel live-panel" style={{ marginBottom: 18 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
-              <span className="livedot" /><b style={{ letterSpacing: 1 }}>NA ŻYWO</b>
-              <span className="muted" style={{ fontSize: 12 }}>· {live.length} {plMecz(live.length)} · odświeża się automatycznie</span>
-            </div>
-            <div style={{ display: "grid", gap: 8 }}>
+          <div className="livebar">
+            <span className="livedot" />
+            <b className="lblab">NA ŻYWO</b>
+            <div className="livescroll">
               {live.map((g) => (
-                <div key={g.id} className="liverow">
-                  <div className="lt"><Flag code={g.homeCode} size="fl-sm" /><span className="ln">{CODE2PL[g.homeCode] || g.homeName}</span></div>
-                  <div className="lscore">{g.homeScore}<span className="lsep">:</span>{g.awayScore}</div>
-                  <div className="lt rt"><span className="ln">{CODE2PL[g.awayCode] || g.awayName}</span><Flag code={g.awayCode} size="fl-sm" /></div>
-                  {g.detail && <div className="lmin">{g.detail}</div>}
-                </div>
+                <button key={g.id} className="livechip" title={`${CODE2PL[g.homeCode] || g.homeName} – ${CODE2PL[g.awayCode] || g.awayName}`} onClick={() => { const mm = matches.find((x) => !x.finished && ((x.homeCode === g.homeCode && x.awayCode === g.awayCode) || (x.homeCode === g.awayCode && x.awayCode === g.homeCode))); if (mm) { setSelDay(matchDayKey(mm.kickoff)); setTypFilter("all"); } setTab("typuj"); }}>
+                  <Flag code={g.homeCode} size="fl-sm" /><span>{g.homeScore}:{g.awayScore}</span><Flag code={g.awayCode} size="fl-sm" />
+                  {g.detail && <span className="lmin2">{g.detail}</span>}
+                </button>
               ))}
             </div>
           </div>
         )}
         <div style={{ marginBottom: 18, display: "flex", gap: 12, flexWrap: "wrap", alignItems: "stretch" }}>
-          <div className="pot">
+          <div className="pot" onClick={() => goTab("regulamin")} style={{ cursor: "pointer" }} title="Zasady i podział puli">
             <div className="pot-ic"><Coins size={21} /></div>
             <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
               <span className="pot-l">Pula nagród</span>
@@ -2444,34 +2545,43 @@ function App() {
           {(() => {
             const ld = standingsFull[0];
             const hasPts = ld && ld.grand > 0;
+            const myRank = standingsFull.findIndex((x) => x.id === me.id) + 1;
+            let delta = 0;
+            if (checkpoints.length >= 2) {
+              const rin = (tbl) => tbl.findIndex((x) => x.id === me.id) + 1;
+              const c = rin(checkpoints[checkpoints.length - 1].table), p = rin(checkpoints[checkpoints.length - 2].table);
+              if (c && p) delta = p - c;
+            }
+            const arrow = delta > 0 ? " ▲" + delta : delta < 0 ? " ▼" + (-delta) : "";
+            const arrowCol = delta > 0 ? "var(--grass)" : delta < 0 ? "var(--coral)" : "var(--muted)";
             return (
               <button className="ministat" onClick={() => setTab("ranking")} title="Zobacz ranking">
                 <div className="ms-ic ms-gold"><Crown size={18} /></div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 2, textAlign: "left", minWidth: 0 }}>
                   <span className="pot-l">Lider</span>
                   <span className="ms-big" style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 170 }}>{hasPts ? ld.name : "—"}</span>
-                  <span className="pot-sub">{hasPts ? `${ld.grand} pkt` : "przed 1. meczami"}</span>
+                  <span className="pot-sub">{hasPts ? `${ld.grand} pkt` : "przed 1. meczami"}{myRank ? <> · Ty: <b style={{ color: "var(--txt)" }}>{myRank}.</b><b style={{ color: arrowCol }}>{arrow}</b></> : null}</span>
                 </div>
               </button>
             );
           })()}
           {nextMatch && (
-            <div className="ministat">
+            <button className="ministat" onClick={() => { setSelDay(matchDayKey(nextMatch.kickoff)); setTypFilter("all"); setTab("typuj"); }} title="Przejdź do meczu">
               <div className="ms-ic ms-blue"><Clock size={18} /></div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 2, minWidth: 0 }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 2, minWidth: 0, textAlign: "left" }}>
                 <span className="pot-l">Najbliższy gwizdek</span>
                 <span className="ms-big">{fmtDur(new Date(nextMatch.kickoff).getTime() - now)}</span>
                 <span className="pot-sub" style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 200 }}>{(() => { const [a, b] = sidesOf(nextMatch); return `${a.label} – ${b.label}`; })()}</span>
               </div>
-            </div>
+            </button>
           )}
           {unbetCount > 0 && (
-            <button className="ministat ms-warn" onClick={() => setTab("typuj")} title="Przejdź do typowania">
+            <button className="ministat ms-warn" onClick={() => { setTypFilter("open"); setTab("typuj"); }} title="Obstaw teraz">
               <div className="ms-ic ms-red"><Flame size={18} /></div>
               <div style={{ display: "flex", flexDirection: "column", gap: 2, textAlign: "left" }}>
                 <span className="pot-l">Do obstawienia</span>
                 <span className="ms-big">{unbetCount}</span>
-                <span className="pot-sub">{plMecz(unbetCount)} bez typu</span>
+                <span className="pot-sub">kliknij, by obstawić →</span>
               </div>
             </button>
           )}
@@ -2479,7 +2589,6 @@ function App() {
         {tab === "typuj" && renderTypuj()}
         {tab === "ranking" && renderRanking()}
         {tab === "grupy" && renderGrupy()}
-        {tab === "dni" && renderDni()}
         {tab === "czat" && renderChat()}
         {tab === "historia" && renderHistoria()}
         {tab === "bonus" && renderBonus()}
@@ -2487,6 +2596,24 @@ function App() {
         {tab === "ustawienia" && renderUstawienia()}
         {tab === "admin" && me.isAdmin && renderAdmin()}
       </main>
+
+      <nav className="botnav">
+        {primaryTabs.map(([id, label, Ico]) => (
+          <button key={id} className={`bn ${tab === id ? "on" : ""}`} onClick={() => goTab(id)}><span className="bnic"><Ico size={18} /></span>{label}</button>
+        ))}
+        <button className={`bn ${moreActive || moreOpen ? "on" : ""}`} onClick={() => setMoreOpen((v) => !v)}><span className="bnic bned">⋯</span>Więcej</button>
+      </nav>
+
+      {moreOpen && (
+        <div className="menu-bg" onClick={() => setMoreOpen(false)}>
+          <div className="menu-card" onClick={(e) => e.stopPropagation()}>
+            <div className="mh"><b style={{ fontSize: 15 }}>Więcej</b><button className="icobtn" onClick={() => setMoreOpen(false)}><X size={18} /></button></div>
+            {moreTabs.map(([id, label, Ico]) => (
+              <button key={id} className={`menu-item ${tab === id ? "on" : ""}`} onClick={() => goTab(id)}><Ico size={18} style={{ color: "var(--gold)" }} /> {label}</button>
+            ))}
+          </div>
+        </div>
+      )}
 
       {toast && <div className="toast">{toast}</div>}
       {profileId && renderProfile()}
