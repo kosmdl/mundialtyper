@@ -145,7 +145,6 @@ const DEFAULT_BONUS = [
   { id: "champion", label: "Mistrz świata", type: "team", points: 10, answer: "" },
   { id: "finalist", label: "Wicemistrz (przegrany finalista)", type: "team", points: 6, answer: "" },
   { id: "topscorer", label: "Król strzelców", type: "text", points: 8, answer: "" },
-  { id: "darkhorse", label: "Czarny koń turnieju", type: "team", points: 5, answer: "" },
 ];
 const DEFAULT_BONUS_DEADLINE = "2026-06-11T12:00:00-04:00"; // przed pierwszym meczem MŚ
 /* punkty bonusowe gracza: porównuje jego odpowiedzi z rozstrzygnięciami (q.answer) */
@@ -192,6 +191,14 @@ const codeOf = (name) => (TEAMS.find((t) => t[0] === name) || [, ""])[1];
 
 const fmtDayKey = (iso) => { try { return new Intl.DateTimeFormat("pl-PL", { day: "numeric", month: "short" }).format(new Date(iso)); } catch { return iso; } };
 
+/* zwycięzca wyprowadzony z dokładnego wyniku (gdy podany) */
+function predWinner(b) {
+  if (!b) return null;
+  const he = b.exactHome, ae = b.exactAway;
+  if (he === "" || he == null || ae === "" || ae == null) return null;
+  return Number(he) > Number(ae) ? "home" : Number(he) < Number(ae) ? "away" : "draw";
+}
+
 /* punktacja gracza po zbiorze rozegranych meczów (używane w rankingu i w historii) */
 function tally(users, matchList, betsByUser, points) {
   return users.map((u) => {
@@ -204,7 +211,8 @@ function tally(users, matchList, betsByUser, points) {
       if (hasExact && Number(b.exactHome) === Number(r.homeScore) && Number(b.exactAway) === Number(r.awayScore)) { total += points.exact; ex++; }
       if (hasExact && (Number(b.exactHome) - Number(b.exactAway)) === (Number(r.homeScore) - Number(r.awayScore))) { total += points.diff; df++; }
       const aw = Number(r.homeScore) > Number(r.awayScore) ? "home" : Number(r.homeScore) < Number(r.awayScore) ? "away" : "draw";
-      if (b.winner && b.winner === aw) { total += points.winner; wn++; }
+      const pw = predWinner(b);
+      if (pw && pw === aw) { total += points.winner; wn++; }
       if (b.firstScorer && r.firstScorer && scorerHit(b.firstScorer, r.firstScorer)) { total += points.scorer; sc++; }
     }
     return { ...u, total, ex, df, wn, sc };
@@ -826,7 +834,7 @@ function App() {
   useEffect(() => { try { if (me) localStorage.setItem("ms2026_me", JSON.stringify(me)); else localStorage.removeItem("ms2026_me"); } catch (e) {} }, [me]);
   const points = settings.points || DEFAULT_POINTS;
   const isLocked = (mt) => now >= new Date(mt.kickoff).getTime();
-  const bonus = settings.bonus || DEFAULT_BONUS;
+  const bonus = (settings.bonus || DEFAULT_BONUS).filter((q) => q.id !== "darkhorse");
   const bonusDeadline = settings.bonusDeadline || DEFAULT_BONUS_DEADLINE;
   const bonusLocked = now >= new Date(bonusDeadline).getTime();
 
@@ -906,7 +914,8 @@ function App() {
       const exOK = hasExact && Number(b.exactHome) === Number(r.homeScore) && Number(b.exactAway) === Number(r.awayScore);
       const dfOK = hasExact && (Number(b.exactHome) - Number(b.exactAway)) === (Number(r.homeScore) - Number(r.awayScore));
       const aw = Number(r.homeScore) > Number(r.awayScore) ? "home" : Number(r.homeScore) < Number(r.awayScore) ? "away" : "draw";
-      const wnOK = b.winner && b.winner === aw;
+      const pw = predWinner(b);
+      const wnOK = !!pw && pw === aw;
       const hasSc = !!b.firstScorer; if (hasSc) scBets++;
       const scOK = hasSc && r.firstScorer && scorerHit(b.firstScorer, r.firstScorer);
       if (exOK) ex++; if (dfOK) df++; if (wnOK) wn++; if (scOK) sc++; if (exOK && wnOK) perfect++;
@@ -1021,7 +1030,7 @@ function App() {
     const mine = { ...(betsByUser[me.id] || {}) };
     mine[m.id] = {
       exactHome: d.exactHome ?? "", exactAway: d.exactAway ?? "",
-      winner: d.winner ?? "", firstScorer: (d.firstScorer ?? "").trim(), at: Date.now(),
+      firstScorer: (d.firstScorer ?? "").trim(), at: Date.now(),
     };
     await store.set("bets:" + me.id, JSON.stringify(mine));
     setBetsByUser((b) => ({ ...b, [me.id]: mine }));
@@ -1252,7 +1261,7 @@ function App() {
     const aw = r ? (Number(r.homeScore) > Number(r.awayScore) ? "home" : Number(r.homeScore) < Number(r.awayScore) ? "away" : "draw") : null;
     const wc = { home: 0, away: 0, draw: 0 }, sl = {};
     rows.forEach(({ b }) => {
-      if (b.winner) wc[b.winner] = (wc[b.winner] || 0) + 1;
+      const pw0 = predWinner(b); if (pw0) wc[pw0] = (wc[pw0] || 0) + 1;
       const hasE = b.exactHome !== "" && b.exactHome != null && b.exactAway !== "" && b.exactAway != null;
       if (hasE) { const k = b.exactHome + ":" + b.exactAway; sl[k] = (sl[k] || 0) + 1; }
     });
@@ -1276,15 +1285,15 @@ function App() {
                 const hasExact = b.exactHome !== "" && b.exactHome != null && b.exactAway !== "" && b.exactAway != null;
                 const exOK = r && hasExact && Number(b.exactHome) === Number(r.homeScore) && Number(b.exactAway) === Number(r.awayScore);
                 const diffOK = r && hasExact && (Number(b.exactHome) - Number(b.exactAway)) === (Number(r.homeScore) - Number(r.awayScore));
-                const wnOK = r && b.winner && b.winner === aw;
+                const wnOK = r && !!predWinner(b) && predWinner(b) === aw;
                 const scOK = r && b.firstScorer && scorerHit(b.firstScorer, r.firstScorer);
                 const p = m.finished ? (exOK ? points.exact : 0) + (diffOK ? points.diff : 0) + (wnOK ? points.winner : 0) + (scOK ? points.scorer : 0) : 0;
-                const kontra = consWinner && b.winner && b.winner !== consWinner;
+                const kontra = consWinner && predWinner(b) && predWinner(b) !== consWinner;
                 return (
                   <tr key={u.id}>
                     <td className={u.id === me.id ? "you" : ""}>{u.name}{u.id === me.id ? " (Ty)" : ""}</td>
                     <td><span className={exOK ? "hit" : diffOK ? "hit2" : ""} style={{ padding: "2px 7px", fontFamily: "var(--fd)", fontSize: 17 }}>{hasExact ? `${b.exactHome}:${b.exactAway}` : "—"}</span></td>
-                    <td><span className={wnOK ? "hit" : ""} style={{ padding: "2px 7px" }}>{winnerLabel(m, b.winner)}</span>{kontra && <span className="kontra">kontra</span>}</td>
+                    <td><span className={wnOK ? "hit" : ""} style={{ padding: "2px 7px" }}>{winnerLabel(m, predWinner(b))}</span>{kontra && <span className="kontra">kontra</span>}</td>
                     <td><span className={scOK ? "hit" : ""} style={{ padding: "2px 7px" }}>{b.firstScorer || "—"}</span></td>
                     {m.finished && <td style={{ textAlign: "right", fontFamily: "var(--fd)", fontSize: 18, color: p ? "var(--gold)" : "var(--muted)" }}>{p}</td>}
                   </tr>
@@ -1366,27 +1375,13 @@ function App() {
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 14 }}>
                     <Flag code={m.homeCode} size="fl-sm" />
                     <input className="inp scoreinp" type="number" min="0" max="20" value={d.exactHome ?? ""}
-                      onChange={(e) => { const v = e.target.value; const ah = d.exactAway; let w = d.winner;
-                        if (v !== "" && ah !== "" && ah != null) w = +v > +ah ? "home" : +v < +ah ? "away" : "draw";
-                        setD(m.id, { exactHome: v, winner: w }); }} placeholder="-" />
+                      onChange={(e) => setD(m.id, { exactHome: e.target.value })} placeholder="-" />
                     <span className="muted" style={{ fontFamily: "var(--fd)", fontSize: 22 }}>:</span>
                     <input className="inp scoreinp" type="number" min="0" max="20" value={d.exactAway ?? ""}
-                      onChange={(e) => { const v = e.target.value; const hh = d.exactHome; let w = d.winner;
-                        if (v !== "" && hh !== "" && hh != null) w = +hh > +v ? "home" : +hh < +v ? "away" : "draw";
-                        setD(m.id, { exactAway: v, winner: w }); }} placeholder="-" />
+                      onChange={(e) => setD(m.id, { exactAway: e.target.value })} placeholder="-" />
                     <Flag code={m.awayCode} size="fl-sm" />
                   </div>
-                </div>
-
-                <div>
-                  <div className="lbl"><Trophy size={13} /> Kto wygra</div>
-                  <div className="seg">
-                    {[["home", m.homeTeam, m.homeCode], ["draw", "Remis", null], ["away", m.awayTeam, m.awayCode]].map(([val, label, code]) => (
-                      <div key={val} className={`o ${d.winner === val ? "on" : ""}`} onClick={() => setD(m.id, { winner: val })}>
-                        {code && <Flag code={code} size="fl-sm" />}<span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{label}</span>
-                      </div>
-                    ))}
-                  </div>
+                  <p className="note" style={{ marginTop: 8, justifyContent: "center" }}><Trophy size={12} /> Zwycięzcę lub remis liczymy automatycznie z wyniku — punkt dostajesz nawet bez trafienia dokładnego rezultatu.</p>
                 </div>
 
                 <div>
@@ -1480,7 +1475,7 @@ function App() {
                     </td>
                     {users.map((u) => {
                       const b = (betsByUser[u.id] || {})[m.id];
-                      const w = b && b.winner;
+                      const w = predWinner(b);
                       const ok = w && w === aw;
                       let inner;
                       if (!w) inner = <span className="muted">—</span>;
@@ -2196,9 +2191,6 @@ function App() {
           <h3 style={{ fontSize: 17, marginBottom: 6, display: "flex", alignItems: "center", gap: 8 }}><Crown size={16} /> Typy bonusowe (cały turniej)</h3>
           {bonus.map((q) => <Row key={q.id} l={q.label} v={"+" + q.points} />)}
           <p className="note" style={{ marginTop: 10 }}>Wypełniasz w zakładce „Bonus" do {fmtDate(bonusDeadline)}. Punkty doliczane po rozstrzygnięciu turnieju.</p>
-          {bonus.some((q) => q.id === "darkhorse") && (
-            <p className="note" style={{ marginTop: 8 }}>⚑ „Czarny koń turnieju" to drużyna-niespodzianka — nierozstawiona/niefaworyzowana, która zaszła dalej, niż się spodziewano (np. awans z grupy mimo roli outsidera albo wejście do ćwierćfinału). Zwycięską odpowiedź ustala prowadzący po turnieju; punkt dostaje każdy, kto wskazał tę drużynę.</p>
-          )}
         </div>
 
         <div className="panel">
@@ -2484,7 +2476,7 @@ function App() {
   const upcomingMine = matches.filter((m) => m.homeCode && m.awayCode && !m.finished && now < new Date(m.kickoff).getTime());
   const nextMatch = upcomingMine.slice().sort((a, b) => new Date(a.kickoff) - new Date(b.kickoff))[0];
   const myBets = betsByUser[me.id] || {};
-  const hasBet = (m) => { const b = myBets[m.id]; return !!(b && ((b.winner && b.winner !== "") || (b.exactHome !== "" && b.exactHome != null) || (b.firstScorer && b.firstScorer !== ""))); };
+  const hasBet = (m) => { const b = myBets[m.id]; return !!(b && ((b.exactHome !== "" && b.exactHome != null && b.exactAway !== "" && b.exactAway != null) || (b.firstScorer && b.firstScorer !== ""))); };
   const unbetCount = upcomingMine.filter((m) => !hasBet(m)).length;
 
   const primaryTabs = [["typuj", "Typuj", Target], ["ranking", "Ranking", Trophy], ["grupy", "Grupy", Globe], ["czat", "Czat", Users], ["historia", "Historia", History]];
