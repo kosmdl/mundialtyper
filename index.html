@@ -672,6 +672,8 @@ button.ministat:hover{background:var(--panel-2);border-color:rgba(255,255,255,.2
 .rank:hover{border-color:rgba(255,255,255,.22);transform:translateY(-1px)}
 .bdg{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:999px;background:rgba(244,201,93,.12);border:1px solid rgba(244,201,93,.35);font-size:12px;font-weight:700;color:var(--txt)}
 .kontra{display:inline-block;margin-left:6px;padding:1px 6px;border-radius:6px;font-size:10px;font-weight:800;background:rgba(232,64,58,.18);border:1px solid rgba(232,64,58,.4);color:#ff9a9a;text-transform:uppercase;letter-spacing:.5px;vertical-align:middle}
+.nobet{display:inline-block;padding:2px 9px;border-radius:8px;font-size:12px;font-weight:700;border:1px dashed rgba(255,255,255,.25);color:var(--muted);font-style:italic}
+.nobetx{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;border:1px dashed rgba(255,255,255,.25);color:var(--muted);font-size:11px;font-weight:800}
 .cons{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px;font-size:13px}
 .cons .cpill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:rgba(0,0,0,.2);border:1px solid var(--line)}
 .modal-bg{position:fixed;inset:0;background:rgba(3,6,16,.74);backdrop-filter:blur(4px);z-index:200;display:flex;align-items:flex-start;justify-content:center;padding:24px 14px;overflow-y:auto}
@@ -1284,9 +1286,9 @@ function App() {
   };
 
   function renderRevealTable(m) {
-    const rows = users
-      .map((u) => ({ u, b: (betsByUser[u.id] || {})[m.id] }))
-      .filter((x) => x.b);
+    const all = users.map((u) => ({ u, b: (betsByUser[u.id] || {})[m.id] }));
+    const rows = all.filter((x) => x.b);
+    const noBet = all.filter((x) => !x.b);
     if (!rows.length) return <div className="note"><Users size={15} /> Nikt nie obstawił tego meczu.</div>;
     const r = m.result;
     const aw = r ? (Number(r.homeScore) > Number(r.awayScore) ? "home" : Number(r.homeScore) < Number(r.awayScore) ? "away" : "draw") : null;
@@ -1302,7 +1304,7 @@ function App() {
     return (
       <div>
         <div className="cons">
-          <span className="muted">Typów: {rows.length}</span>
+          <span className="muted">Typów: {rows.length}/{users.length}</span>
           {wTop && <span className="cpill">Faworyt: <b>{winnerLabel(m, wTop[0])}</b> ({wTop[1]}/{rows.length})</span>}
           {slTop && slTop[1] > 1 && <span className="cpill">Najczęstszy wynik: <b style={{ fontFamily: "var(--fd)" }}>{slTop[0]}</b> ({slTop[1]}×)</span>}
         </div>
@@ -1330,6 +1332,13 @@ function App() {
                   </tr>
                 );
               })}
+              {noBet.map(({ u }) => (
+                <tr key={u.id} style={{ opacity: .55 }}>
+                  <td className={u.id === me.id ? "you" : ""}>{u.name}{u.id === me.id ? " (Ty)" : ""}</td>
+                  <td colSpan={3}><span className="nobet">nie obstawił</span></td>
+                  {m.finished && <td style={{ textAlign: "right", fontFamily: "var(--fd)", fontSize: 18, color: "var(--muted)" }}>0</td>}
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -1483,7 +1492,7 @@ function App() {
     return (
       <div className="panel">
         <h3 style={{ fontSize: 17, marginBottom: 4, display: "flex", alignItems: "center", gap: 8 }}><Trophy size={15} /> Podsumowanie dnia — typy zwycięzcy</h3>
-        <p className="muted" style={{ fontSize: 12, marginBottom: 12 }}>Flaga = drużyna typowana na zwycięzcę, „R" = remis. Zielona obwódka = trafiony typ.</p>
+        <p className="muted" style={{ fontSize: 12, marginBottom: 12 }}>Flaga = drużyna typowana na zwycięzcę, „R" = remis, „✗" = nie obstawił. Zielona obwódka = trafiony typ.</p>
         <div style={{ overflowX: "auto" }}>
           <table className="xtab">
             <thead>
@@ -1509,7 +1518,7 @@ function App() {
                       const w = predWinner(b);
                       const ok = w && w === aw;
                       let inner;
-                      if (!w) inner = <span className="muted">—</span>;
+                      if (!w) inner = <span className="nobetx" title="Nie obstawił">✗</span>;
                       else if (w === "draw") inner = <span className={`pickd ${ok ? "ok" : "no"}`}>R</span>;
                       else inner = <span className={`pick ${ok ? "ok" : "no"}`}><Flag code={w === "home" ? m.homeCode : m.awayCode} size="fl-sm" /></span>;
                       return <td key={u.id}>{inner}</td>;
