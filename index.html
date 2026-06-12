@@ -413,8 +413,8 @@ const WC_FIXTURES = [
 const WC_ENG = Object.fromEntries(Object.entries(WC_TEAM).map(([eng, v]) => [v[1], eng]));
 const engOf = (code, fallback) => WC_ENG[code] || fallback || "";
 const etDateKey = (ts) => { try { return new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(ts)); } catch { return ""; } };
-/* „Dzień meczowy" = okno 24h startujące o 07:00 ET (≈ 13:00 w Polsce). Dzięki temu mecze późnym wieczorem w USA (nad ranem w PL) trafiają do tej samej sesji. */
-const ET_CUTOFF_H = 7;
+/* „Dzień meczowy" = data kalendarzowa meczu w strefie ET — dokładnie tak, jak mecze są wpisane w terminarzu. Mecz o 00:00 ET (6:00 w Polsce) należy do swojego dnia, a nie poprzedniego. */
+const ET_CUTOFF_H = 0;
 const matchDayKey = (ts) => etDateKey(new Date(ts).getTime() - ET_CUTOFF_H * 3600 * 1000);
 const dayAnchorTs = (key) => { try { return new Date(key + "T12:00:00-04:00").getTime(); } catch { return Date.now(); } };
 const fmtDayLabel = (ts) => { try { return new Intl.DateTimeFormat("pl-PL", { timeZone: "America/New_York", weekday: "long", day: "numeric", month: "long" }).format(new Date(ts)); } catch { return ""; } };
@@ -688,7 +688,7 @@ button.ministat:hover{background:var(--panel-2);border-color:rgba(255,255,255,.2
 .bn.on .bnic{background:rgba(39,213,134,.16)}
 .bnic{display:flex;align-items:center;justify-content:center;width:34px;height:26px;border-radius:9px}
 .bn .bned{font-size:18px;line-height:1}
-.mainwrap{padding-bottom:60px}
+.mainwrap{padding:22px 16px 64px}
 .tab.more{margin-left:auto}
 .tab .ted{font-size:17px;line-height:1;margin-right:2px}
 .menu-bg{position:fixed;inset:0;background:rgba(3,6,16,.6);z-index:120;display:flex;align-items:flex-end;justify-content:center}
@@ -698,7 +698,7 @@ button.ministat:hover{background:var(--panel-2);border-color:rgba(255,255,255,.2
 .menu-item:hover{background:rgba(255,255,255,.05)}
 .menu-item.on{border-color:var(--line);background:rgba(244,201,93,.08)}
 @media(min-width:681px){.menu-bg{align-items:flex-start;justify-content:flex-end;padding:62px 18px}.menu-card{width:264px;border-radius:14px;border-bottom:1px solid var(--line)}}
-@media(max-width:680px){.tabs{display:none}.botnav{display:flex}.mainwrap{padding-bottom:90px}}
+@media(max-width:680px){.tabs{display:none}.botnav{display:flex}.mainwrap{padding:18px 14px calc(96px + env(safe-area-inset-bottom))}}
 .livebar{position:sticky;top:8px;z-index:60;display:flex;align-items:center;gap:9px;background:linear-gradient(135deg,rgba(232,64,58,.22),rgba(232,64,58,.08));border:1px solid rgba(232,64,58,.45);border-radius:12px;padding:7px 11px;margin-bottom:14px;backdrop-filter:blur(8px)}
 .livebar .lblab{letter-spacing:1px;font-size:12px;color:#ffb3b0;white-space:nowrap;font-weight:800}
 .livescroll{display:flex;gap:8px;overflow-x:auto}
@@ -862,9 +862,9 @@ function App() {
     return out;
   }, [users, bonusByUser, bonus]);
   const standingsFull = useMemo(() =>
-    standings.map((u) => { const bp = bonusPtsByUser[u.id] || { total: 0 }; return { ...u, bonusPts: bp.total, grand: u.total + bp.total }; })
+    standings.map((u) => { const bp = bonusPtsByUser[u.id] || { total: 0 }; const adj = (settings.adjust || {})[u.id] || 0; return { ...u, bonusPts: bp.total, adj, grand: u.total + bp.total + adj }; })
       .sort((a, b) => b.grand - a.grand || a.name.localeCompare(b.name, "pl")),
-    [standings, bonusPtsByUser]);
+    [standings, bonusPtsByUser, settings.adjust]);
 
   const grpData = useMemo(() => {
     const tables = {}, complete = {};
@@ -1237,8 +1237,8 @@ function App() {
   }
   async function removeUser(u) {
     if (u.id === me.id) return flash("Nie usuniesz własnego konta tutaj.");
+    if (typeof window !== "undefined" && window.confirm && !window.confirm("Usunąć gracza „" + u.name + "”? Jego typy znikną z rankingu. Operacji nie cofniesz.")) return;
     await persistUsers(users.filter((x) => x.id !== u.id));
-    await store.set("bets:" + u.id, JSON.stringify({}));
     flash("Gracz usunięty.");
   }
 
@@ -1635,6 +1635,7 @@ function App() {
     const scPct = s.scBets ? Math.round(100 * s.sc / s.scBets) : 0;
     const place = standingsFull.findIndex((x) => x.id === u.id) + 1;
     const grand = (standingsFull.find((x) => x.id === u.id) || {}).grand || 0;
+    const adj = (standingsFull.find((x) => x.id === u.id) || {}).adj || 0;
     const cmp = cmpId && cmpId !== u.id ? users.find((x) => x.id === cmpId) : null;
     const cs = cmp ? statsFor(cmp.id) : null;
     const Row = ({ l, a, b }) => (<tr><td style={{ color: "var(--muted)" }}>{l}</td><td style={{ textAlign: "center", fontFamily: "var(--fd)", fontSize: 16 }}>{a}</td>{cs && <td style={{ textAlign: "center", fontFamily: "var(--fd)", fontSize: 16, color: "var(--usa)" }}>{b}</td>}</tr>);
@@ -1644,7 +1645,7 @@ function App() {
           <div className="modal-h">
             <div>
               <div style={{ fontFamily: "var(--fd)", fontSize: 22 }}>{u.name}{u.id === me.id ? " (Ty)" : ""}</div>
-              <div className="muted" style={{ fontSize: 12 }}>{place ? place + ". miejsce" : "—"} · {grand} pkt łącznie</div>
+              <div className="muted" style={{ fontSize: 12 }}>{place ? place + ". miejsce" : "—"} · {grand} pkt łącznie{adj ? " · korekta " + (adj > 0 ? "+" + adj : adj) : ""}</div>
             </div>
             <button className="icobtn" onClick={() => { setProfileId(null); setCmpId(""); }}><X size={18} /></button>
           </div>
@@ -2397,18 +2398,27 @@ function App() {
 
         {/* gracze */}
         <div className="panel">
-          <h2 style={{ fontSize: 19, marginBottom: 14, display: "flex", alignItems: "center", gap: 8 }}><Users size={18} /> Gracze</h2>
+          <h2 style={{ fontSize: 19, marginBottom: 6, display: "flex", alignItems: "center", gap: 8 }}><Users size={18} /> Gracze</h2>
+          <p className="muted" style={{ fontSize: 12.5, marginBottom: 12 }}>Korekta = ręcznie dodane (lub odjęte) punkty, doliczane do sumy w rankingu — np. po przywróceniu konta, którego typy przepadły. Wpisz wartość i kliknij „Zapisz korektę".</p>
           <div style={{ display: "grid", gap: 8 }}>
-            {users.map((u) => (
-              <div key={u.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 12px", border: "1px solid var(--line)", borderRadius: 11, background: "rgba(0,0,0,.16)" }}>
-                <span style={{ fontWeight: 700 }}>{u.name}{u.isAdmin ? <Shield size={13} style={{ marginLeft: 6, color: "var(--gold)", verticalAlign: "middle" }} /> : null}{u.id === me.id ? <span className="muted" style={{ fontWeight: 400 }}> (Ty)</span> : null}</span>
-                <div style={{ display: "flex", gap: 8 }}>
-                  <button className="btn ghost sm" onClick={() => toggleAdmin(u)}>{u.isAdmin ? "Odbierz admina" : "Nadaj admina"}</button>
-                  {u.id !== me.id && <button className="icobtn" title="Usuń gracza" onClick={() => removeUser(u)}><Trash2 size={16} /></button>}
+            {users.map((u) => {
+              const cur = (settings.adjust || {})[u.id] || 0;
+              return (
+                <div key={u.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, padding: "10px 12px", border: "1px solid var(--line)", borderRadius: 11, background: "rgba(0,0,0,.16)", flexWrap: "wrap" }}>
+                  <span style={{ fontWeight: 700 }}>{u.name}{u.isAdmin ? <Shield size={13} style={{ marginLeft: 6, color: "var(--gold)", verticalAlign: "middle" }} /> : null}{u.id === me.id ? <span className="muted" style={{ fontWeight: 400 }}> (Ty)</span> : null}</span>
+                  <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                      <span className="muted" style={{ fontSize: 12 }}>Korekta</span>
+                      <input className="inp" type="number" style={{ width: 88 }} value={cur} onChange={(e) => { const v = Number(e.target.value) || 0; setSettings((s) => ({ ...s, adjust: { ...(s.adjust || {}), [u.id]: v } })); }} />
+                    </div>
+                    <button className="btn ghost sm" onClick={() => toggleAdmin(u)}>{u.isAdmin ? "Odbierz admina" : "Nadaj admina"}</button>
+                    {u.id !== me.id && <button className="icobtn" title="Usuń gracza" onClick={() => removeUser(u)}><Trash2 size={16} /></button>}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
+          <button className="btn grass" style={{ marginTop: 14 }} onClick={async () => { await store.set("settings", JSON.stringify(settings)); flash("Korekta punktów zapisana."); }}><Check size={16} /> Zapisz korektę punktów</button>
         </div>
       </div>
     );
@@ -2510,7 +2520,7 @@ function App() {
         </div>
       </header>
 
-      <main className="wrap mainwrap" style={{ padding: "22px 16px 0" }}>
+      <main className="wrap mainwrap">
         {live.length > 0 && (
           <div className="livebar">
             <span className="livedot" />
