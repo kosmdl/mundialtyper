@@ -413,8 +413,8 @@ const WC_FIXTURES = [
 const WC_ENG = Object.fromEntries(Object.entries(WC_TEAM).map(([eng, v]) => [v[1], eng]));
 const engOf = (code, fallback) => WC_ENG[code] || fallback || "";
 const etDateKey = (ts) => { try { return new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(ts)); } catch { return ""; } };
-/* „Dzień meczowy" = data kalendarzowa meczu w strefie ET — dokładnie tak, jak mecze są wpisane w terminarzu. Mecz o 00:00 ET (6:00 w Polsce) należy do swojego dnia, a nie poprzedniego. */
-const ET_CUTOFF_H = 0;
+/* „Dzień meczowy" = okno od 07:00 ET (≈ 13:00 PL) do 07:00 ET następnego dnia. Mecz nad ranem (np. 00:00 ET = 6:00 PL, niedziela) należy do sesji z poprzedniego wieczoru — w grupie dni jest pod sobotą, ale data/godzina pokazuje prawdziwy moment (niedziela 6:00). */
+const ET_CUTOFF_H = 7;
 const matchDayKey = (ts) => etDateKey(new Date(ts).getTime() - ET_CUTOFF_H * 3600 * 1000);
 const dayAnchorTs = (key) => { try { return new Date(key + "T12:00:00-04:00").getTime(); } catch { return Date.now(); } };
 const fmtDayLabel = (ts) => { try { return new Intl.DateTimeFormat("pl-PL", { timeZone: "America/New_York", weekday: "long", day: "numeric", month: "long" }).format(new Date(ts)); } catch { return ""; } };
@@ -1062,19 +1062,26 @@ function App() {
   }
   async function delMatch(id) { await persistMatches(matches.filter((m) => m.id !== id)); }
   async function seedWorldCup() {
-    const have = new Set(matches.map((m) => `${m.homeTeam}|${m.awayTeam}|${m.kickoff}`));
-    const add = [];
+    const out = matches.map((m) => ({ ...m }));
+    let added = 0, moved = 0;
     for (const [g, r, day, time, h, a] of WC_FIXTURES) {
-      const et = `2026-06-${String(day).padStart(2, "0")}T${time}:00-04:00`;
+      // czas "00:00" to północ ET kończąca dany dzień meczowy — kalendarzowo to już następny dzień (w PL 6:00 rano)
+      const realDay = time === "00:00" ? day + 1 : day;
+      const et = `2026-06-${String(realDay).padStart(2, "0")}T${time}:00-04:00`;
       const kickoff = new Date(et).toISOString();
       const [hn, hc] = WC_TEAM[h], [an, ac] = WC_TEAM[a];
-      if (have.has(`${hn}|${an}|${kickoff}`)) continue;
-      add.push({ id: uid(), group: g, round: r, roundLabel: `Faza grupowa — ${r}. kolejka`,
+      const ex = out.find((m) => !m.ko && m.group === g && m.homeTeam === hn && m.awayTeam === an);
+      if (ex) {
+        if (ex.kickoff !== kickoff) { ex.kickoff = kickoff; moved++; }
+        continue;
+      }
+      out.push({ id: uid(), group: g, round: r, roundLabel: `Faza grupowa — ${r}. kolejka`,
         homeTeam: hn, homeCode: hc, awayTeam: an, awayCode: ac, kickoff, finished: false, result: null });
+      added++;
     }
-    if (!add.length) return flash("Terminarz MŚ 2026 jest już wczytany.");
-    await persistMatches([...matches, ...add].sort((a, b) => new Date(a.kickoff) - new Date(b.kickoff)));
-    flash(`Wczytano terminarz MŚ 2026 — ${add.length} meczów grupowych.`);
+    if (!added && !moved) return flash("Terminarz MŚ 2026 jest już wczytany i aktualny.");
+    await persistMatches(out.sort((a, b) => new Date(a.kickoff) - new Date(b.kickoff)));
+    flash(added ? `Wczytano terminarz MŚ 2026 — ${added} meczów grupowych.` : `Poprawiono terminy ${moved} meczów — typy graczy bez zmian.`);
   }
   async function seedKnockout() {
     const out = matches.map((m) => ({ ...m }));
@@ -2143,7 +2150,7 @@ function App() {
   }
 
   function renderRegulamin() {
-    const pot = users.length * STAKE;
+    const pot = Math.max((users.length - 1) * STAKE, 0);
     const first = Math.max(pot - STAKE, 0);
     const second = users.length >= 2 ? STAKE : 0;
     const maxMatch = (points.exact || 0) + (points.diff || 0) + (points.winner || 0);
@@ -2167,6 +2174,7 @@ function App() {
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, paddingTop: 9 }}>
             <span>Łączna pula</span><b style={{ fontFamily: "var(--fd)", fontSize: 22, color: "var(--gold)" }}>{pot.toLocaleString("pl-PL")} zł</b>
           </div>
+          <p className="muted" style={{ fontSize: 12, marginTop: 8 }}>Jedna osoba gra bez stawki, więc pula = (liczba graczy − 1) × wpisowe.</p>
         </div>
 
         <div className="panel">
@@ -2540,9 +2548,9 @@ function App() {
             <div className="pot-ic"><Coins size={21} /></div>
             <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
               <span className="pot-l">Pula nagród</span>
-              <span className="pot-sub">{users.length} {plGracz(users.length)} × {STAKE} zł</span>
+              <span className="pot-sub">{Math.max(users.length - 1, 0)} {plGracz(Math.max(users.length - 1, 0))} × {STAKE} zł</span>
             </div>
-            <span className="pot-amt">{(users.length * STAKE).toLocaleString("pl-PL")} zł</span>
+            <span className="pot-amt">{(Math.max(users.length - 1, 0) * STAKE).toLocaleString("pl-PL")} zł</span>
           </div>
           {(() => {
             const ld = standingsFull[0];
