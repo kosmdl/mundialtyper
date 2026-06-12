@@ -411,6 +411,25 @@ const WC_FIXTURES = [
   ["L",3,27,"17:00","Panama","England"], ["L",3,27,"17:00","Croatia","Ghana"],
 ];
 const WC_ENG = Object.fromEntries(Object.entries(WC_TEAM).map(([eng, v]) => [v[1], eng]));
+/* jednorazowa, chirurgiczna korekta zapisanych danych: mecze o północy ET (6:00 rano w PL)
+   były wpisane o dobę za wcześnie; jeśli mecz ma DOKŁADNIE starą błędną datę, przesuwamy o +24h.
+   Ręcznie poprawionych terminów nie rusza. Idempotentna — po naprawie nic już nie zmienia. */
+function fixMidnightKickoffs(list) {
+  let changed = false;
+  const fixed = list.map((m) => {
+    if (m.ko) return m;
+    for (const [g, , day, time, h] of WC_FIXTURES) {
+      if (time !== "00:00" || m.group !== g) continue;
+      const [hn] = WC_TEAM[h] || [];
+      if (m.homeTeam !== hn) continue;
+      const wrong = new Date(`2026-06-${String(day).padStart(2, "0")}T00:00:00-04:00`).toISOString();
+      const right = new Date(`2026-06-${String(day + 1).padStart(2, "0")}T00:00:00-04:00`).toISOString();
+      if (m.kickoff === wrong) { changed = true; return { ...m, kickoff: right }; }
+    }
+    return m;
+  });
+  return { fixed, changed };
+}
 const engOf = (code, fallback) => WC_ENG[code] || fallback || "";
 const etDateKey = (ts) => { try { return new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(ts)); } catch { return ""; } };
 /* „Dzień meczowy" = okno od 07:00 ET (≈ 13:00 PL) do 07:00 ET następnego dnia. Mecz nad ranem (np. 00:00 ET = 6:00 PL, niedziela) należy do sesji z poprzedniego wieczoru — w grupie dni jest pod sobotą, ale data/godzina pokazuje prawdziwy moment (niedziela 6:00). */
@@ -763,7 +782,12 @@ function App() {
   const loadShared = useCallback(async () => {
     const [u, m, s] = await Promise.all([store.get("users"), store.get("matches"), store.get("settings")]);
     setUsers(u ? JSON.parse(u) : []);
-    setMatches(m ? JSON.parse(m) : []);
+    {
+      let list = m ? JSON.parse(m) : [];
+      const { fixed, changed } = fixMidnightKickoffs(list);
+      if (changed) { list = fixed; try { await store.set("matches", JSON.stringify(list)); } catch (e) {} }
+      setMatches(list);
+    }
     setSettings(s ? JSON.parse(s) : { points: DEFAULT_POINTS });
     const keys = await store.list("bets:");
     const all = {};
