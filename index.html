@@ -674,6 +674,7 @@ button.ministat:hover{background:var(--panel-2);border-color:rgba(255,255,255,.2
 .kontra{display:inline-block;margin-left:6px;padding:1px 6px;border-radius:6px;font-size:10px;font-weight:800;background:rgba(232,64,58,.18);border:1px solid rgba(232,64,58,.4);color:#ff9a9a;text-transform:uppercase;letter-spacing:.5px;vertical-align:middle}
 .nobet{display:inline-block;padding:2px 9px;border-radius:8px;font-size:12px;font-weight:700;border:1px dashed rgba(255,255,255,.25);color:var(--muted);font-style:italic}
 .nobetx{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;border:1px dashed rgba(255,255,255,.25);color:var(--muted);font-size:11px;font-weight:800}
+.changed{display:inline-block;margin-left:7px;padding:1px 7px;border-radius:6px;font-size:10px;font-weight:800;background:rgba(232,64,58,.2);border:1px solid rgba(232,64,58,.5);color:#ffb3b0;white-space:nowrap;vertical-align:middle}
 .cons{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px;font-size:13px}
 .cons .cpill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:rgba(0,0,0,.2);border:1px solid var(--line)}
 .modal-bg{position:fixed;inset:0;background:rgba(3,6,16,.74);backdrop-filter:blur(4px);z-index:200;display:flex;align-items:flex-start;justify-content:center;padding:24px 14px;overflow-y:auto}
@@ -766,6 +767,7 @@ function App() {
   const [bonusByUser, setBonusByUser] = useState({}); // {userId:{questionId:answer}}
   const [bonusDraft, setBonusDraft] = useState({});   // moje edytowalne typy bonusowe
   const [live, setLive] = useState([]);               // mecze na żywo (z ESPN, wersja standalone)
+  const [snaps, setSnaps] = useState({});             // {matchId:{at, picks:{userId:{exactHome,exactAway,firstScorer}}}} — zamrożone typy z gwizdka
 
   const [me, setMe] = useState(() => { try { const s = localStorage.getItem("ms2026_me"); return s ? JSON.parse(s) : null; } catch (e) { return null; } });           // sesja (tylko w pamięci)
   const [tab, setTab] = useState("typuj");
@@ -810,14 +812,52 @@ function App() {
     for (const k of ckeys) { const v = await store.get(k); if (v) { try { cm.push(JSON.parse(v)); } catch (e) {} } }
     cm.sort((a, b) => a.ts - b.ts);
     setChatMsgs(cm.slice(-150));
+    const skeys = await store.list("snap:");
+    const sn = {};
+    for (const k of skeys) { const v = await store.get(k); if (v) { try { sn[k.slice(5)] = JSON.parse(v); } catch (e) {} } }
+    setSnaps(sn);
   }, []);
 
   useEffect(() => {
     (async () => { await loadShared(); setLoading(false); })();
     const t1 = setInterval(() => setNow(Date.now()), 1000);
-    const t2 = setInterval(() => { loadShared(); }, 15000);
+    const t2 = setInterval(() => { if (!window.__savingBet) loadShared(); }, 15000);
     return () => { clearInterval(t1); clearInterval(t2); };
   }, [loadShared]);
+
+  /* Zamrożenie typów w chwili gwizdka: dla każdego rozpoczętego meczu bez migawki zapisujemy raz,
+     co kto obstawił. Trwałe (klucz snap:<id>), niezależne od późniejszych zmian typów — dowód do kontroli. */
+  useEffect(() => {
+    if (loading || !me) return;
+    const started = matches.filter((m) => isLocked(m) && !snaps[m.id]);
+    if (!started.length) return;
+    let cancelled = false;
+    (async () => {
+      for (const m of started) {
+        if (cancelled) return;
+        if (snaps[m.id]) continue;
+        const picks = {};
+        for (const u of users) {
+          const b = (betsByUser[u.id] || {})[m.id];
+          if (b && ((b.exactHome !== "" && b.exactHome != null && b.exactAway !== "" && b.exactAway != null) || (b.firstScorer && b.firstScorer !== "")))
+            picks[u.id] = { exactHome: b.exactHome ?? "", exactAway: b.exactAway ?? "", firstScorer: b.firstScorer ?? "" };
+        }
+        const snap = { at: Date.now(), picks };
+        try { await store.set("snap:" + m.id, JSON.stringify(snap)); setSnaps((s) => ({ ...s, [m.id]: snap })); } catch (e) {}
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [matches, users, betsByUser, snaps, loading, me, now]);
+
+  /* czy aktualny typ gracza różni się od zamrożonego (czerwona flaga) */
+  const snapDiff = (mId, uId) => {
+    const snap = snaps[mId]; if (!snap) return false;
+    const was = snap.picks[uId]; const b = (betsByUser[uId] || {})[mId];
+    const now0 = b ? { exactHome: b.exactHome ?? "", exactAway: b.exactAway ?? "", firstScorer: b.firstScorer ?? "" } : null;
+    if (!was && !now0) return false;
+    if (!was || !now0) return true; // dotypował po starcie albo usunął
+    return was.exactHome !== now0.exactHome || was.exactAway !== now0.exactAway || (was.firstScorer || "") !== (now0.firstScorer || "");
+  };
 
   /* seed mojego draftu z zapisanych typów (bez nadpisywania edycji) */
   useEffect(() => {
@@ -1052,15 +1092,32 @@ function App() {
   /* ---------------- ZAPIS TYPU ---------------- */
   const setD = (mid, patch) => setDraft((d) => ({ ...d, [mid]: { ...(d[mid] || {}), ...patch } }));
   async function saveBet(m) {
+    if (m.finished) return flash("Mecz zakończony — typy są zamknięte.");
+    if (isLocked(m)) return flash("Mecz już się rozpoczął — typowanie zamknięte.");
     const d = draft[m.id] || {};
-    const mine = { ...(betsByUser[me.id] || {}) };
-    mine[m.id] = {
+    const entry = {
       exactHome: d.exactHome ?? "", exactAway: d.exactAway ?? "",
       firstScorer: (d.firstScorer ?? "").trim(), at: Date.now(),
     };
-    await store.set("bets:" + me.id, JSON.stringify(mine));
-    setBetsByUser((b) => ({ ...b, [me.id]: mine }));
-    flash("Typ zapisany ✓");
+    window.__savingBet = true;
+    try {
+      let base = betsByUser[me.id] || {};
+      try { const raw = await store.get("bets:" + me.id); if (raw) base = JSON.parse(raw); } catch (e) {}
+      const mine = { ...base, [m.id]: entry };
+      const payload = JSON.stringify(mine);
+      let ok = await store.set("bets:" + me.id, payload);
+      try {
+        const chk = await store.get("bets:" + me.id);
+        const got = chk ? JSON.parse(chk)[m.id] : null;
+        if (!got || got.exactHome !== entry.exactHome || got.exactAway !== entry.exactAway || (got.firstScorer || "") !== entry.firstScorer) {
+          ok = await store.set("bets:" + me.id, payload);
+        }
+      } catch (e) {}
+      setBetsByUser((b) => ({ ...b, [me.id]: mine }));
+      flash(ok ? "Typ zapisany ✓" : "Nie udało się zapisać — sprawdź internet i spróbuj ponownie.");
+    } finally {
+      window.__savingBet = false;
+    }
   }
   async function saveBonus() {
     if (bonusLocked) return flash("Typowanie bonusowe jest już zamknięte.");
@@ -1122,6 +1179,21 @@ function App() {
     await persistMatches(out.sort((a, b) => new Date(a.kickoff) - new Date(b.kickoff)));
     flash(`Faza pucharowa: dodano ${added}, zaktualizowano ${patched}. Opisy par są już widoczne w „Typuj" i „Dni".`);
   }
+  async function assignBracketTeams() {
+    let n = 0;
+    const next = matches.map((m) => {
+      if (!m.ko || m.finished) return m;
+      const a = koSide(m.ko, "a"), b = koSide(m.ko, "b");
+      if (a.code && b.code && (m.homeCode !== a.code || m.awayCode !== b.code || m.homeTeam !== a.label || m.awayTeam !== b.label)) {
+        n++;
+        return { ...m, homeTeam: a.label, homeCode: a.code, awayTeam: b.label, awayCode: b.code };
+      }
+      return m;
+    });
+    if (!n) return flash("Brak nowych par do przypisania — drużyny jeszcze niewyłonione albo już przypisane.");
+    await persistMatches(next.sort((a, b) => new Date(a.kickoff) - new Date(b.kickoff)));
+    flash(`Przypisano drużyny do ${n} meczów — typowanie otwarte. Sprawdź pary z 3. miejsc z oficjalną drabinką.`);
+  }
   function toLocalInput(iso) { try { const d = new Date(iso); const p = (n) => String(n).padStart(2, "0"); return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate()) + "T" + p(d.getHours()) + ":" + p(d.getMinutes()); } catch (e) { return ""; } }
   function beginEdit(m) {
     const home = WC48.find((t) => t[0] === m.homeTeam) ? m.homeTeam : WC48[0][0];
@@ -1143,17 +1215,28 @@ function App() {
   const [rdraft, setRdraft] = useState({}); // {matchId:{homeScore,awayScore,firstScorer}}
   const setR = (id, patch) => setRdraft((s) => ({ ...s, [id]: { ...(s[id] || {}), ...patch } }));
   const [espnBusy, setEspnBusy] = useState("");
+  /* ESPN grupuje mecze po dacie UTC, a my znamy datę ET — późnowieczorne mecze ET wpadają u ESPN pod następny dzień, więc pytamy o oba i sklejamy. */
+  const espnCode = (x) => { const raw = (x && x.team && (x.team.displayName || x.team.name || x.team.shortDisplayName)) || ""; return ENG2CODE[norm(String(raw).replace(/[-–—\/]/g, " "))] || ENG2CODE[norm(raw)] || ""; };
+  async function espnEvents(ymd) {
+    const d = new Date(Date.UTC(+ymd.slice(0, 4), +ymd.slice(4, 6) - 1, +ymd.slice(6, 8)));
+    d.setUTCDate(d.getUTCDate() + 1);
+    const next = d.toISOString().slice(0, 10).replace(/-/g, "");
+    const seen = {}; const out = [];
+    for (const day of [ymd, next]) {
+      try {
+        const r = await fetch("https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=" + day);
+        const j = await r.json();
+        for (const e of (j.events || [])) { const id = e && e.id != null ? e.id : JSON.stringify(e).slice(0, 40); if (!seen[id]) { seen[id] = 1; out.push(e); } }
+      } catch (e) {}
+    }
+    return out;
+  }
   async function pullEspn(m) {
     setEspnBusy(m.id);
     try {
       const ymd = etDateKey(m.kickoff).replace(/-/g, "");
-      const codeOfComp = (x) => ENG2CODE[norm((x && x.team && (x.team.displayName || x.team.name || x.team.shortDisplayName)) || "")];
-      const events = [];
-      try {
-        const r = await fetch("https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=" + ymd);
-        const j = await r.json();
-        (j.events || []).forEach((e) => events.push(e));
-      } catch (e) {}
+      const codeOfComp = espnCode;
+      const events = await espnEvents(ymd);
       const ev = events.find((e) => {
         const c = e.competitions && e.competitions[0]; if (!c) return false;
         const codes = (c.competitors || []).map(codeOfComp);
@@ -1187,11 +1270,11 @@ function App() {
       if (!due.length) return;
       const byDate = {};
       for (const m of due) { const ymd = etDateKey(m.kickoff).replace(/-/g, ""); (byDate[ymd] = byDate[ymd] || []).push(m); }
-      const codeOfComp = (x) => ENG2CODE[norm((x && x.team && (x.team.displayName || x.team.name || x.team.shortDisplayName)) || "")];
+      const codeOfComp = espnCode;
       const confirmed = [];
       for (const ymd of Object.keys(byDate)) {
         let events = [];
-        try { const r = await fetch("https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=" + ymd); const j = await r.json(); events = j.events || []; } catch (e) { continue; }
+        try { events = await espnEvents(ymd); } catch (e) { continue; }
         if (cancelled) return;
         for (const m of byDate[ymd]) {
           const ev = events.find((e) => { const c = e.competitions && e.competitions[0]; if (!c) return false; const codes = (c.competitors || []).map(codeOfComp); return codes.indexOf(m.homeCode) >= 0 && codes.indexOf(m.awayCode) >= 0; });
@@ -1222,9 +1305,8 @@ function App() {
       if (typeof document !== "undefined" && document.hidden) return;
       try {
         const ymd = etDateKey(Date.now()).replace(/-/g, "");
-        const r = await fetch("https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=" + ymd);
-        const j = await r.json();
-        const codeOfComp = (x) => ENG2CODE[norm((x && x.team && (x.team.displayName || x.team.name || x.team.shortDisplayName)) || "")] || "";
+        const j = { events: await espnEvents(ymd) };
+        const codeOfComp = espnCode;
         const out = [];
         for (const e of (j.events || [])) {
           const st = e.status && e.status.type;
@@ -1324,7 +1406,7 @@ function App() {
                 const kontra = consWinner && predWinner(b) && predWinner(b) !== consWinner;
                 return (
                   <tr key={u.id}>
-                    <td className={u.id === me.id ? "you" : ""}>{u.name}{u.id === me.id ? " (Ty)" : ""}</td>
+                    <td className={u.id === me.id ? "you" : ""}>{u.name}{u.id === me.id ? " (Ty)" : ""}{snapDiff(m.id, u.id) && <span className="changed" title="Typ różni się od zamrożonego w chwili gwizdka">⚠ zmiana po starcie</span>}</td>
                     <td><span className={exOK ? "hit" : diffOK ? "hit2" : ""} style={{ padding: "2px 7px", fontFamily: "var(--fd)", fontSize: 17 }}>{hasExact ? `${b.exactHome}:${b.exactAway}` : "—"}</span></td>
                     <td><span className={wnOK ? "hit" : ""} style={{ padding: "2px 7px" }}>{winnerLabel(m, predWinner(b))}</span>{kontra && <span className="kontra">kontra</span>}</td>
                     <td><span className={scOK ? "hit" : ""} style={{ padding: "2px 7px" }}>{b.firstScorer || "—"}</span></td>
@@ -2312,7 +2394,9 @@ function App() {
             <button className="btn grass" onClick={addMatch}><Plus size={16} /> Dodaj mecz</button>
             <button className="btn gold" onClick={seedWorldCup}><Download size={16} /> Wczytaj terminarz MŚ 2026</button>
             <button className="btn ghost" onClick={seedKnockout}><Trophy size={16} /> Wczytaj fazę pucharową</button>
+            <button className="btn gold" onClick={assignBracketTeams}><Trophy size={16} /> Przypisz drużyny z drabinki</button>
           </div>
+          <p className="muted" style={{ fontSize: 12, marginTop: 10 }}>„Przypisz drużyny z drabinki" wpisuje do meczów pucharowych pary policzone z wyników grup i otwiera typowanie. Mecze z jeszcze niewyłonionymi drużynami pomija — kliknij ponownie po każdej kolejnej rundzie. Pary z udziałem drużyn z 3. miejsc są orientacyjne — sprawdź je z oficjalną drabinką i w razie potrzeby popraw ołówkiem.</p>
         </div>
 
         {/* mecze + wyniki */}
