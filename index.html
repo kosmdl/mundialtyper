@@ -426,6 +426,21 @@ const WC_ENG = Object.fromEntries(Object.entries(WC_TEAM).map(([eng, v]) => [v[1
 /* jednorazowa, chirurgiczna korekta zapisanych danych: mecze o północy ET (6:00 rano w PL)
    były wpisane o dobę za wcześnie; jeśli mecz ma DOKŁADNIE starą błędną datę, przesuwamy o +24h.
    Ręcznie poprawionych terminów nie rusza. Idempotentna — po naprawie nic już nie zmienia. */
+function fixKnockoutAdvancers(list) {
+  // Uzupełnia "kto awansował" dla zakończonych meczów pucharowych z ROZSTRZYGNIĘTYM
+  // wynikiem (nie-remisem), jeśli pole było puste (np. po starym auto-ESPN). Dzięki temu
+  // punkt za awans liczy się bez ręcznego zaznaczania. Remisy (dogrywka/karne) zostawia adminowi.
+  let changed = false;
+  const fixed = list.map((m) => {
+    if (!m.ko || !m.finished || !m.result || m.result.advancer) return m;
+    const h = Number(m.result.homeScore), a = Number(m.result.awayScore);
+    if (isNaN(h) || isNaN(a) || h === a) return m;
+    changed = true;
+    return { ...m, result: { ...m.result, advancer: h > a ? "home" : "away" } };
+  });
+  return { fixed, changed };
+}
+
 function fixMidnightKickoffs(list) {
   let changed = false;
   const fixed = list.map((m) => {
@@ -720,6 +735,12 @@ button.ministat:hover{background:var(--panel-2);border-color:rgba(255,255,255,.2
 .fchip:hover{color:var(--txt);border-color:rgba(255,255,255,.2)}
 .fchip.on{background:var(--grass);color:#04110b;border-color:var(--grass)}
 .botnav{display:none;position:fixed;left:0;right:0;bottom:0;z-index:80;background:rgba(8,14,28,.96);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom));justify-content:space-around;align-items:stretch}
+.adm-fab{position:fixed;right:18px;bottom:calc(22px + env(safe-area-inset-bottom));z-index:90;display:flex;flex-direction:column;gap:9px}
+.adm-fab-btn{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:rgba(8,14,28,.92);backdrop-filter:blur(8px);color:var(--txt);display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.4);transition:border-color .15s,transform .1s}
+.adm-fab-btn:hover{border-color:var(--grass)}
+.adm-fab-btn:active{transform:scale(.93)}
+.adm-fab-btn.now{background:linear-gradient(180deg,var(--grass),#1fb56e);color:#06210f;border-color:transparent}
+@media(max-width:680px){.adm-fab{right:12px;bottom:calc(88px + env(safe-area-inset-bottom))}}
 .bn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;border:none;background:none;color:var(--muted);font-size:10.5px;font-weight:700;cursor:pointer}
 .bn.on{color:var(--grass)}
 .bn.on .bnic{background:rgba(39,213,134,.16)}
@@ -805,6 +826,8 @@ function App() {
       let list = m ? JSON.parse(m) : [];
       const { fixed, changed } = fixMidnightKickoffs(list);
       if (changed) { list = fixed; try { await store.set("matches", JSON.stringify(list)); } catch (e) {} }
+      const ka = fixKnockoutAdvancers(list);
+      if (ka.changed) { list = ka.fixed; try { await store.set("matches", JSON.stringify(list)); } catch (e) {} }
       setMatches(list);
     }
     setSettings(s ? JSON.parse(s) : { points: DEFAULT_POINTS });
@@ -866,6 +889,7 @@ function App() {
 
   /* czy aktualny typ gracza różni się od zamrożonego (czerwona flaga) */
   const snapDiff = (mId, uId) => {
+    const mt = matches.find((x) => x.id === mId); if (mt && mt.ko) return false; // w pucharach typowanie otwiera się późno (po przypisaniu drużyn), więc migawka z gwizdka bywa myląca
     const snap = snaps[mId]; if (!snap) return false;
     const was = snap.picks[uId]; const b = (betsByUser[uId] || {})[mId];
     const now0 = b ? { exactHome: b.exactHome ?? "", exactAway: b.exactAway ?? "", firstScorer: b.firstScorer ?? "" } : null;
@@ -1293,7 +1317,7 @@ function App() {
     let cancelled = false;
     (async () => {
       const t = Date.now();
-      const due = matches.filter((m) => m.homeCode && m.awayCode && !m.finished && t >= new Date(m.kickoff).getTime() + AUTO_ESPN_DELAY_MS);
+      const due = matches.filter((m) => !m.ko && m.homeCode && m.awayCode && !m.finished && t >= new Date(m.kickoff).getTime() + AUTO_ESPN_DELAY_MS);
       if (!due.length) return;
       const byDate = {};
       for (const m of due) { const ymd = etDateKey(m.kickoff).replace(/-/g, ""); (byDate[ymd] = byDate[ymd] || []).push(m); }
@@ -1363,8 +1387,12 @@ function App() {
     const r = rdraft[m.id] || (m.result ? { homeScore: m.result.homeScore, awayScore: m.result.awayScore, firstScorer: m.result.firstScorer, advancer: m.result.advancer } : {});
     if (r.homeScore === "" || r.homeScore == null || r.awayScore === "" || r.awayScore == null || isNaN(Number(r.homeScore)) || isNaN(Number(r.awayScore)))
       return flash("Uzupełnij liczbowy wynik.");
-    if (m.ko && !r.advancer) return flash("Zaznacz, która drużyna awansuje (faza pucharowa).");
-    const next = matches.map((x) => x.id === m.id ? { ...x, finished: true, result: { homeScore: Number(r.homeScore), awayScore: Number(r.awayScore), firstScorer: (r.firstScorer || "").trim(), advancer: m.ko ? r.advancer : "" } } : x);
+    let advancer = r.advancer || "";
+    if (m.ko && !advancer) {
+      if (Number(r.homeScore) !== Number(r.awayScore)) advancer = Number(r.homeScore) > Number(r.awayScore) ? "home" : "away";
+      else return flash("Remis po 90 min — zaznacz, kto awansuje (dogrywka/karne).");
+    }
+    const next = matches.map((x) => x.id === m.id ? { ...x, finished: true, result: { homeScore: Number(r.homeScore), awayScore: Number(r.awayScore), firstScorer: (r.firstScorer || "").trim(), advancer: m.ko ? advancer : "" } } : x);
     await persistMatches(next); flash("Wynik zatwierdzony — punkty naliczone.");
   }
   async function reopen(m) {
@@ -1437,7 +1465,7 @@ function App() {
                   <tr key={u.id}>
                     <td className={u.id === me.id ? "you" : ""}>{u.name}{u.id === me.id ? " (Ty)" : ""}{snapDiff(m.id, u.id) && <span className="changed" title="Typ różni się od zamrożonego w chwili gwizdka">⚠ zmiana po starcie</span>}</td>
                     <td><span className={exOK ? "hit" : diffOK ? "hit2" : ""} style={{ padding: "2px 7px", fontFamily: "var(--fd)", fontSize: 17 }}>{hasExact ? `${b.exactHome}:${b.exactAway}` : "—"}</span></td>
-                    <td><span className={!m.ko && wnOK ? "hit" : ""} style={{ padding: "2px 7px" }}>{winnerLabel(m, predWinner(b))}</span>{kontra && <span className="kontra">kontra</span>}{m.ko && b.advance && <span className={`advchip ${advOK ? "hit" : ""}`} title="Typ awansu"><Flag code={b.advance === "home" ? m.homeCode : m.awayCode} size="fl-sm" /> awans</span>}</td>
+                    <td><span className={!m.ko && wnOK ? "hit" : ""} style={{ padding: "2px 7px" }}>{winnerLabel(m, predWinner(b))}</span>{kontra && <span className="kontra">kontra</span>}{m.ko && b.advance && <span className={`advchip ${advOK ? "hit" : ""}`} title="Typ awansu"><Flag code={b.advance === "home" ? m.homeCode : m.awayCode} size="fl-sm" /> awans{advOK ? " +" + (points.advance || 0) : ""}</span>}</td>
                     <td><span className={scOK ? "hit" : ""} style={{ padding: "2px 7px" }}>{b.firstScorer || "—"}</span>{scOK && <span className="advchip hit" title="Punkty za strzelca (wg popularności typu)">+{m.ko ? scorerPoints(scorerCountByMatch[m.id] || 1) : 1}</span>}</td>
                     {m.finished && <td style={{ textAlign: "right", fontFamily: "var(--fd)", fontSize: 18, color: p ? "var(--gold)" : "var(--muted)" }}>{p}</td>}
                   </tr>
@@ -2415,8 +2443,23 @@ function App() {
   }
 
   function renderAdmin() {
+    const jumpNow = () => {
+      const sorted = [...matches].sort((a, b) => new Date(a.kickoff) - new Date(b.kickoff));
+      if (!sorted.length) return;
+      const t = Date.now();
+      const live = sorted.find((m) => new Date(m.kickoff).getTime() <= t && !m.finished);
+      const up = sorted.find((m) => new Date(m.kickoff).getTime() > t);
+      const target = live || up || sorted[sorted.length - 1];
+      const el = document.getElementById("adm-" + target.id);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+    };
     return (
       <div style={{ display: "grid", gap: 16 }}>
+        <div className="adm-fab">
+          <button className="adm-fab-btn" title="Na górę" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}><span style={{ display: "inline-flex", transform: "rotate(-90deg)" }}><ChevronRight size={20} /></span></button>
+          <button className="adm-fab-btn now" title="Do aktualnego meczu" onClick={jumpNow}><Target size={18} /></button>
+          <button className="adm-fab-btn" title="Na dół" onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" })}><span style={{ display: "inline-flex", transform: "rotate(90deg)" }}><ChevronRight size={20} /></span></button>
+        </div>
         {/* dodaj mecz */}
         <div className="panel">
           <h2 style={{ fontSize: 19, marginBottom: 14, display: "flex", alignItems: "center", gap: 8 }}><Plus size={18} /> Dodaj mecz</h2>
@@ -2453,7 +2496,7 @@ function App() {
             {[...matches].sort((a, b) => new Date(a.kickoff) - new Date(b.kickoff)).map((m) => {
               const r = rdraft[m.id] || (m.result ? { homeScore: m.result.homeScore, awayScore: m.result.awayScore, firstScorer: m.result.firstScorer, advancer: m.result.advancer } : {});
               return (
-                <div key={m.id} style={{ border: "1px solid var(--line)", borderRadius: 14, padding: 14, background: "rgba(0,0,0,.18)" }}>
+                <div key={m.id} id={"adm-" + m.id} style={{ border: "1px solid var(--line)", borderRadius: 14, padding: 14, background: "rgba(0,0,0,.18)" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 10, justifyContent: "space-between", flexWrap: "wrap" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 8, fontWeight: 700 }}>
                       <Flag code={m.homeCode} size="fl-sm" /> {m.homeTeam}
